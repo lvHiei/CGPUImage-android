@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "openglHeader.h"
+#include "../util/openglHeader.h"
 
 class GPUImageFilter {
 public:
