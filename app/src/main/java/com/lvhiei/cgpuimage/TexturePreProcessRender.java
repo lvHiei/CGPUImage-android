@@ -22,12 +22,13 @@ public class TexturePreProcessRender {
 			"attribute vec4 position;\n" +
             "attribute vec4 inputTextureCoordinate;\n" +
             "\n" +
-            "uniform mat4 textureTransform;\n" +
+//            "uniform mat4 textureTransform;\n" +
             "varying vec2 textureCoordinate;\n" +
             "\n" +
             "void main()\n" +
             "{\n" +
-            "	textureCoordinate = (textureTransform * inputTextureCoordinate).xy;\n" +
+//            "	textureCoordinate = (textureTransform * inputTextureCoordinate).xy;\n" +
+            "	textureCoordinate = (inputTextureCoordinate).xy;\n" +
             "	gl_Position = position;\n" +
             "}";
 
@@ -75,10 +76,10 @@ public class TexturePreProcessRender {
     };
 
     private final float texturePoint[] = {
-            0.0f, 0.0f,
-            1.0f, 0.0f,
             0.0f, 1.0f,
             1.0f, 1.0f,
+            0.0f, 0.0f,
+            1.0f, 0.0f,
     };
 
 	public TexturePreProcessRender(){
@@ -110,7 +111,7 @@ public class TexturePreProcessRender {
         mGLAttribTextureCoordinate = GLES20.glGetAttribLocation(mGLProgId,
                 "inputTextureCoordinate");
         mIsInitialized = true;
-        mTextureTransformMatrixLocation = GLES20.glGetUniformLocation(mGLProgId, "textureTransform");
+//        mTextureTransformMatrixLocation = GLES20.glGetUniformLocation(mGLProgId, "textureTransform");
     }
 
 	public void setTextureTransformMatrix(float[] mtx){
@@ -212,7 +213,7 @@ public class TexturePreProcessRender {
         GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, mGLTextureBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
 
-        GLES20.glUniformMatrix4fv(mTextureTransformMatrixLocation, 1, false, mTextureTransformMatrix, 0);
+//        GLES20.glUniformMatrix4fv(mTextureTransformMatrixLocation, 1, false, mTextureTransformMatrix, 0);
 
         if(textureId != OpenGLUtils.NO_TEXTURE){
 	        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);

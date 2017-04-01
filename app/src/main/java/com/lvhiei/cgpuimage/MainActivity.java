@@ -31,6 +31,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private SurfaceTexture.OnFrameAvailableListener mOnFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
         @Override
         public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+            if(mbCameraSwithed){
+                mbCameraSwithed = false;
+                nativeSetFrontCamera(mCameraId == 1);
+            }
+
             if(null != mSurfaceView){
                 mSurfaceView.requestRender();
             }
@@ -41,6 +46,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private int mCameraId = 1;
 
+    private boolean mbCameraSwithed = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +57,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         setContentView(R.layout.activity_main);
 
-        Button btn = (Button) findViewById(R.id.cgpuimage_test_button);
+        Button btn = (Button) findViewById(R.id.cgpuimage_switchCamera);
         btn.setOnClickListener(this);
-        btn.setVisibility(View.GONE);
 
         mRender = new CGPUImageRender();
 
@@ -80,6 +86,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private boolean openCamera(int id){
         try {
+            closeCamera();
             mCamera = Camera.open(id);
             if(null == mCamera){
                 logger.e("opencamera failed id " + id);
@@ -181,17 +188,21 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
 
 
-    private native void nativeSetFrontCamera(boolean isfront);
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.cgpuimage_test_button:
+            case R.id.cgpuimage_switchCamera:
+                mCameraId = mCameraId == 0 ? 1 : 0;
                 openCamera(mCameraId);
                 startPreview();
+                mbCameraSwithed = true;
                 break;
             default:
                 break;
         }
     }
+
+    private native void nativeSetFrontCamera(boolean isfront);
+
 }

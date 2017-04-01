@@ -25,10 +25,11 @@ float textureCoord_front[] = {
 };
 
 float textureCoord_back[] = {
-        1.0f, 1.0f,
         1.0f, 0.0f,
-        0.0f, 1.0f,
+        1.0f, 1.0f,
         0.0f, 0.0f,
+        0.0f, 1.0f,
+
 };
 
 
@@ -89,4 +90,6 @@ bool NativeRender::setFrontCamera(bool front)
             m_pFilter->setTextureCoordinate(textureCoord_back);
         }
     }
+
+    return true;
 }

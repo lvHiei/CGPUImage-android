@@ -13,9 +13,9 @@
         android:layout_height="match_parent"/>
 
     <Button
-        android:id="@+id/cgpuimage_test_button"
+        android:id="@+id/cgpuimage_switchCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="opencamera"/>
+        android:text="switchCamera"/>
 
 </RelativeLayout>
