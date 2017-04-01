@@ -1,21 +1,27 @@
 package com.lvhiei.cgpuimage;
 
+import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.TextureView;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity implements View.OnClickListener{
 
     // Used to load the 'native-lib' library on application startup.
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("cgpuimage");
     }
+
+    private Logger logger = new Logger(this.getClass().getName());
 
     private Camera mCamera;
 
@@ -33,12 +39,20 @@ public class MainActivity extends AppCompatActivity {
 
     private int mTextureId = OpenGLUtils.NO_TEXTURE;
 
-    private int mCameraId = 0;
+    private int mCameraId = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
+
+        Button btn = (Button) findViewById(R.id.cgpuimage_test_button);
+        btn.setOnClickListener(this);
+        btn.setVisibility(View.GONE);
 
         mRender = new CGPUImageRender();
 
@@ -57,10 +71,18 @@ public class MainActivity extends AppCompatActivity {
         startPreview();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        closeCamera();
+    }
+
     private boolean openCamera(int id){
         try {
             mCamera = Camera.open(id);
             if(null == mCamera){
+                logger.e("opencamera failed id " + id);
                 return false;
             }
 
@@ -69,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
             int[] fpsrange = getCameraFpsRange();
             parameters.setPreviewFpsRange(fpsrange[0], fpsrange[1]);
             mCamera.setParameters(parameters);
-        }catch (Throwable t){
+        }catch (Exception e){
+            logger.e("opencamera get some error");
+            e.printStackTrace();
             try {
                 if(null != mCamera){
                     mCamera.release();
@@ -81,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void closeCamera(){
+        if(mCamera != null){
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     private Camera.Size getCameraPreviewSize(){
@@ -123,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPreview(){
 
+        if(mCamera == null){
+            return;
+        }
+
         if(OpenGLUtils.NO_TEXTURE == mTextureId){
             mTextureId = OpenGLUtils.getExternalOESTextureID();
         }
@@ -132,7 +168,9 @@ public class MainActivity extends AppCompatActivity {
             mSurfaceTexture.setOnFrameAvailableListener(mOnFrameAvailableListener);
         }
 
+        mRender.setFrameSize(mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height);
         mRender.setSurfaceTexture(mSurfaceTexture);
+        mRender.setTextureId(mTextureId);
 
         try{
             mCamera.setPreviewTexture(mSurfaceTexture);
@@ -142,4 +180,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private native void nativeSetFrontCamera(boolean isfront);
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.cgpuimage_test_button:
+                openCamera(mCameraId);
+                startPreview();
+                break;
+            default:
+                break;
+        }
+    }
 }

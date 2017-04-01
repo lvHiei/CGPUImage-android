@@ -97,7 +97,7 @@ bool GPUImageFilter::createProgram()
                            1024,
                            &length,
                            infoLog);
-        LOGE("OpenGLHelper : compile vertexShader failed : error msg = %s", infoLog);
+        LOGE("GPUImageFilter : compile vertexShader failed : error msg = %s", infoLog);
 
         return false;
     }
@@ -115,7 +115,7 @@ bool GPUImageFilter::createProgram()
                            1024,
                            &length,
                            infoLog);
-        LOGE("OpenGLHelper : compile fragmentShader failed : error msg = %s", infoLog);
+        LOGE("GPUImageFilter : compile fragmentShader failed : error msg = %s", infoLog);
         return false;
     }
 
@@ -131,13 +131,7 @@ bool GPUImageFilter::createProgram()
 
     this->createProgramExtra();
 
-    if(GL_NO_ERROR != glGetError())
-    {
-        LOGE("createProgram : some opengl error occured");
-        return false;
-    }
-
-    return true;
+    return !checkGLError("createProgram");
 }
 
 bool GPUImageFilter::createProgramExtra()
@@ -205,7 +199,8 @@ bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
     glFlush();
 
     this->onDraw();
-    return true;
+
+    return !checkGLError("draw");
 }
 
 bool GPUImageFilter::beforeDraw()
@@ -228,6 +223,7 @@ bool GPUImageFilter::onDraw()
     glDisableVertexAttribArray(m_uTextureCoordLocation);
 
     this->onDrawExtra();
+
     return true;
 }
 
@@ -294,7 +290,7 @@ bool GPUImageFilter::createTexture(int textureWidth, int textureHeight)
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    return true;
+    return checkGLError("createTexture");
 }
 
 bool GPUImageFilter::draw(GLubyte *rgbaData, int viewWidth, int viewHeight)
@@ -324,7 +320,7 @@ bool GPUImageFilter::draw(GLubyte *rgbaData, int viewWidth, int viewHeight)
 
     this->onDraw();
 
-    return true;
+    return checkGLError("draw");
 }
 
 bool GPUImageFilter::checkGLError(const char* funName)
