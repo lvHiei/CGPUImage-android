@@ -13,6 +13,8 @@
 #include <string.h>
 
 #include "../util/openglHeader.h"
+#include "../util/logUtil.h"
+
 
 class GPUImageFilter {
 public:

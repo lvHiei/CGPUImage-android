@@ -23,6 +23,11 @@ add_library( # Sets the name of the library.
              src/main/cpp/native-lib.cpp
              src/main/cpp/NativeRender.cpp
              src/main/cpp/GPUImage/GPUImageFilter.cpp
+             src/main/cpp/GPUImage/GPUImageGreyscaleFilter.cpp
+             src/main/cpp/GPUImage/GPUImageContrastFilter.cpp
+             src/main/cpp/GPUImage/GPUImageSaturationFilter.cpp
+             src/main/cpp/GPUImage/GPUImageColorMatrixFilter.cpp
+             src/main/cpp/GPUImage/GPUImageSepiaFilter.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a

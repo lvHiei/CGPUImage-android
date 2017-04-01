@@ -22,6 +22,10 @@ public:
     bool draw(int textureId, int viewWidth, int viewHeight);
 
     bool setFrontCamera(bool front);
+
+private:
+    void intenalCreateFilter(int filterType);
+
 private:
     GPUImageFilter* m_pFilter;
 

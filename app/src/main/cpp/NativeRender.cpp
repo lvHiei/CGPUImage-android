@@ -7,6 +7,10 @@
 
 
 #include "NativeRender.h"
+#include "GPUImage/GPUImageGreyscaleFilter.h"
+#include "GPUImage/GPUImageContrastFilter.h"
+#include "GPUImage/GPUImageSepiaFilter.h"
+#include "GPUImage/GPUImageSaturationFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -56,7 +60,7 @@ bool NativeRender::createFilter(int filterType)
         delete m_pFilter;
     }
 
-    m_pFilter = new GPUImageFilter();
+    intenalCreateFilter(filterType);
 
     m_pFilter->setVertexCoordinate(vertex_coordinate);
     if(m_bFrontCamera){
@@ -66,6 +70,15 @@ bool NativeRender::createFilter(int filterType)
     }
 
     return m_pFilter->createProgram();
+}
+
+void NativeRender::intenalCreateFilter(int filterType)
+{
+    m_pFilter = new GPUImageFilter();
+//    m_pFilter = new GPUImageGreyscaleFilter();
+//    m_pFilter = new GPUImageContrastFilter();
+//    m_pFilter = new GPUImageSaturationFilter();
+//    m_pFilter = new GPUImageSepiaFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

@@ -7,7 +7,6 @@
 
 
 #include "GPUImageFilter.h"
-#include "../util/logUtil.h"
 
 
 // 顶点着色器
