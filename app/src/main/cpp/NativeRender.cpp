@@ -15,6 +15,14 @@
 #include "GPUImage/GPUImageMissEtikateFilter.h"
 #include "GPUImage/GPUImageGammaFilter.h"
 #include "GPUImage/GPUImage3x3ConvolutionFilter.h"
+#include "GPUImage/GPUImageColorLocalBinaryPatternFilter.h"
+#include "GPUImage/GPUImageDirectionalSobelEdgeDetectionFilter.h"
+#include "GPUImage/GPUImageLocalBinaryPatternFilter.h"
+#include "GPUImage/GPUImageMedianFilter.h"
+#include "GPUImage/GPUImageNonMaximumSuppressionFilter.h"
+#include "GPUImage/GPUImageWeakPixelInclusionFilter.h"
+#include "GPUImage/GPUImageThresholdedNonMaximumSuppressionFilter.h"
+#include "GPUImage/GPUImageToonFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -86,7 +94,15 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageAmatorkaFilter();
 //    m_pFilter = new GPUImageMissEtikateFilter();
 //    m_pFilter = new GPUImageGammaFilter();
-    m_pFilter = new GPUImage3x3ConvolutionFilter();
+//    m_pFilter = new GPUImage3x3ConvolutionFilter();
+//    m_pFilter = new GPUImageColorLocalBinaryPatternFilter();
+//    m_pFilter = new GPUImageDirectionalSobelEdgeDetectionFilter();
+//    m_pFilter = new GPUImageLocalBinaryPatternFilter();
+//    m_pFilter = new GPUImageMedianFilter();
+//    m_pFilter = new GPUImageNonMaximumSuppressionFilter();
+//    m_pFilter = new GPUImageWeakPixelInclusionFilter();
+//    m_pFilter = new GPUImageThresholdedNonMaximumSuppressionFilter();
+    m_pFilter = new GPUImageToonFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

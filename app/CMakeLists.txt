@@ -37,6 +37,14 @@ add_library( # Sets the name of the library.
              src/main/cpp/GPUImage/GPUImageGammaFilter.cpp
              src/main/cpp/GPUImage/GPUImage3x3TextureSamplingFilter.cpp
              src/main/cpp/GPUImage/GPUImage3x3ConvolutionFilter.cpp
+             src/main/cpp/GPUImage/GPUImageColorLocalBinaryPatternFilter.cpp
+             src/main/cpp/GPUImage/GPUImageDirectionalSobelEdgeDetectionFilter.cpp
+             src/main/cpp/GPUImage/GPUImageLocalBinaryPatternFilter.cpp
+             src/main/cpp/GPUImage/GPUImageMedianFilter.cpp
+             src/main/cpp/GPUImage/GPUImageNonMaximumSuppressionFilter.cpp
+             src/main/cpp/GPUImage/GPUImageThresholdedNonMaximumSuppressionFilter.cpp
+             src/main/cpp/GPUImage/GPUImageToonFilter.cpp
+             src/main/cpp/GPUImage/GPUImageWeakPixelInclusionFilter.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a

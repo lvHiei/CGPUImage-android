@@ -60,7 +60,7 @@ GPUImage3x3TextureSamplingFilter::GPUImage3x3TextureSamplingFilter(const char *f
     strcpy(m_pFragmentShader, fragment);
 
     m_fTexelWidth = 1.0 / 1280;
-    m_fTexelWidth = 1.0 / 720;
+    m_fTexelHeight = 1.0 / 720;
 }
 
 
@@ -82,7 +82,7 @@ bool GPUImage3x3TextureSamplingFilter::release()
 bool GPUImage3x3TextureSamplingFilter::createProgramExtra()
 {
     m_iTexelWidthUniformLocation = glGetUniformLocation(m_uProgram, "texelWidth");
-    m_iTexelHeightUniformLocation = glGetAttribLocation(m_uProgram, "texelHeight");
+    m_iTexelHeightUniformLocation = glGetUniformLocation(m_uProgram, "texelHeight");
 
     return true;
 }
