@@ -24,7 +24,7 @@ public:
     /**
      * 饱和度，0.0--2.0, 默认1.0
      */
-    void setSaturation(float saturation);
+    void setSaturation(int percent);
 
 public:
     virtual bool createProgramExtra();

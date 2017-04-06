@@ -22,7 +22,7 @@ public:
 
 public:
 
-    void setIntensity(float intensity);
+    void setIntensity(int percent);
 
 public:
     virtual bool createProgramExtra();

@@ -66,17 +66,19 @@ GPUImageColorMatrixFilter::~GPUImageColorMatrixFilter()
 
 }
 
-void GPUImageColorMatrixFilter::setIntensity(float intensity)
+void GPUImageColorMatrixFilter::setIntensity(int percent)
 {
-    if(intensity < 0.0f){
-        intensity = 0.0f;
+    if(percent < 0){
+        percent = 0;
     }
 
-    if(intensity > 1.0f){
-        intensity = 1.0f;
+    if(percent > 100){
+        percent = 100;
     }
 
-    m_fIntensity = intensity;
+    float incremental = (1.0f - 0.0f) / 100;
+
+    m_fIntensity = 0.0f + incremental * percent;
 }
 
 bool GPUImageColorMatrixFilter::createVertexShader(char *vertex, int &length)

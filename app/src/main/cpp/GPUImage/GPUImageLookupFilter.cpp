@@ -78,3 +78,18 @@ bool GPUImageLookupFilter::beforeDrawExtra()
     GPUImageTwoInputFilter::beforeDrawExtra();
     return true;
 }
+
+void GPUImageLookupFilter::setIntensity(int percent)
+{
+    if(percent < 0){
+        percent = 0;
+    }
+
+    if(percent > 100){
+        percent = 100;
+    }
+
+    float incremental = (1.0f - 0.0f) / 100;
+
+    m_fIntensity = 0.0f + incremental * percent;
+}

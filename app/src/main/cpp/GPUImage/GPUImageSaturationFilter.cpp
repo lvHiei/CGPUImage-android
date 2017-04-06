@@ -55,17 +55,19 @@ GPUImageSaturationFilter::~GPUImageSaturationFilter()
 
 }
 
-void GPUImageSaturationFilter::setSaturation(float saturation)
+void GPUImageSaturationFilter::setSaturation(int percent)
 {
-    if(saturation < 0.0f){
-        saturation = 0.0f;
+    if(percent < 0){
+        percent = 0;
     }
 
-    if(saturation > 2.0f){
-        saturation = 2.0f;
+    if(percent > 100){
+        percent = 100;
     }
 
-    m_fSaturation = saturation;
+    float incremental = (2.0f - 0.0f) / 100;
+
+    m_fSaturation = 0.0f + incremental * percent;
 }
 
 bool GPUImageSaturationFilter::createVertexShader(char *vertex, int &length)

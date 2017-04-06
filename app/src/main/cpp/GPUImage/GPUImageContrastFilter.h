@@ -25,7 +25,7 @@ public:
      * 设置对比度
      * @param 对比度  1.0--4.0f default 1.0
      */
-    void setContrast(float contrast);
+    void setContrast(int percent);
 
 
 public:

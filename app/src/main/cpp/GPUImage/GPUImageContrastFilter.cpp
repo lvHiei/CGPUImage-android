@@ -52,17 +52,19 @@ GPUImageContrastFilter::~GPUImageContrastFilter()
 
 }
 
-void GPUImageContrastFilter::setContrast(float contrast)
+void GPUImageContrastFilter::setContrast(int percent)
 {
-    if(contrast < 1.0f){
-        contrast = 1.0f;
+    if(percent < 0){
+        percent = 0;
     }
 
-    if(contrast > 4.0f){
-        contrast = 4.0f;
+    if(percent > 100){
+        percent = 100;
     }
 
-    m_fContrast = contrast;
+    float incremental = (4.0f - 1.0f) / 100;
+
+    m_fContrast = 1.0f + incremental * percent;
 }
 
 bool GPUImageContrastFilter::createVertexShader(char *vertex, int &length)

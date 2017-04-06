@@ -39,7 +39,7 @@ public:
     GPUImageLookupFilter();
     ~GPUImageLookupFilter();
 
-    void setIntensity(float intensity);
+    void setIntensity(int percent);
 
 protected:
     virtual bool createProgramExtra();
