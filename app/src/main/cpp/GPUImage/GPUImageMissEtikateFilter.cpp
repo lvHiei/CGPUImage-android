@@ -5,28 +5,28 @@
  * My Email is majun_1523@163.com.
  */
 
-#include "GPUImageAmatorkaFilter.h"
+#include "GPUImageMissEtikateFilter.h"
 #include "../util/FileUtil.h"
 
 
-GPUImageAmatorkaFilter::GPUImageAmatorkaFilter():
-    GPUImageLookupFilter()
+GPUImageMissEtikateFilter::GPUImageMissEtikateFilter():
+        GPUImageLookupFilter()
 {
     m_fIntensity = 0.5f;
 }
 
-GPUImageAmatorkaFilter::~GPUImageAmatorkaFilter()
+GPUImageMissEtikateFilter::~GPUImageMissEtikateFilter()
 {
     this->release();
 }
 
-bool GPUImageAmatorkaFilter::loadImage()
+bool GPUImageMissEtikateFilter::loadImage()
 {
-    // this is decode the image of lookup_amatorka.png.
+    // this is decode the image of lookup_miss_etikate.png.
     // in the example we just use the rgba data stored in
-    // the file lookup_amatorka.rgba.
+    // the file lookup_miss_etikate.rgba.
 
-    const char* filename = "lookup_amatorka.rgba";
+    const char* filename = "lookup_miss_etikate.rgba";
 
     m_uPicWidth = 512;
     m_uPicHeight = 512;
