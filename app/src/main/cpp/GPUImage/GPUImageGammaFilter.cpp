@@ -38,7 +38,7 @@ const char _gamma_fragment_shader[]=
 
 GPUImageGammaFilter::GPUImageGammaFilter()
 {
-    m_fGamma = 2.0f;
+    m_fGamma = 1.5f;
 }
 
 
@@ -57,9 +57,9 @@ void GPUImageGammaFilter::setGamma(int percent)
         percent = 100;
     }
 
-    float incremental = (3.0f - 1.0f) / 100;
+    float incremental = (3.0f - 0.0f) / 100;
 
-    m_fGamma = 1.0f + incremental * percent;
+    m_fGamma = 0.0f + incremental * percent;
 }
 
 bool GPUImageGammaFilter::createVertexShader(char *vertex, int &length)
