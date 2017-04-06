@@ -38,7 +38,6 @@ GPUImageTwoInputFilter::GPUImageTwoInputFilter(const char *fragment)
     m_iImageTextureIdLocation = -1;
     m_iImageTextureIdCoordinateLocation = -1;
 
-    this->loadImage();
 }
 
 GPUImageTwoInputFilter::~GPUImageTwoInputFilter()
@@ -56,6 +55,11 @@ bool GPUImageTwoInputFilter::release()
     if(0 != m_uImageTextureId && glIsTexture(m_uTextureId)){
         glDeleteTextures(1, &m_uImageTextureId);
         m_uImageTextureId = 0;
+    }
+
+    if(NULL != m_pPicDataRGBA){
+        free(m_pPicDataRGBA);
+        m_pPicDataRGBA = NULL;
     }
 
     return true;
@@ -76,6 +80,8 @@ bool GPUImageTwoInputFilter::createProgramExtra()
     m_iImageTextureIdCoordinateLocation = glGetAttribLocation(m_uProgram, "inputTextureCoordinate2");
 
     if(0 == m_uImageTextureId){
+        this->loadImage();
+
         glActiveTexture(GL_TEXTURE1);
         glGenTextures(1, &m_uImageTextureId);
         glBindTexture(GL_TEXTURE_2D, m_uImageTextureId);
@@ -122,7 +128,8 @@ bool GPUImageTwoInputFilter::createFragmentShader(char *fragment, int &length)
         return false;
     }
 
-    sprintf(fragment, m_pFragmentShader);
+//    sprintf(fragment, m_pFragmentShader);
+    strcpy(fragment, m_pFragmentShader);
     length = expLen;
     return true;
 }

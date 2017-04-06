@@ -12,6 +12,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener{
@@ -59,6 +64,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         Button btn = (Button) findViewById(R.id.cgpuimage_switchCamera);
         btn.setOnClickListener(this);
+
+        copyAssets();
 
         mRender = new CGPUImageRender();
 
@@ -201,6 +208,65 @@ public class MainActivity extends Activity implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+
+    private void copyAssets(){
+        String cgpuimagePath = "/sdcard/cgpuimage/";
+        File filepath = new File(cgpuimagePath);
+        if(!filepath.exists()){
+            filepath.mkdir();
+        }
+
+        String lookup_amatoka = "lookup_amatorka.rgba";
+        String lookup_miss_etikate = "lookup_miss_etikate.rgba";
+        String lookup_soft_elegance_1 = "lookup_soft_elegance_1.rgba";
+        String lookup_soft_elegance_2 = "lookup_soft_elegance_2.rgba";
+
+        copyAssetsToSD(lookup_amatoka, cgpuimagePath + lookup_amatoka);
+        copyAssetsToSD(lookup_miss_etikate, cgpuimagePath + lookup_miss_etikate);
+        copyAssetsToSD(lookup_soft_elegance_1, cgpuimagePath + lookup_soft_elegance_1);
+        copyAssetsToSD(lookup_soft_elegance_2, cgpuimagePath + lookup_soft_elegance_2);
+    }
+
+    private void copyAssetsToSD(String assetName, String sdFile)
+    {
+        File file = new File(sdFile);
+        if (file.exists()){
+            return ;
+        }
+
+        InputStream myInput = null;
+        OutputStream myOutput = null;
+        try {
+            myOutput = new FileOutputStream(sdFile);
+            myInput = this.getAssets().open(assetName);
+
+            byte[] buffer = new byte[1024];
+            int length = myInput.read(buffer);
+            while (length > 0) {
+                myOutput.write(buffer, 0, length);
+                length = myInput.read(buffer);
+            }
+
+            myOutput.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != myInput) {
+                    myInput.close();
+                }
+
+                if (null != myOutput) {
+                    myOutput.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private native void nativeSetFrontCamera(boolean isfront);

@@ -37,6 +37,13 @@ float TEXTURE_ROTATED_270[] = {
 };
 
 
+float TextureRotateUtil::m_pTextureCoordinate[] = {
+        0.0f, 0.0f,
+        0.0f, 0.0f,
+        0.0f, 0.0f,
+        0.0f, 0.0f,
+};
+
 float* TextureRotateUtil::getTextureCoordinate(int degree, bool flipHorizontal, bool flipVertical)
 {
     switch (degree){
@@ -65,6 +72,8 @@ float* TextureRotateUtil::getTextureCoordinate(int degree, bool flipHorizontal, 
             m_pTextureCoordinate[i] = flip(m_pTextureCoordinate[i]);
         }
     }
+
+    return m_pTextureCoordinate;
 }
 
 float TextureRotateUtil::flip(float x)

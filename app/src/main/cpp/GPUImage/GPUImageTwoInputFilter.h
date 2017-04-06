@@ -38,7 +38,7 @@ private:
     GLint m_iImageTextureIdLocation;
     GLint m_iImageTextureIdCoordinateLocation;
 
-private:
+protected:
     uint8_t *m_pPicDataRGBA;
     uint32_t m_uPicWidth;
     uint32_t m_uPicHeight;

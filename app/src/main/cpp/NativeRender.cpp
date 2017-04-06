@@ -11,6 +11,7 @@
 #include "GPUImage/GPUImageContrastFilter.h"
 #include "GPUImage/GPUImageSepiaFilter.h"
 #include "GPUImage/GPUImageSaturationFilter.h"
+#include "GPUImage/GPUImageAmatorkaFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -74,11 +75,12 @@ bool NativeRender::createFilter(int filterType)
 
 void NativeRender::intenalCreateFilter(int filterType)
 {
-    m_pFilter = new GPUImageFilter();
+//    m_pFilter = new GPUImageFilter();
 //    m_pFilter = new GPUImageGreyscaleFilter();
 //    m_pFilter = new GPUImageContrastFilter();
 //    m_pFilter = new GPUImageSaturationFilter();
 //    m_pFilter = new GPUImageSepiaFilter();
+    m_pFilter = new GPUImageAmatorkaFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
@@ -87,6 +89,7 @@ bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
         return false;
     }
 
+    LOGI("NativeRender::draw...");
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, viewWidth, viewHeight);
     return m_pFilter->draw(textureId, viewWidth, viewHeight);
