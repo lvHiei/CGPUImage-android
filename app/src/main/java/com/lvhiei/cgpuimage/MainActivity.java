@@ -222,11 +222,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
         String lookup_miss_etikate = "lookup_miss_etikate.rgba";
         String lookup_soft_elegance_1 = "lookup_soft_elegance_1.rgba";
         String lookup_soft_elegance_2 = "lookup_soft_elegance_2.rgba";
+        String blend = "blend.rgba";
 
         copyAssetsToSD(lookup_amatoka, cgpuimagePath + lookup_amatoka);
         copyAssetsToSD(lookup_miss_etikate, cgpuimagePath + lookup_miss_etikate);
         copyAssetsToSD(lookup_soft_elegance_1, cgpuimagePath + lookup_soft_elegance_1);
         copyAssetsToSD(lookup_soft_elegance_2, cgpuimagePath + lookup_soft_elegance_2);
+        copyAssetsToSD(blend, cgpuimagePath + blend);
     }
 
     private void copyAssetsToSD(String assetName, String sdFile)
