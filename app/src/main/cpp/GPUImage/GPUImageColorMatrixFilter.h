@@ -18,7 +18,7 @@
 class GPUImageColorMatrixFilter : public GPUImageFilter{
 public:
     GPUImageColorMatrixFilter();
-    ~GPUImageColorMatrixFilter();
+    virtual ~GPUImageColorMatrixFilter();
 
 public:
 

@@ -21,7 +21,7 @@
 class GPUImageMissEtikateFilter : public GPUImageLookupFilter{
 public:
     GPUImageMissEtikateFilter();
-    ~GPUImageMissEtikateFilter();
+    virtual ~GPUImageMissEtikateFilter();
 
 protected:
     virtual bool loadImage();

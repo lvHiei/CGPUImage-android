@@ -14,6 +14,7 @@
 #include "GPUImage/GPUImageAmatorkaFilter.h"
 #include "GPUImage/GPUImageMissEtikateFilter.h"
 #include "GPUImage/GPUImageGammaFilter.h"
+#include "GPUImage/GPUImage3x3ConvolutionFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -84,7 +85,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageSepiaFilter();
 //    m_pFilter = new GPUImageAmatorkaFilter();
 //    m_pFilter = new GPUImageMissEtikateFilter();
-    m_pFilter = new GPUImageGammaFilter();
+//    m_pFilter = new GPUImageGammaFilter();
+    m_pFilter = new GPUImage3x3ConvolutionFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

@@ -37,7 +37,7 @@
 class GPUImageLookupFilter : public GPUImageTwoInputFilter{
 public:
     GPUImageLookupFilter();
-    ~GPUImageLookupFilter();
+    virtual ~GPUImageLookupFilter();
 
     void setIntensity(int percent);
 

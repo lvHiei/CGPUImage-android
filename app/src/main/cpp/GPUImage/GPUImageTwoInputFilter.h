@@ -30,10 +30,10 @@ protected:
 protected:
     virtual bool loadImage();
 
-private:
+protected:
     char* m_pFragmentShader;
 
-private:
+protected:
     GLuint m_uImageTextureId;
     GLint m_iImageTextureIdLocation;
     GLint m_iImageTextureIdCoordinateLocation;

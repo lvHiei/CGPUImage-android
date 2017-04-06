@@ -21,7 +21,7 @@
 class GPUImageAmatorkaFilter : public GPUImageLookupFilter{
 public:
     GPUImageAmatorkaFilter();
-    ~GPUImageAmatorkaFilter();
+    virtual ~GPUImageAmatorkaFilter();
 
 protected:
     virtual bool loadImage();
