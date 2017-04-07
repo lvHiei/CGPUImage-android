@@ -36,6 +36,7 @@
 #include "GPUImage/GPUImageColorPackingFilter.h"
 #include "GPUImage/GPUImageColourFASTSamplingOperation.h"
 #include "GPUImage/GPUImageCrosshatchFilter.h"
+#include "GPUImage/GPUImageDarkenBlendFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -128,7 +129,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageColorInvertFilter();
 //    m_pFilter = new GPUImageColorPackingFilter();
 //    m_pFilter = new GPUImageColourFASTSamplingOperation();
-    m_pFilter = new GPUImageCrosshatchFilter();
+//    m_pFilter = new GPUImageCrosshatchFilter();
+    m_pFilter = new GPUImageDarkenBlendFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
