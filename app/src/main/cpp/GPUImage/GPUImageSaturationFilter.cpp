@@ -9,22 +9,6 @@
 #include "GPUImageSaturationFilter.h"
 
 
-
-// 顶点着色器
-const char _saturation_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-
-"varying vec2 textureCoordinate;\n"
-
-"void main()\n"
-"{\n"
-"	gl_Position = position;\n"
-"	textureCoordinate = inputTextureCoordinate.xy;\n"
-"}\n"
-;
-
 // 片元着色器
 const char _saturation_fragment_shader[]=
 "precision mediump float;\n"
@@ -45,7 +29,7 @@ const char _saturation_fragment_shader[]=
 ;
 
 GPUImageSaturationFilter::GPUImageSaturationFilter()
-        : GPUImageFilter()
+        : GPUImageFilter(_saturation_fragment_shader)
 {
     m_fSaturation = 1.0f;
 }
@@ -68,35 +52,6 @@ void GPUImageSaturationFilter::setSaturation(int percent)
     float incremental = (2.0f - 0.0f) / 100;
 
     m_fSaturation = 0.0f + incremental * percent;
-}
-
-bool GPUImageSaturationFilter::createVertexShader(char *vertex, int &length)
-{
-    int expLen = strlen(_saturation_vertex_shader);
-
-    if(!vertex || length < expLen){
-        LOGE("createVertexShader failed! vertex:%p,length:$d,expLen:%d", vertex, length, expLen);
-        return false;
-    }
-
-    sprintf(vertex, _saturation_vertex_shader);
-    length = expLen;
-
-    return true;
-}
-
-bool GPUImageSaturationFilter::createFragmentShader(char *fragment, int &length)
-{
-    int expLen = strlen(_saturation_fragment_shader);
-
-    if(!fragment || length < expLen){
-        LOGE("createFragmentShader failed! fragment:%p,length:$d,expLen:%d", fragment, length, expLen);
-        return false;
-    }
-
-    sprintf(fragment, _saturation_fragment_shader);
-    length = expLen;
-    return true;
 }
 
 bool GPUImageSaturationFilter::createProgramExtra()

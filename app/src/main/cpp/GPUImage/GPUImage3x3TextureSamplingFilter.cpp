@@ -53,12 +53,8 @@ const char _3x3TextureSampling_vertex_shader[]=
 
 
 GPUImage3x3TextureSamplingFilter::GPUImage3x3TextureSamplingFilter(const char *fragment)
+    : GPUImageFilter(_3x3TextureSampling_vertex_shader, fragment)
 {
-    int fragLen = strlen(fragment) + 1;
-    m_pFragmentShader = (char *) malloc(fragLen * sizeof(char));
-
-    strcpy(m_pFragmentShader, fragment);
-
     m_fTexelWidth = 1.0 / 1280;
     m_fTexelHeight = 1.0 / 720;
 }
@@ -71,10 +67,7 @@ GPUImage3x3TextureSamplingFilter::~GPUImage3x3TextureSamplingFilter()
 
 bool GPUImage3x3TextureSamplingFilter::release()
 {
-    if(NULL != m_pFragmentShader){
-        free(m_pFragmentShader);
-        m_pFragmentShader = NULL;
-    }
+
     return true;
 }
 
@@ -84,35 +77,6 @@ bool GPUImage3x3TextureSamplingFilter::createProgramExtra()
     m_iTexelWidthUniformLocation = glGetUniformLocation(m_uProgram, "texelWidth");
     m_iTexelHeightUniformLocation = glGetUniformLocation(m_uProgram, "texelHeight");
 
-    return true;
-}
-
-bool GPUImage3x3TextureSamplingFilter::createVertexShader(char *vertex, int &length)
-{
-    int expLen = strlen(_3x3TextureSampling_vertex_shader);
-
-    if(!vertex || length < expLen){
-        LOGE("createVertexShader failed! vertex:%p,length:$d,expLen:%d", vertex, length, expLen);
-        return false;
-    }
-
-    sprintf(vertex, _3x3TextureSampling_vertex_shader);
-    length = expLen;
-    return true;
-}
-
-bool GPUImage3x3TextureSamplingFilter::createFragmentShader(char *fragment, int &length)
-{
-    int expLen = strlen(m_pFragmentShader);
-
-    if(!fragment || length < expLen){
-        LOGE("createFragmentShader failed! fragment:%p,length:$d,expLen:%d", fragment, length, expLen);
-        return false;
-    }
-
-//    sprintf(fragment, m_pFragmentShader);
-    strcpy(fragment, m_pFragmentShader);
-    length = expLen;
     return true;
 }
 

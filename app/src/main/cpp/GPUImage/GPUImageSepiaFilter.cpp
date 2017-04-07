@@ -17,7 +17,7 @@ const float sepiaColorMatrix[] = {
 
 
 GPUImageSepiaFilter::GPUImageSepiaFilter()
-        :GPUImageColorMatrixFilter()
+        : GPUImageColorMatrixFilter()
 {
     m_fIntensity = 1.0f;
     memcpy(m_pColorMatrix, sepiaColorMatrix, 16*sizeof(float));

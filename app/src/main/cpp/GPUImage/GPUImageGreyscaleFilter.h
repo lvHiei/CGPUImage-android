@@ -19,11 +19,6 @@ class GPUImageGreyscaleFilter : public GPUImageFilter{
 public:
     GPUImageGreyscaleFilter();
     virtual ~GPUImageGreyscaleFilter();
-
-public:
-    virtual bool createVertexShader(char* vertex, int& length);
-    virtual bool createFragmentShader(char* fragment, int& length);
-
 };
 
 

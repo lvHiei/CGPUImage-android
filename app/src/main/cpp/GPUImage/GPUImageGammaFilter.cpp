@@ -7,21 +7,6 @@
 
 #include "GPUImageGammaFilter.h"
 
-// 顶点着色器
-const char _gamma_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-
-"varying vec2 textureCoordinate;\n"
-
-"void main()\n"
-"{\n"
-"	gl_Position = position;\n"
-"	textureCoordinate = inputTextureCoordinate.xy;\n"
-"}\n"
-;
-
 // 片元着色器
 const char _gamma_fragment_shader[]=
 "precision mediump float;\n"
@@ -37,6 +22,7 @@ const char _gamma_fragment_shader[]=
 ;
 
 GPUImageGammaFilter::GPUImageGammaFilter()
+    : GPUImageFilter(_gamma_fragment_shader)
 {
     m_fGamma = 1.5f;
 }
@@ -60,35 +46,6 @@ void GPUImageGammaFilter::setGamma(int percent)
     float incremental = (3.0f - 0.0f) / 100;
 
     m_fGamma = 0.0f + incremental * percent;
-}
-
-bool GPUImageGammaFilter::createVertexShader(char *vertex, int &length)
-{
-    int expLen = strlen(_gamma_vertex_shader);
-
-    if(!vertex || length < expLen){
-        LOGE("createVertexShader failed! vertex:%p,length:$d,expLen:%d", vertex, length, expLen);
-        return false;
-    }
-
-    sprintf(vertex, _gamma_vertex_shader);
-    length = expLen;
-
-    return true;
-}
-
-bool GPUImageGammaFilter::createFragmentShader(char *fragment, int &length)
-{
-    int expLen = strlen(_gamma_fragment_shader);
-
-    if(!fragment || length < expLen){
-        LOGE("createFragmentShader failed! fragment:%p,length:$d,expLen:%d", fragment, length, expLen);
-        return false;
-    }
-
-    sprintf(fragment, _gamma_fragment_shader);
-    length = expLen;
-    return true;
 }
 
 bool GPUImageGammaFilter::createProgramExtra()

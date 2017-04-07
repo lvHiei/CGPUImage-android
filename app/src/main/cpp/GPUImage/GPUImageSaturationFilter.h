@@ -26,12 +26,8 @@ public:
      */
     void setSaturation(int percent);
 
-public:
-    virtual bool createProgramExtra();
-    virtual bool createVertexShader(char* vertex, int& length);
-    virtual bool createFragmentShader(char* fragment, int& length);
-
 protected:
+    virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();
     virtual bool onDrawExtra();
 

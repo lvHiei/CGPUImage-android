@@ -18,10 +18,6 @@ public:
 
     void setGamma(int percent);
 
-public:
-    virtual bool createVertexShader(char* vertex, int& length);
-    virtual bool createFragmentShader(char* fragment, int& length);
-
 protected:
     virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();

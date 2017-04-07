@@ -21,16 +21,9 @@ public:
     void setTexture2Id(GLuint texture2Id);
 
 protected:
-    virtual bool createVertexShader(char* vertex, int& length);
-    virtual bool createFragmentShader(char* fragment, int& length);
-
-protected:
     virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();
     virtual bool onDrawExtra();
-
-protected:
-    char* m_pFragmentShader;
 
 protected:
     GLuint m_uTexture2Id;

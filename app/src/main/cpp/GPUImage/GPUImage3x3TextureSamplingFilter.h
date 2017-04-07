@@ -24,8 +24,6 @@ public:
 
 public:
     virtual bool createProgramExtra();
-    virtual bool createVertexShader(char* vertex, int& length);
-    virtual bool createFragmentShader(char* fragment, int& length);
 
 protected:
     virtual bool beforeDrawExtra();
@@ -40,9 +38,6 @@ protected:
 
     GLint m_iTexelWidthUniformLocation;
     GLint m_iTexelHeightUniformLocation;
-
-protected:
-    char* m_pFragmentShader;
 };
 
 

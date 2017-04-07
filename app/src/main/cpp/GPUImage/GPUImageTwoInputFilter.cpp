@@ -28,11 +28,8 @@ const char _twoInput_vertex_shader[]=
 ;
 
 GPUImageTwoInputFilter::GPUImageTwoInputFilter(const char *fragment)
+    : GPUImageFilter(_twoInput_vertex_shader, fragment)
 {
-    int fragLen = strlen(fragment) + 1;
-    m_pFragmentShader = (char *) malloc(fragLen * sizeof(char));
-
-    strcpy(m_pFragmentShader, fragment);
 
     m_uTexture2Id = 0;
     m_iTexture2IdLocation = -1;
@@ -47,10 +44,6 @@ GPUImageTwoInputFilter::~GPUImageTwoInputFilter()
 
 bool GPUImageTwoInputFilter::release()
 {
-    if(NULL != m_pFragmentShader){
-        free(m_pFragmentShader);
-        m_pFragmentShader = NULL;
-    }
 
     return true;
 }
@@ -60,35 +53,6 @@ bool GPUImageTwoInputFilter::createProgramExtra()
     m_iTexture2IdLocation = glGetUniformLocation(m_uProgram, "inputImageTexture2");
     m_iTexture2IdCoordinateLocation = glGetAttribLocation(m_uProgram, "inputTextureCoordinate2");
 
-    return true;
-}
-
-bool GPUImageTwoInputFilter::createVertexShader(char *vertex, int &length)
-{
-    int expLen = strlen(_twoInput_vertex_shader);
-
-    if(!vertex || length < expLen){
-        LOGE("createVertexShader failed! vertex:%p,length:$d,expLen:%d", vertex, length, expLen);
-        return false;
-    }
-
-    sprintf(vertex, _twoInput_vertex_shader);
-    length = expLen;
-    return true;
-}
-
-bool GPUImageTwoInputFilter::createFragmentShader(char *fragment, int &length)
-{
-    int expLen = strlen(m_pFragmentShader);
-
-    if(!fragment || length < expLen){
-        LOGE("createFragmentShader failed! fragment:%p,length:$d,expLen:%d", fragment, length, expLen);
-        return false;
-    }
-
-//    sprintf(fragment, m_pFragmentShader);
-    strcpy(fragment, m_pFragmentShader);
-    length = expLen;
     return true;
 }
 

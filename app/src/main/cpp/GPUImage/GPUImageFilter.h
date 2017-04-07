@@ -19,6 +19,8 @@
 class GPUImageFilter {
 public:
     GPUImageFilter();
+    GPUImageFilter(const char* vertex, const char* fragment);
+    GPUImageFilter(const char* fragment);
     virtual ~GPUImageFilter();
 
 
@@ -46,6 +48,8 @@ protected:
 
     bool checkGLError(const char* funName);
 
+    bool init(const char *vertex, const char *fragment);
+
 protected:
     virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();
@@ -61,6 +65,9 @@ protected:
 
     float* m_pVertexCoordinate;
     float* m_pTextureCoordinate;
+
+    char* m_pVertexShader;
+    char* m_pFragmnetShader;
 
     GLuint m_uTextureId;
     int m_iTextureWidth;

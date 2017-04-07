@@ -9,22 +9,6 @@
 #include "GPUImageContrastFilter.h"
 #include "GPUImageFilter.h"
 
-
-// 顶点着色器
-const char _contrast_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-
-"varying vec2 textureCoordinate;\n"
-
-"void main()\n"
-"{\n"
-"	gl_Position = position;\n"
-"	textureCoordinate = inputTextureCoordinate.xy;\n"
-"}\n"
-;
-
 // 片元着色器
 const char _contrast_fragment_shader[]=
 "precision mediump float;\n"
@@ -42,7 +26,7 @@ const char _contrast_fragment_shader[]=
 ;
 
 GPUImageContrastFilter::GPUImageContrastFilter()
-        :GPUImageFilter()
+        :GPUImageFilter(_contrast_fragment_shader)
 {
     m_fContrast = 1.0f;
 }
@@ -65,35 +49,6 @@ void GPUImageContrastFilter::setContrast(int percent)
     float incremental = (4.0f - 1.0f) / 100;
 
     m_fContrast = 1.0f + incremental * percent;
-}
-
-bool GPUImageContrastFilter::createVertexShader(char *vertex, int &length)
-{
-    int expLen = strlen(_contrast_vertex_shader);
-
-    if(!vertex || length < expLen){
-        LOGE("createVertexShader failed! vertex:%p,length:$d,expLen:%d", vertex, length, expLen);
-        return false;
-    }
-
-    sprintf(vertex, _contrast_vertex_shader);
-    length = expLen;
-
-    return true;
-}
-
-bool GPUImageContrastFilter::createFragmentShader(char *fragment, int &length)
-{
-    int expLen = strlen(_contrast_fragment_shader);
-
-    if(!fragment || length < expLen){
-        LOGE("createFragmentShader failed! fragment:%p,length:$d,expLen:%d", fragment, length, expLen);
-        return false;
-    }
-
-    sprintf(fragment, _contrast_fragment_shader);
-    length = expLen;
-    return true;
 }
 
 bool GPUImageContrastFilter::createProgramExtra()

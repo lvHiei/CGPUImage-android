@@ -42,6 +42,30 @@ const int TEXTURE_COORDINATE_SIZE = 8;
 
 GPUImageFilter::GPUImageFilter()
 {
+    init(_base_vertex_shader, _base_fragment_shader);
+}
+
+GPUImageFilter::GPUImageFilter(const char *fragment)
+{
+    init(_base_vertex_shader, fragment);
+}
+
+GPUImageFilter::GPUImageFilter(const char *vertex, const char *fragment)
+{
+    init(vertex, fragment);
+}
+
+
+GPUImageFilter::~GPUImageFilter()
+{
+    this->release();
+    m_uProgram = 0;
+    m_uPositionLocation = 0;
+    m_uTextureCoordLocation = 0;
+}
+
+bool GPUImageFilter::init(const char *vertex, const char *fragment)
+{
     m_uProgram = 0;
     m_uPositionLocation = 0;
     m_uTextureCoordLocation = 0;
@@ -55,14 +79,20 @@ GPUImageFilter::GPUImageFilter()
 
     m_pVertexCoordinate = (float *) malloc(sizeof(float) * VERTEX_COORDINATE_SIZE);
     m_pTextureCoordinate = (float *) malloc(sizeof(float) * TEXTURE_COORDINATE_SIZE);
-}
 
-GPUImageFilter::~GPUImageFilter()
-{
-    this->release();
-    m_uProgram = 0;
-    m_uPositionLocation = 0;
-    m_uTextureCoordLocation = 0;
+    m_pVertexShader = NULL;
+    m_pFragmnetShader = NULL;
+
+    uint32_t vertex_len = strlen(vertex) + 1;
+    uint32_t fragment_len = strlen(fragment) + 1;
+
+    m_pVertexShader = (char *) malloc(vertex_len);
+    m_pFragmnetShader = (char *) malloc(fragment_len);
+
+    strcpy(m_pVertexShader, vertex);
+    strcpy(m_pFragmnetShader, fragment);
+
+    return true;
 }
 
 bool GPUImageFilter::createProgram()
@@ -158,14 +188,14 @@ void GPUImageFilter::setTextureCoordinate(float *textureCoordinate)
 
 bool GPUImageFilter::createVertexShader(char *vertex, int &length)
 {
-    int expLen = strlen(_base_vertex_shader);
+    int expLen = strlen(m_pVertexShader);
 
     if(!vertex || length < expLen){
         LOGE("createVertexShader failed! vertex:%p,length:$d,expLen:%d", vertex, length, expLen);
         return false;
     }
 
-    sprintf(vertex, _base_vertex_shader);
+    strcpy(vertex, m_pVertexShader);
     length = expLen;
 
     return true;
@@ -173,14 +203,14 @@ bool GPUImageFilter::createVertexShader(char *vertex, int &length)
 
 bool GPUImageFilter::createFragmentShader(char *fragment, int &length)
 {
-    int expLen = strlen(_base_fragment_shader);
+    int expLen = strlen(m_pFragmnetShader);
 
     if(!fragment || length < expLen){
         LOGE("createFragmentShader failed! fragment:%p,length:$d,expLen:%d", fragment, length, expLen);
         return false;
     }
 
-    sprintf(fragment, _base_fragment_shader);
+    strcpy(fragment, m_pFragmnetShader);
     length = expLen;
     return true;
 }
@@ -268,6 +298,15 @@ bool GPUImageFilter::release()
         m_uProgram = 0;
     }
 
+    if(NULL != m_pVertexShader){
+        free(m_pVertexShader);
+        m_pVertexShader = NULL;
+    }
+
+    if(NULL != m_pFragmnetShader){
+        free(m_pFragmnetShader);
+        m_pFragmnetShader = NULL;
+    }
 
     LOGI("GPUImageFilter::released");
     return true;
