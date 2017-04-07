@@ -33,6 +33,7 @@
 #include "GPUImage/GPUImageColorBurnBlendFilter.h"
 #include "GPUImage/GPUImageColorDodgeBlendFilter.h"
 #include "GPUImage/GPUImageColorInvertFilter.h"
+#include "GPUImage/GPUImageColorPackingFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -122,7 +123,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageColorBlendFilter();
 //    m_pFilter = new GPUImageColorBurnBlendFilter();
 //    m_pFilter = new GPUImageColorDodgeBlendFilter();
-    m_pFilter = new GPUImageColorInvertFilter();
+//    m_pFilter = new GPUImageColorInvertFilter();
+    m_pFilter = new GPUImageColorPackingFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
