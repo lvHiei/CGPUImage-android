@@ -52,7 +52,7 @@ const char _addBlend_fragment_shader[]=
 
 
 GPUImageAddBlendFilter::GPUImageAddBlendFilter()
-    : GPUImageTwoInputFilter(_addBlend_fragment_shader)
+    : GPUImageImageFilter(_addBlend_fragment_shader)
 {
 
 }

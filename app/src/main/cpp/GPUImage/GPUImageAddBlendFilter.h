@@ -9,9 +9,9 @@
 #define CGPUIMAGE_ANDROID_GPUIMAGEADDBLENDFILTER_H
 
 
-#include "GPUImageTwoInputFilter.h"
+#include "GPUImageImageFilter.h"
 
-class GPUImageAddBlendFilter : public GPUImageTwoInputFilter{
+class GPUImageAddBlendFilter : public GPUImageImageFilter{
 public:
     GPUImageAddBlendFilter();
     virtual ~GPUImageAddBlendFilter();

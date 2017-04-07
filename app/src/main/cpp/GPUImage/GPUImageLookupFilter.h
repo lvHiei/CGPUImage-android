@@ -9,7 +9,7 @@
 #define CGPUIMAGE_ANDROID_GPUIMAGELOOKUPFILTER_H
 
 
-#include "GPUImageTwoInputFilter.h"
+#include "GPUImageImageFilter.h"
 
 
 // How To Use:
@@ -34,7 +34,7 @@
 //        }
 //    }
 //}
-class GPUImageLookupFilter : public GPUImageTwoInputFilter{
+class GPUImageLookupFilter : public GPUImageImageFilter{
 public:
     GPUImageLookupFilter();
     virtual ~GPUImageLookupFilter();
@@ -50,6 +50,7 @@ protected:
 
     // Opacity/intensity of lookup filter ranges from 0.0 to 1.0, with 1.0 as the normal setting
     GLint m_iIntensityLocation;
+
 };
 
 

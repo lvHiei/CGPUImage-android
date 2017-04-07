@@ -54,7 +54,7 @@ const char _lookUp_fragment_shader[]=
 ;
 
 GPUImageLookupFilter::GPUImageLookupFilter() :
-    GPUImageTwoInputFilter(_lookUp_fragment_shader)
+    GPUImageImageFilter(_lookUp_fragment_shader)
 {
     m_fIntensity = 1.0f;
 }
@@ -67,15 +67,17 @@ GPUImageLookupFilter::~GPUImageLookupFilter()
 
 bool GPUImageLookupFilter::createProgramExtra()
 {
+    GPUImageImageFilter::createProgramExtra();
+
     m_iIntensityLocation = glGetUniformLocation(m_uProgram, "lookupIntensity");
-    GPUImageTwoInputFilter::createProgramExtra();
+
     return true;
 }
 
 bool GPUImageLookupFilter::beforeDrawExtra()
 {
     glUniform1f(m_iIntensityLocation, m_fIntensity);
-    GPUImageTwoInputFilter::beforeDrawExtra();
+    GPUImageImageFilter::beforeDrawExtra();
     return true;
 }
 

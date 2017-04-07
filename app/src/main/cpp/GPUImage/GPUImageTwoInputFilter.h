@@ -18,6 +18,8 @@ public:
 
     virtual bool release();
 
+    void setTexture2Id(GLuint texture2Id);
+
 protected:
     virtual bool createVertexShader(char* vertex, int& length);
     virtual bool createFragmentShader(char* fragment, int& length);
@@ -28,20 +30,13 @@ protected:
     virtual bool onDrawExtra();
 
 protected:
-    virtual bool loadImage();
-
-protected:
     char* m_pFragmentShader;
 
 protected:
-    GLuint m_uImageTextureId;
-    GLint m_iImageTextureIdLocation;
-    GLint m_iImageTextureIdCoordinateLocation;
+    GLuint m_uTexture2Id;
+    GLint m_iTexture2IdLocation;
+    GLint m_iTexture2IdCoordinateLocation;
 
-protected:
-    uint8_t *m_pPicDataRGBA;
-    uint32_t m_uPicWidth;
-    uint32_t m_uPicHeight;
 };
 
 
