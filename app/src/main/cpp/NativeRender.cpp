@@ -31,6 +31,7 @@
 #include "GPUImage/GPUImageChromaKeyFilter.h"
 #include "GPUImage/GPUImageColorBlendFilter.h"
 #include "GPUImage/GPUImageColorBurnBlendFilter.h"
+#include "GPUImage/GPUImageColorDodgeBlendFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -118,7 +119,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageChromaKeyBlendFilter();
 //    m_pFilter = new GPUImageChromaKeyFilter();
 //    m_pFilter = new GPUImageColorBlendFilter();
-    m_pFilter = new GPUImageColorBurnBlendFilter();
+//    m_pFilter = new GPUImageColorBurnBlendFilter();
+    m_pFilter = new GPUImageColorDodgeBlendFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

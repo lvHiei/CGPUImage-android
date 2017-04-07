@@ -55,6 +55,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/GPUImage/GPUImageChromaKeyFilter.cpp
              src/main/cpp/GPUImage/GPUImageColorBlendFilter.cpp
              src/main/cpp/GPUImage/GPUImageColorBurnBlendFilter.cpp
+             src/main/cpp/GPUImage/GPUImageColorDodgeBlendFilter.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a
