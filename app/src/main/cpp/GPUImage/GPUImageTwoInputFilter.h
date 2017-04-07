@@ -14,6 +14,7 @@
 class GPUImageTwoInputFilter : public GPUImageFilter{
 public:
     GPUImageTwoInputFilter(const char* fragment);
+    GPUImageTwoInputFilter(const char* vertex, const char* fragment);
     virtual ~GPUImageTwoInputFilter();
 
     virtual bool release();

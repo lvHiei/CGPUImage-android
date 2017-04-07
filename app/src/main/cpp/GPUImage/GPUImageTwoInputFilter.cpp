@@ -37,6 +37,15 @@ GPUImageTwoInputFilter::GPUImageTwoInputFilter(const char *fragment)
 
 }
 
+GPUImageTwoInputFilter::GPUImageTwoInputFilter(const char *vertex, const char *fragment)
+    : GPUImageFilter(vertex, fragment)
+{
+    m_uTexture2Id = 0;
+    m_iTexture2IdLocation = -1;
+    m_iTexture2IdCoordinateLocation = -1;
+
+}
+
 GPUImageTwoInputFilter::~GPUImageTwoInputFilter()
 {
     this->release();
