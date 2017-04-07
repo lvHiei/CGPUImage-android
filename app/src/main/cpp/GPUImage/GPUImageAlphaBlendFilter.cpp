@@ -32,7 +32,7 @@ const char _alphaBlend_fragment_shader[]=
 GPUImageAlphaBlendFilter::GPUImageAlphaBlendFilter()
     : GPUImageTwoInputFilter(_alphaBlend_fragment_shader)
 {
-    m_fMix = 1.0f;
+    m_fMix = 0.5f;
 
     m_iMixUniformLocation = -1;
 }
