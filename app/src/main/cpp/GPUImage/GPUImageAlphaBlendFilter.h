@@ -24,7 +24,7 @@ protected:
 
 protected:
     // Mix ranges from 0.0 (only image 1) to 1.0 (only image 2), with 1.0 as the normal level
-    float m_fMix;
+    GLfloat m_fMix;
 
     GLint m_iMixUniformLocation;
 };

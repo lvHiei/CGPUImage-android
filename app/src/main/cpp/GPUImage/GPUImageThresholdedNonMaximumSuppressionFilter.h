@@ -27,7 +27,7 @@ protected:
     /** Any local maximum above this threshold will be white,
      * and anything below black. Ranges from 0.0 to 1.0, with 0.8 as the default
      */
-    float m_fThreshold;
+    GLfloat m_fThreshold;
 
     GLint m_iThresholdUniformLocation;
 };

@@ -27,7 +27,7 @@ protected:
     GLint m_iGammaLocation;
 
     // Gamma ranges from 0.0 to 3.0, with 1.0 as the normal level
-    float m_fGamma;
+    GLfloat m_fGamma;
 };
 
 

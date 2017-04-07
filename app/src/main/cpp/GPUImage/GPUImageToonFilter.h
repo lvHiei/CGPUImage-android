@@ -30,11 +30,11 @@ protected:
 protected:
     /** The threshold at which to apply the edges, default of 0.2
      */
-    float m_fThreshold;
+    GLfloat m_fThreshold;
 
     /** The levels of quantization for the posterization of colors within the scene, with a default of 10.0
      */
-    float m_fQuantizationLevels;
+    GLfloat m_fQuantizationLevels;
 
     GLint m_iThresholdUniformLocation;
     GLint m_iQuantizationLevelsUniformLocation;

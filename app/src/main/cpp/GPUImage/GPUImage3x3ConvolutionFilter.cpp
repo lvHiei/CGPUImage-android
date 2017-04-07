@@ -48,14 +48,14 @@ const char _3x3Convolution_fragment_shader[]=
 ;
 
 
-float convolution_init[] = {
+GLfloat convolution_init[] = {
     0.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f,
     0.0f, 0.0f, 0.0f,
 };
 
 
-float convolution_example[] = {
+GLfloat convolution_example[] = {
         -1.0f, 0.0f, 1.0f,
         -2.0f, 0.0f, 2.0f,
         -1.0f, 0.0f, 1.0f,

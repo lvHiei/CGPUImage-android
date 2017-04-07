@@ -33,8 +33,8 @@ protected:
 protected:
     // The texel width and height determines how far out to sample from this texel.
     // By default, this is the normalized width of a pixel, but this can be overridden for different effects.
-    float m_fTexelWidth;
-    float m_fTexelHeight;
+    GLfloat m_fTexelWidth;
+    GLfloat m_fTexelHeight;
 
     GLint m_iTexelWidthUniformLocation;
     GLint m_iTexelHeightUniformLocation;

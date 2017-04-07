@@ -39,12 +39,12 @@ protected:
     /**
      * A 4x4 matrix used to transform each color in an image
      */
-    float m_pColorMatrix[16];
+    GLfloat m_pColorMatrix[16];
 
     /**
      * The degree to which the new transformed color replaces the original color for each pixel
      */
-    float m_fIntensity;
+    GLfloat m_fIntensity;
 };
 
 

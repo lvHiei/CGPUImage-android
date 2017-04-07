@@ -63,8 +63,8 @@ protected:
     GLuint m_uPositionLocation;
     GLuint m_uTextureCoordLocation;
 
-    float* m_pVertexCoordinate;
-    float* m_pTextureCoordinate;
+    GLfloat* m_pVertexCoordinate;
+    GLfloat* m_pTextureCoordinate;
 
     char* m_pVertexShader;
     char* m_pFragmnetShader;

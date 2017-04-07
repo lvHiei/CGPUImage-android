@@ -46,7 +46,7 @@ protected:
     virtual bool beforeDrawExtra();
 
 protected:
-    float m_fIntensity;
+    GLfloat m_fIntensity;
 
     // Opacity/intensity of lookup filter ranges from 0.0 to 1.0, with 1.0 as the normal setting
     GLint m_iIntensityLocation;

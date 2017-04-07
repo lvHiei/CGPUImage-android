@@ -29,7 +29,7 @@ const char _colorMatrix_fragment_shader[]=
 /*
  * 转换矩阵
  */
-const float colorMatrix[] = {
+const GLfloat colorMatrix[] = {
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
