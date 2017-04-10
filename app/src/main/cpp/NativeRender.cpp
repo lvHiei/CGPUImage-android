@@ -44,6 +44,7 @@
 #include "GPUImage/GPUImageEmbossFilter.h"
 #include "GPUImage/GPUImageExclusionBlendFilter.h"
 #include "GPUImage/GPUImageExposureFilter.h"
+#include "GPUImage/GPUImageFalseColorFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -144,7 +145,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageDivideBlendFilter();
 //    m_pFilter = new GPUImageEmbossFilter();
 //    m_pFilter = new GPUImageExclusionBlendFilter();
-    m_pFilter = new GPUImageExposureFilter();
+//    m_pFilter = new GPUImageExposureFilter();
+    m_pFilter = new GPUImageFalseColorFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
