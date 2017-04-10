@@ -54,6 +54,7 @@
 #include "GPUImage/GPUImageHueFilter.h"
 #include "GPUImage/GPUImageKuwaharaFilter.h"
 #include "GPUImage/GPUImageKuwaharaRadius3Filter.h"
+#include "GPUImage/GPUImageLaplacianFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -164,7 +165,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageHueBlendFilter();
 //    m_pFilter = new GPUImageHueFilter();
 //    m_pFilter = new GPUImageKuwaharaFilter();
-    m_pFilter = new GPUImageKuwaharaRadius3Filter();
+//    m_pFilter = new GPUImageKuwaharaRadius3Filter();
+    m_pFilter = new GPUImageLaplacianFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

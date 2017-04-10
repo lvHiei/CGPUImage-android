@@ -16,6 +16,7 @@
 class GPUImage3x3ConvolutionFilter : public GPUImage3x3TextureSamplingFilter{
 public:
     GPUImage3x3ConvolutionFilter();
+    GPUImage3x3ConvolutionFilter(const char* fragment);
     virtual ~GPUImage3x3ConvolutionFilter();
 
 public:
