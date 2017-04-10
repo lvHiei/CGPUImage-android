@@ -70,6 +70,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/GPUImage/GPUImageExposureFilter.cpp
              src/main/cpp/GPUImage/GPUImageFalseColorFilter.cpp
              src/main/cpp/GPUImage/GPUImageHardLightBlendFilter.cpp
+             src/main/cpp/GPUImage/GPUImageHazeFilter.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a
