@@ -50,6 +50,7 @@
 #include "GPUImage/GPUImageHighlightShadowFilter.h"
 #include "GPUImage/GPUImageHighlightShadowTintFilter.h"
 #include "GPUImage/GPUImageHSBFilter.h"
+#include "GPUImage/GPUImageHueBlendFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -156,7 +157,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageHazeFilter();
 //    m_pFilter = new GPUImageHighlightShadowFilter();
 //    m_pFilter = new GPUImageHighlightShadowTintFilter();
-    m_pFilter = new GPUImageHSBFilter();
+//    m_pFilter = new GPUImageHSBFilter();
+    m_pFilter = new GPUImageHueBlendFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
