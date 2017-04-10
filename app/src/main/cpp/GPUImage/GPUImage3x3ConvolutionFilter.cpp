@@ -88,5 +88,5 @@ bool GPUImage3x3ConvolutionFilter::beforeDrawExtra()
 
 void GPUImage3x3ConvolutionFilter::setConvolutionKernel(float *convolutionKernel)
 {
-    memcpy(m_pConvolutionKernel, convolution_init, 9 * sizeof(float));
+    memcpy(m_pConvolutionKernel, convolutionKernel, 9 * sizeof(float));
 }
