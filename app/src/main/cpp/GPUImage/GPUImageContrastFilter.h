@@ -26,6 +26,8 @@ public:
      * @param 对比度  1.0--4.0f default 1.0
      */
     void setContrast(int percent);
+    void setContrast(float contrast);
+
 
 protected:
     virtual bool createProgramExtra();

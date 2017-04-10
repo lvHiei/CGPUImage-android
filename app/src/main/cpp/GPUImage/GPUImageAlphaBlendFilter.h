@@ -17,6 +17,7 @@ public:
     virtual ~GPUImageAlphaBlendFilter();
 
     void setMix(int percent);
+    void setMix(float mix);
 
 protected:
     virtual bool createProgramExtra();

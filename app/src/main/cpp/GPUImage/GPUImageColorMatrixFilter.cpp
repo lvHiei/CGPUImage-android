@@ -83,3 +83,11 @@ bool GPUImageColorMatrixFilter::onDrawExtra()
 {
     return true;
 }
+
+
+void GPUImageColorMatrixFilter::setIntensity(float intensity)
+{
+    m_fIntensity = intensity;
+}
+
+

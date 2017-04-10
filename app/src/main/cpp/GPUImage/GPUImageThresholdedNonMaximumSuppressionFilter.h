@@ -18,6 +18,7 @@ public:
 
 public:
     void setThreshold(int percent);
+    void setThreshold(float threshold);
 
 protected:
     virtual bool createProgramExtra();

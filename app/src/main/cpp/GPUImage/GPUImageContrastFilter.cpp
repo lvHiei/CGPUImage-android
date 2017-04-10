@@ -67,3 +67,10 @@ bool GPUImageContrastFilter::onDrawExtra()
 {
     return true;
 }
+
+
+void GPUImageContrastFilter::setContrast(float contrast)
+{
+    m_fContrast = contrast;
+}
+

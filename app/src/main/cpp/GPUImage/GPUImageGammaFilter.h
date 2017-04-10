@@ -17,6 +17,8 @@ public:
     virtual ~GPUImageGammaFilter();
 
     void setGamma(int percent);
+    void setGamma(float gamma);
+
 
 protected:
     virtual bool createProgramExtra();

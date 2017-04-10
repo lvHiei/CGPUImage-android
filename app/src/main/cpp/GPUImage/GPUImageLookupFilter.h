@@ -40,6 +40,7 @@ public:
     virtual ~GPUImageLookupFilter();
 
     void setIntensity(int percent);
+    void setIntensity(float intensity);
 
 protected:
     virtual bool createProgramExtra();

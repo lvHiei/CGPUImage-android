@@ -99,3 +99,10 @@ void GPUImageThresholdedNonMaximumSuppressionFilter::setThreshold(int percent)
 
     m_fThreshold = 0.0f + incremental * percent;
 }
+
+
+void GPUImageThresholdedNonMaximumSuppressionFilter::setThreshold(float threshold)
+{
+    m_fThreshold = threshold;
+}
+

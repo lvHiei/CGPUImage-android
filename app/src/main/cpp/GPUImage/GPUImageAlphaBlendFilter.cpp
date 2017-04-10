@@ -71,3 +71,10 @@ void GPUImageAlphaBlendFilter::setMix(int percent)
 
     m_fMix = 0.0f + incremental * percent;
 }
+
+
+void GPUImageAlphaBlendFilter::setMix(float mix)
+{
+    m_fMix = mix;
+}
+

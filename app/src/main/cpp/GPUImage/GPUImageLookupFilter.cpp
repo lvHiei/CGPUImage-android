@@ -95,3 +95,10 @@ void GPUImageLookupFilter::setIntensity(int percent)
 
     m_fIntensity = 0.0f + incremental * percent;
 }
+
+
+void GPUImageLookupFilter::setIntensity(float intensity)
+{
+    m_fIntensity = intensity;
+}
+

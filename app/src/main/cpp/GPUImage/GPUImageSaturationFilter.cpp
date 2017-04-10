@@ -70,3 +70,10 @@ bool GPUImageSaturationFilter::onDrawExtra()
 {
     return true;
 }
+
+
+void GPUImageSaturationFilter::setSaturation(float saturation)
+{
+    m_fSaturation = saturation;
+}
+

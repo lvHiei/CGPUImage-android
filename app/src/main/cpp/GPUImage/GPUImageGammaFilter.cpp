@@ -64,3 +64,10 @@ bool GPUImageGammaFilter::onDrawExtra()
 {
     return true;
 }
+
+
+void GPUImageGammaFilter::setGamma(float gamma)
+{
+    m_fGamma = gamma;
+}
+

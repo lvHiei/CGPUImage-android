@@ -103,3 +103,10 @@ void GPUImageToonFilter::setQuantizationLevels(float quantizationLevels)
 {
     m_fQuantizationLevels = quantizationLevels;
 }
+
+
+void GPUImageToonFilter::setThreshold(float threshold)
+{
+    m_fThreshold = threshold;
+}
+

@@ -17,6 +17,7 @@ public:
     virtual ~GPUImageBrightnessFilter();
 
     void setBrightness(int percent);
+    void setBrightness(float brightness);
 
 protected:
     virtual bool createProgramExtra();

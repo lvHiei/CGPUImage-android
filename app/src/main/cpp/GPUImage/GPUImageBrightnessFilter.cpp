@@ -65,3 +65,10 @@ void GPUImageBrightnessFilter::setBrightness(int percent)
 
     m_fBrightness = -1.0f + incremental * percent;
 }
+
+
+void GPUImageBrightnessFilter::setBrightness(float brightness)
+{
+    m_fBrightness = brightness;
+}
+

@@ -21,6 +21,7 @@ public:
     virtual ~GPUImageToonFilter();
 
     void setThreshold(int percent);
+    void setThreshold(float threshold);
     void setQuantizationLevels(float quantizationLevels);
 
 protected:
