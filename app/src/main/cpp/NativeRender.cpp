@@ -62,6 +62,7 @@
 #include "GPUImage/GPUImageLuminanceThresholdFilter.h"
 #include "GPUImage/GPUImageLuminosityBlendFilter.h"
 #include "GPUImage/GPUImageMaskFilter.h"
+#include "GPUImage/GPUImageMonochromeFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -180,7 +181,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageLuminanceRangeFilter();
 //    m_pFilter = new GPUImageLuminanceThresholdFilter();
 //    m_pFilter = new GPUImageLuminosityBlendFilter();
-    m_pFilter = new GPUImageMaskFilter();
+//    m_pFilter = new GPUImageMaskFilter();
+    m_pFilter = new GPUImageMonochromeFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
