@@ -58,6 +58,7 @@
 #include "GPUImage/GPUImageLevelsFilter.h"
 #include "GPUImage/GPUImageLightenBlendFilter.h"
 #include "GPUImage/GPUImageLinearBurnBlendFilter.h"
+#include "GPUImage/GPUImageLuminanceRangeFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -172,7 +173,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageLaplacianFilter();
 //    m_pFilter = new GPUImageLevelsFilter();
 //    m_pFilter = new GPUImageLightenBlendFilter();
-    m_pFilter = new GPUImageLinearBurnBlendFilter();
+//    m_pFilter = new GPUImageLinearBurnBlendFilter();
+    m_pFilter = new GPUImageLuminanceRangeFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
