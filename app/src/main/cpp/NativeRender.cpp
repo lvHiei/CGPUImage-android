@@ -67,6 +67,7 @@
 #include "GPUImage/GPUImageMotionBlurFilter.h"
 #include "GPUImage/GPUImageMultiplyBlendFilter.h"
 #include "GPUImage/GPUImageNormalBlendFilter.h"
+#include "GPUImage/GPUImageOpacityFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -190,7 +191,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageMosaicFilter();
 //    m_pFilter = new GPUImageMotionBlurFilter();
 //    m_pFilter = new GPUImageMultiplyBlendFilter();
-    m_pFilter = new GPUImageNormalBlendFilter();
+//    m_pFilter = new GPUImageNormalBlendFilter();
+    m_pFilter = new GPUImageOpacityFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
