@@ -28,7 +28,8 @@ const char _opacity_fragment_shader[]=
 GPUImageOpacityFilter::GPUImageOpacityFilter()
     : GPUImageFilter(_opacity_fragment_shader)
 {
-
+    m_fOpacity = 1.0f;
+    m_iOpacityUniformLocation = -1;
 }
 
 GPUImageOpacityFilter::~GPUImageOpacityFilter()
