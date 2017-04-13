@@ -86,6 +86,9 @@ bool GPUImageToonFilter::beforeDrawExtra()
 
 void GPUImageToonFilter::setThreshold(int percent)
 {
+    float max = 1.0f;
+    float min = 0.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -94,9 +97,10 @@ void GPUImageToonFilter::setThreshold(int percent)
         percent = 100;
     }
 
-    float incremental = (1.0f - 0.0f) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fThreshold = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setThreshold(value);
 }
 
 void GPUImageToonFilter::setQuantizationLevels(float quantizationLevels)

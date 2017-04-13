@@ -56,6 +56,9 @@ void GPUImageExposureFilter::setExposure(float exposure)
 
 void GPUImageExposureFilter::setExposure(int percent)
 {
+    float max = 10.0f;
+    float min = -10.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -64,7 +67,8 @@ void GPUImageExposureFilter::setExposure(int percent)
         percent = 100;
     }
 
-    float incremental = (10.0f - (-10.0f)) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fExposure = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setExposure(value);
 }

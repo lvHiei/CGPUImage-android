@@ -41,6 +41,9 @@ GPUImageSaturationFilter::~GPUImageSaturationFilter()
 
 void GPUImageSaturationFilter::setSaturation(int percent)
 {
+    float max = 2.0f;
+    float min = 0.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -49,9 +52,10 @@ void GPUImageSaturationFilter::setSaturation(int percent)
         percent = 100;
     }
 
-    float incremental = (2.0f - 0.0f) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fSaturation = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setSaturation(value);
 }
 
 bool GPUImageSaturationFilter::createProgramExtra()

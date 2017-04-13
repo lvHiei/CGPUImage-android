@@ -35,6 +35,9 @@ GPUImageGammaFilter::~GPUImageGammaFilter()
 
 void GPUImageGammaFilter::setGamma(int percent)
 {
+    float max = 3.0f;
+    float min = 0.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -43,9 +46,10 @@ void GPUImageGammaFilter::setGamma(int percent)
         percent = 100;
     }
 
-    float incremental = (3.0f - 0.0f) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fGamma = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setGamma(value);
 }
 
 bool GPUImageGammaFilter::createProgramExtra()

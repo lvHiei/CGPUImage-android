@@ -86,6 +86,9 @@ void GPUImageMosaicFilter::setDisplaySize(float x, float y)
 
 void GPUImageMosaicFilter::setDisplaySize(int percent)
 {
+    float max = 2.0f;
+    float min = 0.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -94,10 +97,10 @@ void GPUImageMosaicFilter::setDisplaySize(int percent)
         percent = 100;
     }
 
-    float incremental = (2.0f - 0.0f) / 100;
+    float incremental = (max - min) / 100;
 
-    m_pDisplayTileSize[0] = 0.0f + incremental * percent;
-    m_pDisplayTileSize[1] = m_pDisplayTileSize[0];
+    float value = min + incremental * percent;
+    setDisplaySize(value, value);
 }
 
 void GPUImageMosaicFilter::setNumTiles(float numTiles)

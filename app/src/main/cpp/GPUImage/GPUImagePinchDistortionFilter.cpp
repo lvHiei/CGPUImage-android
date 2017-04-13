@@ -98,6 +98,9 @@ void GPUImagePinchDistortionFilter::setRadius(int percent)
 
 void GPUImagePinchDistortionFilter::setScale(int percent)
 {
+    float max = 2.0f;
+    float min = -2.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -106,9 +109,10 @@ void GPUImagePinchDistortionFilter::setScale(int percent)
         percent = 100;
     }
 
-    float incremental = (2.0f - (-2.0f)) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fScale = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setScale(value);
 }
 
 

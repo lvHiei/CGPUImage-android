@@ -64,6 +64,9 @@ void GPUImageHazeFilter::setSlope(float slope)
 
 void GPUImageHazeFilter::setDistance(int percent)
 {
+    float max = 0.3f;
+    float min = -0.3f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -72,13 +75,17 @@ void GPUImageHazeFilter::setDistance(int percent)
         percent = 100;
     }
 
-    float incremental = (0.3f - (-0.3f)) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fDistance = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setDistance(value);
 }
 
 void GPUImageHazeFilter::setSlope(int percent)
 {
+    float max = 0.3f;
+    float min = -0.3f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -87,9 +94,10 @@ void GPUImageHazeFilter::setSlope(int percent)
         percent = 100;
     }
 
-    float incremental = (0.3f - (-0.3f)) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fSlope = 0.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setSlope(value);
 }
 
 bool GPUImageHazeFilter::createProgramExtra()

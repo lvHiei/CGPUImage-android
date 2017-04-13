@@ -38,6 +38,9 @@ GPUImageContrastFilter::~GPUImageContrastFilter()
 
 void GPUImageContrastFilter::setContrast(int percent)
 {
+    float max = 4.0f;
+    float min = 1.0f;
+
     if(percent < 0){
         percent = 0;
     }
@@ -46,9 +49,10 @@ void GPUImageContrastFilter::setContrast(int percent)
         percent = 100;
     }
 
-    float incremental = (4.0f - 1.0f) / 100;
+    float incremental = (max - min) / 100;
 
-    m_fContrast = 1.0f + incremental * percent;
+    float value = min + incremental * percent;
+    setContrast(value);
 }
 
 bool GPUImageContrastFilter::createProgramExtra()
