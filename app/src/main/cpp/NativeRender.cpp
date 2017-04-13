@@ -72,6 +72,7 @@
 #include "GPUImage/GPUImagePerlinNoiseFilter.h"
 #include "GPUImage/GPUImagePinchDistortionFilter.h"
 #include "GPUImage/GPUImagePixellateFilter.h"
+#include "GPUImage/GPUImagePixellatePositionFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -200,7 +201,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageOverlayBlendFilter();
 //    m_pFilter = new GPUImagePerlinNoiseFilter();
 //    m_pFilter = new GPUImagePinchDistortionFilter();
-    m_pFilter = new GPUImagePixellateFilter();
+//    m_pFilter = new GPUImagePixellateFilter();
+    m_pFilter = new GPUImagePixellatePositionFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
