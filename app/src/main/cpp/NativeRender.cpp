@@ -80,6 +80,7 @@
 #include "GPUImage/GPUImageSaturationBlendFilter.h"
 #include "GPUImage/GPUImageScreenBlendFilter.h"
 #include "GPUImage/GPUImageSharpenFilter.h"
+#include "GPUImage/GPUImageSkinToneFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -216,7 +217,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageRGBFilter();
 //    m_pFilter = new GPUImageSaturationBlendFilter();
 //    m_pFilter = new GPUImageScreenBlendFilter();
-    m_pFilter = new GPUImageSharpenFilter();
+//    m_pFilter = new GPUImageSharpenFilter();
+    m_pFilter = new GPUImageSkinToneFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
