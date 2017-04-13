@@ -39,6 +39,19 @@ GPUImagePixellateFilter::GPUImagePixellateFilter()
     m_iFragUniformLocation = -1;
 }
 
+
+GPUImagePixellateFilter::GPUImagePixellateFilter(const char *fragment)
+        : GPUImageFilter(fragment)
+{
+    m_fAsepctRatio = 720.0f/1280.0f;
+
+    m_fFractionalWidthOfAPixel = 0.05f;
+
+    m_iAsepectRatioUniformLocation = -1;
+    m_iFragUniformLocation = -1;
+}
+
+
 GPUImagePixellateFilter::~GPUImagePixellateFilter()
 {
 

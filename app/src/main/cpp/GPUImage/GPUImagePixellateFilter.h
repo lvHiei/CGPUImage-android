@@ -14,6 +14,7 @@
 class GPUImagePixellateFilter : public GPUImageFilter{
 public:
     GPUImagePixellateFilter();
+    GPUImagePixellateFilter(const char* fragment);
     virtual ~GPUImagePixellateFilter();
 
     void setAspectRatio(float aspectRatio);
