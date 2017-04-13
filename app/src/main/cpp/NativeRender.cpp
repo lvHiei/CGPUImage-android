@@ -89,6 +89,7 @@
 #include "GPUImage/GPUImageSwirlFilter.h"
 #include "GPUImage/GPUImageVibranceFilter.h"
 #include "GPUImage/GPUImageVignetteFilter.h"
+#include "GPUImage/GPUImageWhiteBalanceFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -234,7 +235,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageStretchDistortionFilter();
 //    m_pFilter = new GPUImageSwirlFilter();
 //    m_pFilter = new GPUImageVibranceFilter();
-    m_pFilter = new GPUImageVignetteFilter();
+//    m_pFilter = new GPUImageVignetteFilter();
+    m_pFilter = new GPUImageWhiteBalanceFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
