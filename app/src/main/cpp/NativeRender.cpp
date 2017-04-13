@@ -76,6 +76,7 @@
 #include "GPUImage/GPUImagePolarPixellateFilter.h"
 #include "GPUImage/GPUImagePolkaDotFilter.h"
 #include "GPUImage/GPUImagePosterizeFilter.h"
+#include "GPUImage/GPUImageRGBFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -208,7 +209,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImagePixellatePositionFilter();
 //    m_pFilter = new GPUImagePolarPixellateFilter();
 //    m_pFilter = new GPUImagePolkaDotFilter();
-    m_pFilter = new GPUImagePosterizeFilter();
+//    m_pFilter = new GPUImagePosterizeFilter();
+    m_pFilter = new GPUImageRGBFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
