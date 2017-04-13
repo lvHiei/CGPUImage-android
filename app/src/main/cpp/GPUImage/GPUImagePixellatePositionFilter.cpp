@@ -47,6 +47,11 @@ GPUImagePixellatePositionFilter::GPUImagePixellatePositionFilter()
     m_fRadius = 0.25f;
     m_pCenter[0] = 0.5f;
     m_pCenter[1] = 0.5f;
+
+    m_iRadiusUniformLocation = -1;
+    m_iFractionalUniformLocation = -1;
+    m_iCenterUniformLocation = -1;
+    m_iAspectRatioUniformLocation = -1;
 }
 
 GPUImagePixellatePositionFilter::~GPUImagePixellatePositionFilter()

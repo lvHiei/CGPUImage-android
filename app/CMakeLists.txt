@@ -97,6 +97,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/GPUImage/GPUImagePinchDistortionFilter.cpp
              src/main/cpp/GPUImage/GPUImagePixellateFilter.cpp
              src/main/cpp/GPUImage/GPUImagePixellatePositionFilter.cpp
+             src/main/cpp/GPUImage/GPUImagePolarPixellateFilter.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a
