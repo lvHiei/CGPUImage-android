@@ -85,6 +85,7 @@
 #include "GPUImage/GPUImageSourceOverBlendFilter.h"
 #include "GPUImage/GPUImageSubtractBlendFilter.h"
 #include "GPUImage/GPUImageSphereRefractionFilter.h"
+#include "GPUImage/GPUImageStretchDistortionFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -226,7 +227,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageSoftLightBlendFilter();
 //    m_pFilter = new GPUImageSourceOverBlendFilter();
 //    m_pFilter = new GPUImageSubtractBlendFilter();
-    m_pFilter = new GPUImageSphereRefractionFilter();
+//    m_pFilter = new GPUImageSphereRefractionFilter();
+    m_pFilter = new GPUImageStretchDistortionFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
