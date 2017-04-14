@@ -62,8 +62,7 @@ const char _colorPacking_fragment_shader[]=
 GPUImageColorPackingFilter::GPUImageColorPackingFilter()
     : GPUImageFilter(_colorPacking_vertex_shader, _colorPacking_fragment_shader)
 {
-    m_fTexelWidth = 1.0 / 1280;
-    m_fTexelHeight = 1.0 / 720;
+    updateTexelWidthHeight();
 
     m_iTexelWidthUniformLocation = -1;
     m_iTexelHeightUniformLocation = -1;
@@ -100,3 +99,29 @@ void GPUImageColorPackingFilter::setTexelHeight(float height)
 {
     m_fTexelHeight = height;
 }
+
+
+void GPUImageColorPackingFilter::setTextureSize(int width, int height) {
+    GPUImageFilter::setTextureSize(width, height);
+    updateTexelWidthHeight();
+}
+
+void GPUImageColorPackingFilter::setTextureRotation(Rotation rotation) {
+    GPUImageFilter::setTextureRotation(rotation);
+    updateTexelWidthHeight();
+}
+
+void GPUImageColorPackingFilter::updateTexelWidthHeight()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fTexelWidth = 1.0 / m_iTextureWidth;
+    m_fTexelHeight = 1.0 / m_iTextureHeight;
+}
+

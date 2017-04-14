@@ -11,4 +11,12 @@
 
 const int ABS_FLIE_LEN_MAX = 1024;
 
+
+enum Rotation{
+    ROTATION_NORMAL = 0,
+    ROTATION_90 = 90,
+    ROTATION_180 = 180,
+    ROTATION_270 = 270,
+};
+
 #endif //CGPUIMAGE_ANDROID_CONST_H

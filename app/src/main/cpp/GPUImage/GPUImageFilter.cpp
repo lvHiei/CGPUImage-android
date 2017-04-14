@@ -370,3 +370,21 @@ bool GPUImageFilter::checkGLError(const char* funName)
     }
     return false;
 }
+
+
+void GPUImageFilter::setTextureSize(int width, int height)
+{
+    m_iTextureWidth = width;
+    m_iTextureHeight = height;
+}
+
+void GPUImageFilter::setTextureRotation(Rotation rotation)
+{
+    m_eRotation = rotation;
+}
+
+bool GPUImageFilter::isRotationSwapWidthAndHeight()
+{
+    return ROTATION_90 == m_eRotation || ROTATION_270 == m_eRotation;
+}
+

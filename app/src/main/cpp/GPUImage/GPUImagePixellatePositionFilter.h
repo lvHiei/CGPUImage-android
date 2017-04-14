@@ -26,6 +26,14 @@ protected:
     virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();
 
+public:
+    virtual void setTextureSize(int width, int height);
+    virtual void setTextureRotation(Rotation rotation);
+
+protected:
+    void updateAspectRatio();
+
+
 protected:
     // The fractional width of the image to use as a size for the pixels in the resulting image.
     // Values below one pixel width in the source image are ignored.

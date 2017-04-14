@@ -22,6 +22,8 @@ public:
     void setTexelWidth(float texelWidth);
     void setTexelHeight(float texelHeight);
 
+
+
 public:
     virtual bool createProgramExtra();
 
@@ -29,6 +31,12 @@ protected:
     virtual bool beforeDrawExtra();
     virtual bool onDrawExtra();
 
+public:
+    virtual void setTextureSize(int width, int height);
+    virtual void setTextureRotation(Rotation rotation);
+
+protected:
+    void updateTexelWidthHeight();
 
 protected:
     // The texel width and height determines how far out to sample from this texel.

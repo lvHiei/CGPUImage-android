@@ -14,6 +14,7 @@
 
 #include "../util/openglHeader.h"
 #include "../util/logUtil.h"
+#include "../util/const.h"
 
 
 class GPUImageFilter {
@@ -36,6 +37,12 @@ public:
 
     virtual bool createTexture(int textureWidth, int textureHeight);
     virtual bool draw(GLubyte* rgbaData, int viewWidth, int viewHeight);
+
+    virtual void setTextureSize(int width, int height);
+    virtual void setTextureRotation(Rotation rotation);
+
+public:
+    bool isRotationSwapWidthAndHeight();
 
 protected:
     virtual bool createVertexShader(char* vertex, int& length);
@@ -72,6 +79,8 @@ protected:
     GLuint m_uTextureId;
     int m_iTextureWidth;
     int m_iTextureHeight;
+
+    Rotation m_eRotation;
 };
 
 

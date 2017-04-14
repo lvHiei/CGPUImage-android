@@ -42,7 +42,8 @@ const char _pixelLatePosition_fragment_shader[]=
 GPUImagePixellatePositionFilter::GPUImagePixellatePositionFilter()
     : GPUImageFilter(_pixelLatePosition_fragment_shader)
 {
-    m_fAspectRatio = 720.0/1280.0;
+    updateAspectRatio();
+
     m_fFractionalWidthOfAPixel = 0.05f;
     m_fRadius = 0.25f;
     m_pCenter[0] = 0.5f;
@@ -94,6 +95,11 @@ void GPUImagePixellatePositionFilter::setRadius(int percent)
 void GPUImagePixellatePositionFilter::setFractionalWidthOfAPixel(float fractional)
 {
     GLfloat min = 1.0 / 1280.0;
+
+    if(m_iTextureWidth != 0){
+        min = 1.0 / m_iTextureWidth;
+    }
+
     if(fractional < min){
         fractional = min;
     }
@@ -122,6 +128,34 @@ bool GPUImagePixellatePositionFilter::beforeDrawExtra()
     glUniform1f(m_iRadiusUniformLocation, m_fRadius);
     glUniform2fv(m_iCenterUniformLocation, 1, m_pCenter);
     return GPUImageFilter::beforeDrawExtra();
+}
+
+
+void GPUImagePixellatePositionFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateAspectRatio();
+}
+
+void GPUImagePixellatePositionFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateAspectRatio();
+}
+
+void GPUImagePixellatePositionFilter::updateAspectRatio()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fAspectRatio = isRotationSwapWidthAndHeight() ?
+                     1.0 * m_iTextureHeight / m_iTextureWidth :
+                     1.0 * m_iTextureWidth / m_iTextureHeight;
 }
 
 

@@ -134,6 +134,14 @@ void GPUImageMotionBlurFilter::resetTexelStep()
     int texwidth = 1280;
     int texheight = 720;
 
+    if(0 != m_iTextureWidth){
+        texwidth = m_iTextureWidth;
+    }
+
+    if(0 != m_iTextureHeight){
+        texwidth = m_iTextureHeight;
+    }
+
     if(m_fBlurAngle == 90 || m_fBlurAngle == 270)
     {
         float aspectRatio = 1.0 * texwidth / texheight;

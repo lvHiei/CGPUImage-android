@@ -94,6 +94,11 @@ bool GPUImageCrosshatchFilter::beforeDrawExtra()
 void GPUImageCrosshatchFilter::setCrossHatchSpacing(float crossHatchSpacing)
 {
     float min = 1.0 / 1280;
+
+    if(0 != m_iTextureWidth){
+        min = 1.0 / m_iTextureWidth;
+    }
+
     if(crossHatchSpacing < min){
         crossHatchSpacing = min;
     }

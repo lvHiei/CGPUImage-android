@@ -41,9 +41,8 @@ const char _directionalNonMaximumSuppression_fragment_shader[]=
 GPUImageDirectionalNonMaximumSuppressionFilter::GPUImageDirectionalNonMaximumSuppressionFilter()
         : GPUImageFilter(_directionalNonMaximumSuppression_fragment_shader)
 {
-    m_fTexelWidth = 1.0 / 1280;
-    m_fTexelHeight = 1.0 / 720;
 
+    updateTexelWidthHeight();
     m_fUpperThreshold = 0.5f;
     m_fLowerThreshold = 0.1f;
 
@@ -100,3 +99,31 @@ void GPUImageDirectionalNonMaximumSuppressionFilter::setLowerThreshold(float low
 {
     m_fLowerThreshold = lowerThreshold;
 }
+
+
+void GPUImageDirectionalNonMaximumSuppressionFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateTexelWidthHeight();
+}
+
+void GPUImageDirectionalNonMaximumSuppressionFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateTexelWidthHeight();
+}
+
+void GPUImageDirectionalNonMaximumSuppressionFilter::updateTexelWidthHeight()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fTexelWidth = 1.0 / m_iTextureWidth;
+    m_fTexelHeight = 1.0 / m_iTextureHeight;
+}
+

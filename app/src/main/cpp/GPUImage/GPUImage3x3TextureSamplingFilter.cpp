@@ -55,8 +55,10 @@ const char _3x3TextureSampling_vertex_shader[]=
 GPUImage3x3TextureSamplingFilter::GPUImage3x3TextureSamplingFilter(const char *fragment)
     : GPUImageFilter(_3x3TextureSampling_vertex_shader, fragment)
 {
-    m_fTexelWidth = 1.0 / 1280;
-    m_fTexelHeight = 1.0 / 720;
+    updateTexelWidthHeight();
+
+    m_iTexelWidthUniformLocation = -1;
+    m_iTexelHeightUniformLocation = -1;
 }
 
 
@@ -101,3 +103,31 @@ void GPUImage3x3TextureSamplingFilter::setTexelHeight(float texelHeight)
 {
     m_fTexelHeight = texelHeight;
 }
+
+void GPUImage3x3TextureSamplingFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateTexelWidthHeight();
+}
+
+void GPUImage3x3TextureSamplingFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateTexelWidthHeight();
+}
+
+
+void GPUImage3x3TextureSamplingFilter::updateTexelWidthHeight()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fTexelWidth = 1.0 / m_iTextureWidth;
+    m_fTexelHeight = 1.0 / m_iTextureHeight;
+}
+

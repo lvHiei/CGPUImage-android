@@ -98,9 +98,7 @@ const char _colourFASTSamplingOperation_fragment_shader[]=
 GPUImageColourFASTSamplingOperation::GPUImageColourFASTSamplingOperation()
         : GPUImageTwoInputFilter(_colourFASTSamplingOperation_vertex_shader, _colourFASTSamplingOperation_fragment_shader)
 {
-    m_fTexelWidth = 1.0 / 1280;
-    m_fTexelHeight = 1.0 / 720;
-
+    updateTexelWidthHeight();
     m_iTexelWidthUniformLocation = -1;
     m_iTexelHeightUniformLocation = -1;
 
@@ -136,3 +134,31 @@ void GPUImageColourFASTSamplingOperation::setTexelHeight(float height)
 {
     m_fTexelHeight = height;
 }
+
+
+void GPUImageColourFASTSamplingOperation::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateTexelWidthHeight();
+}
+
+void GPUImageColourFASTSamplingOperation::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateTexelWidthHeight();
+}
+
+void GPUImageColourFASTSamplingOperation::updateTexelWidthHeight()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fTexelWidth = 1.0 / m_iTextureWidth;
+    m_fTexelHeight = 1.0 / m_iTextureHeight;
+}
+

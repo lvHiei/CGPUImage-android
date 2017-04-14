@@ -31,7 +31,7 @@ const char _pixellate_fragment_shader[]=
 GPUImagePixellateFilter::GPUImagePixellateFilter()
     : GPUImageFilter(_pixellate_fragment_shader)
 {
-    m_fAsepctRatio = 720.0f/1280.0f;
+    updateAspectRatio();
 
     m_fFractionalWidthOfAPixel = 0.05f;
 
@@ -43,7 +43,7 @@ GPUImagePixellateFilter::GPUImagePixellateFilter()
 GPUImagePixellateFilter::GPUImagePixellateFilter(const char *fragment)
         : GPUImageFilter(fragment)
 {
-    m_fAsepctRatio = 720.0f/1280.0f;
+    updateAspectRatio();
 
     m_fFractionalWidthOfAPixel = 0.05f;
 
@@ -59,12 +59,17 @@ GPUImagePixellateFilter::~GPUImagePixellateFilter()
 
 void GPUImagePixellateFilter::setAspectRatio(float aspectRatio)
 {
-    m_fAsepctRatio = aspectRatio;
+    m_fAspectRatio = aspectRatio;
 }
 
 void GPUImagePixellateFilter::setFractionalWidthOfAPixel(float fraction)
 {
     GLfloat min = 1.0 / 1280.0;
+
+    if(m_iTextureWidth != 0){
+        min = 1.0 / m_iTextureWidth;
+    }
+
     if(fraction < min){
         fraction = min;
     }
@@ -82,8 +87,35 @@ bool GPUImagePixellateFilter::createProgramExtra()
 bool GPUImagePixellateFilter::beforeDrawExtra()
 {
     glUniform1f(m_iFragUniformLocation, m_fFractionalWidthOfAPixel);
-    glUniform1f(m_iAsepectRatioUniformLocation, m_fAsepctRatio);
+    glUniform1f(m_iAsepectRatioUniformLocation, m_fAspectRatio);
     return GPUImageFilter::beforeDrawExtra();
 }
 
+
+void GPUImagePixellateFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateAspectRatio();
+}
+
+void GPUImagePixellateFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateAspectRatio();
+}
+
+void GPUImagePixellateFilter::updateAspectRatio()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fAspectRatio = isRotationSwapWidthAndHeight() ?
+                     1.0 * m_iTextureHeight / m_iTextureWidth :
+                     1.0 * m_iTextureWidth / m_iTextureHeight;
+}
 

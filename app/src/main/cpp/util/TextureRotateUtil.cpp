@@ -44,18 +44,19 @@ float TextureRotateUtil::m_pTextureCoordinate[] = {
         0.0f, 0.0f,
 };
 
-float* TextureRotateUtil::getTextureCoordinate(int degree, bool flipHorizontal, bool flipVertical)
+float* TextureRotateUtil::getTextureCoordinate(Rotation rotation, bool flipHorizontal, bool flipVertical)
 {
-    switch (degree){
-        case 90:
+    switch (rotation){
+        case ROTATION_90:
             memcpy(m_pTextureCoordinate, TEXTURE_ROTATED_90, 8*sizeof(float));
             break;
-        case 180:
+        case ROTATION_180:
             memcpy(m_pTextureCoordinate, TEXTURE_ROTATED_180, 8*sizeof(float));
             break;
-        case 270:
+        case ROTATION_270:
             memcpy(m_pTextureCoordinate, TEXTURE_ROTATED_270, 8*sizeof(float));
             break;
+        case ROTATION_NORMAL:
         default:
             memcpy(m_pTextureCoordinate, TEXTURE_NO_ROTATION, 8*sizeof(float));
             break;

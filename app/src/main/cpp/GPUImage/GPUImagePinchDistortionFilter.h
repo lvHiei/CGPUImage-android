@@ -31,6 +31,14 @@ protected:
     virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();
 
+public:
+    virtual void setTextureSize(int width, int height);
+    virtual void setTextureRotation(Rotation rotation);
+
+protected:
+    void updateAspectRatio();
+
+
 protected:
 
     /** The center about which to apply the distortion, with a default of (0.5, 0.5)

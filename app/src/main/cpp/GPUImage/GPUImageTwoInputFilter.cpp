@@ -67,7 +67,7 @@ bool GPUImageTwoInputFilter::createProgramExtra()
 
 bool GPUImageTwoInputFilter::beforeDrawExtra()
 {
-    float* textureCoord = TextureRotateUtil::getTextureCoordinate(0, false, false);
+    float* textureCoord = TextureRotateUtil::getTextureCoordinate(ROTATION_NORMAL, false, false);
     glVertexAttribPointer(m_iTexture2IdCoordinateLocation, 2, GL_FLOAT, GL_FALSE, 0, textureCoord);
     glEnableVertexAttribArray(m_iTexture2IdCoordinateLocation);
 

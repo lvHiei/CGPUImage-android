@@ -26,6 +26,13 @@ protected:
     virtual bool createProgramExtra();
     virtual bool beforeDrawExtra();
 
+public:
+    virtual void setTextureSize(int width, int height);
+    virtual void setTextureRotation(Rotation rotation);
+
+protected:
+    void updateTexelWidthHeight();
+
 protected:
 
     // The texel width and height determines how far out to sample from this texel.

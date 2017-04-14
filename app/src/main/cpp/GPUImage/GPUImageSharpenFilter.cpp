@@ -75,9 +75,7 @@ const char _sharpen_fragment_shader[]=
 GPUImageSharpenFilter::GPUImageSharpenFilter()
     : GPUImageFilter(_sharpen_vertex_shader, _sharpen_fragment_shader)
 {
-    m_fImageWidthFactor = 1.0/720.0;
-    m_fImageHeightFactor = 1.0/1280.0;
-
+    updateTexelWidthHeight();
     m_fSharpness = 0.0f;
 
     m_iImageHeightFactorUniformLocation = -1;
@@ -138,6 +136,33 @@ bool GPUImageSharpenFilter::beforeDrawExtra() {
     glUniform1f(m_iSharpnessUniformLocation, m_fSharpness);
 
     return GPUImageFilter::beforeDrawExtra();
+}
+
+
+void GPUImageSharpenFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateTexelWidthHeight();
+}
+
+void GPUImageSharpenFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateTexelWidthHeight();
+}
+
+void GPUImageSharpenFilter::updateTexelWidthHeight()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fImageWidthFactor = 1.0 / m_iTextureWidth;
+    m_fImageHeightFactor = 1.0 / m_iTextureHeight;
 }
 
 

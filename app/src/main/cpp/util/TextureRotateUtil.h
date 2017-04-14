@@ -9,9 +9,11 @@
 #define CGPUIMAGE_ANDROID_TEXTUREROTATEUTIL_H
 
 
+#include "const.h"
+
 class TextureRotateUtil {
 public:
-    static float* getTextureCoordinate(int degree, bool flipHorizontal, bool flipVertical);
+    static float* getTextureCoordinate(Rotation rotation, bool flipHorizontal, bool flipVertical);
 
 private:
     static float flip(float x);

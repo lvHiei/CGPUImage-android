@@ -142,10 +142,14 @@ bool NativeRender::createFilter(int filterType)
 
     intenalCreateFilter(filterType);
 
+    m_pFilter->setTextureSize(1280, 720);
+
     m_pFilter->setVertexCoordinate(vertex_coordinate);
     if(m_bFrontCamera){
+        m_pFilter->setTextureRotation(ROTATION_270);
         m_pFilter->setTextureCoordinate(textureCoord_front);
     }else{
+        m_pFilter->setTextureRotation(ROTATION_90);
         m_pFilter->setTextureCoordinate(textureCoord_back);
     }
 
@@ -218,7 +222,7 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageOpacityFilter();
 //    m_pFilter = new GPUImageOverlayBlendFilter();
 //    m_pFilter = new GPUImagePerlinNoiseFilter();
-//    m_pFilter = new GPUImagePinchDistortionFilter();
+    m_pFilter = new GPUImagePinchDistortionFilter();
 //    m_pFilter = new GPUImagePixellateFilter();
 //    m_pFilter = new GPUImagePixellatePositionFilter();
 //    m_pFilter = new GPUImagePolarPixellateFilter();
@@ -238,7 +242,7 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageVibranceFilter();
 //    m_pFilter = new GPUImageVignetteFilter();
 //    m_pFilter = new GPUImageWhiteBalanceFilter();
-    m_pFilter = new GPUImageZoomBlurFilter();
+//    m_pFilter = new GPUImageZoomBlurFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

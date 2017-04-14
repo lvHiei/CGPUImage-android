@@ -52,8 +52,7 @@ GPUImagePinchDistortionFilter::GPUImagePinchDistortionFilter()
     m_pCenter[0] = 0.5f;
     m_pCenter[1] = 0.5f;
 
-//    m_fAspectRatio = 1280.0f / 720.0;
-    m_fAspectRatio = 720.0f / 1280.0;
+    updateAspectRatio();
 
     m_iCenterUnifornLocation = -1;
     m_iRadiusUnifornLocation = -1;
@@ -140,6 +139,34 @@ bool GPUImagePinchDistortionFilter::beforeDrawExtra()
     glUniform2fv(m_iCenterUnifornLocation, 1, m_pCenter);
 
     return GPUImageFilter::beforeDrawExtra();
+}
+
+
+void GPUImagePinchDistortionFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateAspectRatio();
+}
+
+void GPUImagePinchDistortionFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateAspectRatio();
+}
+
+void GPUImagePinchDistortionFilter::updateAspectRatio()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fAspectRatio = isRotationSwapWidthAndHeight() ?
+                     1.0 * m_iTextureHeight / m_iTextureWidth :
+                     1.0 * m_iTextureWidth / m_iTextureHeight;
 }
 
 

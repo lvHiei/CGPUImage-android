@@ -41,7 +41,8 @@ const char _sphereRefraction_fragment_shader[]=
 GPUImageSphereRefractionFilter::GPUImageSphereRefractionFilter()
     : GPUImageFilter(_sphereRefraction_fragment_shader)
 {
-    m_fAspectRatio = 720.0f/1280.0f;
+
+    updateAspectRatio();
 
     m_fRadius = 0.25f;
 //    m_fRadius = 0.15f;
@@ -122,4 +123,30 @@ bool GPUImageSphereRefractionFilter::beforeDrawExtra()
 }
 
 
+void GPUImageSphereRefractionFilter::setTextureSize(int width, int height)
+{
+    GPUImageFilter::setTextureSize(width, height);
+    updateAspectRatio();
+}
+
+void GPUImageSphereRefractionFilter::setTextureRotation(Rotation rotation)
+{
+    GPUImageFilter::setTextureRotation(rotation);
+    updateAspectRatio();
+}
+
+void GPUImageSphereRefractionFilter::updateAspectRatio()
+{
+    if(0 == m_iTextureWidth){
+        m_iTextureWidth = 1280;
+    }
+
+    if(0 == m_iTextureHeight){
+        m_iTextureHeight = 720;
+    }
+
+    m_fAspectRatio = isRotationSwapWidthAndHeight() ?
+                     1.0 * m_iTextureHeight / m_iTextureWidth :
+                     1.0 * m_iTextureWidth / m_iTextureHeight;
+}
 
