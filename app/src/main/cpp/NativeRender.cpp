@@ -91,6 +91,7 @@
 #include "GPUImage/GPUImageVignetteFilter.h"
 #include "GPUImage/GPUImageWhiteBalanceFilter.h"
 #include "GPUImage/GPUImageZoomBlurFilter.h"
+#include "GPUImage/GPUImagePoissonBlendFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -222,7 +223,7 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageOpacityFilter();
 //    m_pFilter = new GPUImageOverlayBlendFilter();
 //    m_pFilter = new GPUImagePerlinNoiseFilter();
-    m_pFilter = new GPUImagePinchDistortionFilter();
+//    m_pFilter = new GPUImagePinchDistortionFilter();
 //    m_pFilter = new GPUImagePixellateFilter();
 //    m_pFilter = new GPUImagePixellatePositionFilter();
 //    m_pFilter = new GPUImagePolarPixellateFilter();
@@ -243,6 +244,7 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageVignetteFilter();
 //    m_pFilter = new GPUImageWhiteBalanceFilter();
 //    m_pFilter = new GPUImageZoomBlurFilter();
+    m_pFilter = new GPUImagePoissonBlendFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
