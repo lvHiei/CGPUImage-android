@@ -9,7 +9,7 @@
 
 
 // 片元着色器
-const char _3x3Convolution_fragment_shader[]=
+extern const char _3x3Convolution_fragment_shader[]=
 "precision mediump float;\n"
 "uniform sampler2D inputImageTexture;\n"
 "\n"

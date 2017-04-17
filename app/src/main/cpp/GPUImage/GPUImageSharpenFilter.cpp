@@ -8,8 +8,8 @@
 #include "GPUImageSharpenFilter.h"
 
 
-// 片元着色器
-const char _sharpen_vertex_shader[]=
+// 顶点着色器
+extern const char _sharpen_vertex_shader[]=
 //"precision mediump float;\n"
 "attribute vec4 position;\n"
 "attribute vec4 inputTextureCoordinate;\n"
@@ -46,7 +46,7 @@ const char _sharpen_vertex_shader[]=
 ;
 
 // 片元着色器
-const char _sharpen_fragment_shader[]=
+extern const char _sharpen_fragment_shader[]=
 "precision mediump float;\n"
 "varying vec2 textureCoordinate;\n"
 "varying vec2 leftTextureCoordinate;\n"

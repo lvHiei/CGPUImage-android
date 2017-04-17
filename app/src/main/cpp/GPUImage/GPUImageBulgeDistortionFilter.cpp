@@ -118,7 +118,7 @@
 // 不知道为什么 上面三个shader写法都不行，下面这个正常
 
 // 片元着色器
-const char _bulgeDistortion_fragment_shader[]=
+extern const char _bulgeDistortion_fragment_shader[]=
 "precision mediump float;\n"
 "\n"
 "varying vec2 textureCoordinate;\n"

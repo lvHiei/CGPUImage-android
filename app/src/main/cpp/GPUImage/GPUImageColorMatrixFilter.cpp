@@ -9,7 +9,7 @@
 #include "GPUImageColorMatrixFilter.h"
 
 // 片元着色器
-const char _colorMatrix_fragment_shader[]=
+extern const char _colorMatrix_fragment_shader[]=
 "precision mediump float;\n"
 "uniform sampler2D inputImageTexture;\n"
 "varying vec2 textureCoordinate;\n"

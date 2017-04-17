@@ -8,7 +8,7 @@
 #include "GPUImage3x3TextureSamplingFilter.h"
 
 // 顶点着色器
-const char _3x3TextureSampling_vertex_shader[]=
+extern const char _3x3TextureSampling_vertex_shader[]=
 //"precision mediump float;\n"
 "attribute vec4 position;\n"
 "attribute vec4 inputTextureCoordinate;\n"

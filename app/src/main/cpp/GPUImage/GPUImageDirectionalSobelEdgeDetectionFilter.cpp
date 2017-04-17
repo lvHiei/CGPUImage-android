@@ -7,16 +7,8 @@
 
 #include "GPUImageDirectionalSobelEdgeDetectionFilter.h"
 
-//
-//// 片元着色器
-//const char _contrast_fragment_shader[]=
-//"precision mediump float;\n"
-//
-//;
-
-
 // 片元着色器
-const char _directionalSobelEdgeDetection_fragment_shader[]=
+extern const char _directionalSobelEdgeDetection_fragment_shader[]=
 "precision mediump float;\n"
 "\n"
 "varying vec2 textureCoordinate;\n"

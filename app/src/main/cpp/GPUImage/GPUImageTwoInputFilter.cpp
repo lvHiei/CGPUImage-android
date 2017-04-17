@@ -10,7 +10,7 @@
 
 
 // 顶点着色器
-const char _twoInput_vertex_shader[]=
+extern const char _twoInput_vertex_shader[]=
 //"precision mediump float;\n"
 "attribute vec4 position;\n"
 "attribute vec4 inputTextureCoordinate;\n"

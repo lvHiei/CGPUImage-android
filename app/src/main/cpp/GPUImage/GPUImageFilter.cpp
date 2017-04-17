@@ -10,7 +10,7 @@
 
 
 // 顶点着色器
-const char _base_vertex_shader[]=
+extern const char _base_vertex_shader[]=
 //"precision mediump float;\n"
 "attribute vec4 position;\n"
 "attribute vec4 inputTextureCoordinate;\n"
@@ -25,7 +25,7 @@ const char _base_vertex_shader[]=
 ;
 
 // 片元着色器
-const char _base_fragment_shader[]=
+extern const char _base_fragment_shader[]=
 "precision mediump float;\n"
 "uniform sampler2D inputImageTexture;\n"
 "varying vec2 textureCoordinate;\n"

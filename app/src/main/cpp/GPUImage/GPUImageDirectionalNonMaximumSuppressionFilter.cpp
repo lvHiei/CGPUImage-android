@@ -8,7 +8,7 @@
 #include "GPUImageDirectionalNonMaximumSuppressionFilter.h"
 
 // 片元着色器
-const char _directionalNonMaximumSuppression_fragment_shader[]=
+extern const char _directionalNonMaximumSuppression_fragment_shader[]=
 "precision mediump float;\n"
 "varying vec2 textureCoordinate;\n"
 "\n"

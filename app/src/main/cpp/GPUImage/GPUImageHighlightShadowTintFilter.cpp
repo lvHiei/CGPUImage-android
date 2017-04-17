@@ -9,7 +9,7 @@
 
 
 // 片元着色器
-const char _highlightShadowTint_fragment_shader[]=
+extern const char _highlightShadowTint_fragment_shader[]=
 "precision mediump float;\n"
 "\n"
 "varying vec2 textureCoordinate;\n"

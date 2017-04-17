@@ -10,7 +10,7 @@
 
 
 // 片元着色器
-const char _mosaic_fragment_shader[]=
+extern const char _mosaic_fragment_shader[]=
 "precision mediump float;\n"
 "varying vec2 textureCoordinate;\n"
 "\n"
