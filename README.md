@@ -7,7 +7,7 @@ GPUImage implements by c++, the android example
 
 
 2.GPUImageMosaicFilter the square.png deocode has a question,
-the picture has transport, decode the picture will the transport data will
+the picture has transport, decoding the picture the transport data will
 be 0xffffff, the effect is not correct
 
 
