@@ -94,6 +94,7 @@
 #include "GPUImage/GPUImagePoissonBlendFilter.h"
 #include "GPUImage/GPUImageSobelEdgeDetectionFilter.h"
 #include "GPUImage/GPUImagePrewittEdgeDetectionFilter.h"
+#include "GPUImage/GPUImageThresholdEdgeDetectionFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -247,7 +248,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageZoomBlurFilter();
 //    m_pFilter = new GPUImagePoissonBlendFilter();
 //    m_pFilter = new GPUImageSobelEdgeDetectionFilter();
-    m_pFilter = new GPUImagePrewittEdgeDetectionFilter();
+//    m_pFilter = new GPUImagePrewittEdgeDetectionFilter();
+    m_pFilter = new GPUImageThresholdEdgeDetectionFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
