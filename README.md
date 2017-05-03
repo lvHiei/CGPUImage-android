@@ -18,3 +18,5 @@ be 0xffffff, the effect is not correct
 
 5.GPUImageLanczosResamplingFilter the originImageSize is not used and
 don't know the function of this property.
+
+6.GPUImageGaussianBlurFilter bypasses is not used

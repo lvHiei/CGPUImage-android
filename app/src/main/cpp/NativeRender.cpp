@@ -103,6 +103,7 @@
 #include "GPUImage/GPUImageErosionFilter.h"
 #include "GPUImage/GPUImageRGBErosionFilter.h"
 #include "GPUImage/GPUImageLanczosResamplingFilter.h"
+#include "GPUImage/GPUImageGaussianBlurFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -265,7 +266,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageRGBDilationFilter();
 //    m_pFilter = new GPUImageErosionFilter();
 //    m_pFilter = new GPUImageRGBErosionFilter();
-    m_pFilter = new GPUImageLanczosResamplingFilter();
+//    m_pFilter = new GPUImageLanczosResamplingFilter();
+    m_pFilter = new GPUImageGaussianBlurFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
