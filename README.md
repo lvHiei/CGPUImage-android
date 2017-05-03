@@ -16,3 +16,5 @@ be 0xffffff, the effect is not correct
 
 4.GPUImagePoissonBlendFilter is not test and the m_uNumIterations is not implement
 
+5.GPUImageLanczosResamplingFilter the originImageSize is not used and
+don't know the function of this property.
