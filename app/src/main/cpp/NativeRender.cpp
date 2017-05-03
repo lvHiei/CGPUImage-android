@@ -98,6 +98,7 @@
 #include "GPUImage/GPUImageSketchFilter.h"
 #include "GPUImage/GPUImageXYDerivativeFilter.h"
 #include "GPUImage/GPUImageThresholdSketchFilter.h"
+#include "GPUImage/GPUImageDilationFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -255,7 +256,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageThresholdEdgeDetectionFilter();
 //    m_pFilter = new GPUImageSketchFilter();
 //    m_pFilter = new GPUImageXYDerivativeFilter();
-    m_pFilter = new GPUImageThresholdSketchFilter();
+//    m_pFilter = new GPUImageThresholdSketchFilter();
+    m_pFilter = new GPUImageDilationFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

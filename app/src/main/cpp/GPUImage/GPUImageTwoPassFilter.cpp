@@ -346,3 +346,40 @@ void GPUImageTwoPassFilter::setTextureCoordinate(float *textureCoordinate)
 }
 
 
+void GPUImageTwoPassFilter::resetShader(const char *firstVertex, const char *fisrtFragment,
+                                        const char *secondVertex, const char *secondFragment)
+{
+
+    if(m_pVertexShader){
+        free(m_pVertexShader);
+    }
+
+    if(m_pFragmnetShader){
+        free(m_pFragmnetShader);
+    }
+
+    if(m_pSecondVertexShader){
+        free(m_pSecondVertexShader);
+    }
+
+    if(m_pSecondFragShader){
+        free(m_pSecondFragShader);
+    }
+
+    int fvLen = strlen(firstVertex) + 1;
+    int ffLen = strlen(fisrtFragment) + 1;
+    int svLen = strlen(secondVertex) + 1;
+    int sfLen = strlen(secondFragment) + 1;
+
+    m_pVertexShader = (char *) malloc(fvLen);
+    m_pFragmnetShader = (char *) malloc(ffLen);
+    m_pSecondVertexShader = (char *) malloc(svLen);
+    m_pSecondFragShader = (char *) malloc(sfLen);
+
+
+    strcpy(m_pVertexShader, firstVertex);
+    strcpy(m_pFragmnetShader, fisrtFragment);
+    strcpy(m_pSecondVertexShader, secondVertex);
+    strcpy(m_pSecondFragShader, secondFragment);
+}
+

@@ -30,6 +30,7 @@ public:
 
     virtual void setTextureCoordinate(float *textureCoordinate);
 
+    virtual void resetShader(const char* firstVertex, const char* fisrtFragment, const char* secondVertex, const char* secondFragment);
 
 protected:
     virtual bool firstCreateProgramExtra();
