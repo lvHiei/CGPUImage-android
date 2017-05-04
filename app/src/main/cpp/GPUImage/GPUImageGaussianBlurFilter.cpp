@@ -46,8 +46,8 @@ GPUImageGaussianBlurFilter::GPUImageGaussianBlurFilter(float blurRadiusInPixels)
 
 void GPUImageGaussianBlurFilter::initWithBlurSigma(int blurRadius, float sigma)
 {
-    genVertexShaderForOptimizedBlurOfRadius(blurRadius, sigma);
-    genFragmentShaderForOptimizedBlurOfRadius(blurRadius, sigma);
+    this->genVertexShaderForOptimizedBlurOfRadius(blurRadius, sigma);
+    this->genFragmentShaderForOptimizedBlurOfRadius(blurRadius, sigma);
 }
 
 

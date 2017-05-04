@@ -23,10 +23,10 @@ public:
     void setBlurRadiusAsFractionOfImageHeight(float blurRadiusAsFractionOfImageHeight);
 
 protected:
-    void genVertexShaderForStandardBlurOfRadius(int blurRadius, float sigma);
-    void genFragmentShaderForStandardBlurOfRadius(int blurRadius, float sigma);
-    void genVertexShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
-    void genFragmentShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
+    virtual void genVertexShaderForStandardBlurOfRadius(int blurRadius, float sigma);
+    virtual void genFragmentShaderForStandardBlurOfRadius(int blurRadius, float sigma);
+    virtual void genVertexShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
+    virtual void genFragmentShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
 
     void updateBlurRadiusInPixels();
 
