@@ -48,6 +48,50 @@ extern const char _lanczosResapling_vertex_shader[]=
 "}"
 ;
 
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _lanczosResapling_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepLeftTextureCoordinate;\n"
+"varying vec2 twoStepsLeftTextureCoordinate;\n"
+"varying vec2 threeStepsLeftTextureCoordinate;\n"
+"varying vec2 fourStepsLeftTextureCoordinate;\n"
+"varying vec2 oneStepRightTextureCoordinate;\n"
+"varying vec2 twoStepsRightTextureCoordinate;\n"
+"varying vec2 threeStepsRightTextureCoordinate;\n"
+"varying vec2 fourStepsRightTextureCoordinate;\n"
+"\n"
+"// sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)\n"
+"// Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;\n"
+"\n"
+"    fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;\n"
+"    fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;\n"
+"\n"
+"    fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;\n"
+"    fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;\n"
+"\n"
+"    fragmentColor += texture2D(inputImageTexture, threeStepsLeftTextureCoordinate) * -0.02612;\n"
+"    fragmentColor += texture2D(inputImageTexture, threeStepsRightTextureCoordinate) * -0.02612;\n"
+"\n"
+"    fragmentColor += texture2D(inputImageTexture, fourStepsLeftTextureCoordinate) * -0.02143;\n"
+"    fragmentColor += texture2D(inputImageTexture, fourStepsRightTextureCoordinate) * -0.02143;\n"
+"\n"
+"    gl_FragColor = fragmentColor;\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _lanczosResapling_fragment_shader[]=
 "precision mediump float;\n"
@@ -85,6 +129,10 @@ extern const char _lanczosResapling_fragment_shader[]=
 "    gl_FragColor = fragmentColor;\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImageLanczosResamplingFilter::GPUImageLanczosResamplingFilter()

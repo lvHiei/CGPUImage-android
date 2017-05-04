@@ -87,7 +87,7 @@ void GPUImageBoxBlurFilter::genFragmentShaderForOptimizedBlurOfRadius(int blurRa
 
     char tempShader[20480] = {0};
     // Header
-#if 0
+#ifdef __GLSL_SUPPORT_HIGHP__
     const char* part1 =
     "uniform sampler2D inputImageTexture;\n"
     "uniform highp float texelWidthOffset;\n"
@@ -130,7 +130,7 @@ void GPUImageBoxBlurFilter::genFragmentShaderForOptimizedBlurOfRadius(int blurRa
     // If the number of required samples exceeds the amount we can pass in via varyings, we have to do dependent texture reads in the fragment shader
     if (trueNumberOfOptimizedOffsets > numberOfOptimizedOffsets)
     {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#ifdef __GLSL_SUPPORT_HIGHP__
         sprintf(tempShader + strlen(tempShader), "highp vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n");
 #else
         sprintf(tempShader + strlen(tempShader), "vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n");

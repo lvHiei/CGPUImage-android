@@ -42,6 +42,87 @@ extern const char _bilateral_vertex_shader[]=
 "}"
 ;
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _bilateral_fragment_shader[]=
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"const lowp int GAUSSIAN_SAMPLES = 9;\n"
+"\n"
+"varying highp vec2 textureCoordinate;\n"
+"varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
+"\n"
+"uniform mediump float distanceNormalizationFactor;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 centralColor;\n"
+"    lowp float gaussianWeightTotal;\n"
+"    lowp vec4 sum;\n"
+"    lowp vec4 sampleColor;\n"
+"    lowp float distanceFromCentralColor;\n"
+"    lowp float gaussianWeight;\n"
+"\n"
+"    centralColor = texture2D(inputImageTexture, blurCoordinates[4]);\n"
+"    gaussianWeightTotal = 0.18;\n"
+"    sum = centralColor * 0.18;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[0]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[1]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[2]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[3]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[5]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[6]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[7]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    sampleColor = texture2D(inputImageTexture, blurCoordinates[8]);\n"
+"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
+"    gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n"
+"    gaussianWeightTotal += gaussianWeight;\n"
+"    sum += sampleColor * gaussianWeight;\n"
+"\n"
+"    gl_FragColor = sum / gaussianWeightTotal;\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _bilateral_fragment_shader[]=
 "precision mediump float;\n"
@@ -118,6 +199,10 @@ extern const char _bilateral_fragment_shader[]=
 "    gl_FragColor = sum / gaussianWeightTotal;\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImageBilateralFilter::GPUImageBilateralFilter()

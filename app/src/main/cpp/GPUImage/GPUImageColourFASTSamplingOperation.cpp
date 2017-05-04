@@ -47,6 +47,59 @@ extern const char _colourFASTSamplingOperation_vertex_shader[]=
 "}"
 ;
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _colourFASTSamplingOperation_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 textureCoordinate;\n"
+"varying vec2 pointATextureCoordinate;\n"
+"varying vec2 pointBTextureCoordinate;\n"
+"varying vec2 pointCTextureCoordinate;\n"
+"varying vec2 pointDTextureCoordinate;\n"
+"varying vec2 pointETextureCoordinate;\n"
+"varying vec2 pointFTextureCoordinate;\n"
+"varying vec2 pointGTextureCoordinate;\n"
+"varying vec2 pointHTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"const float PITwo = 6.2832;\n"
+"const float PI = 3.1416;\n"
+"void main()\n"
+"{\n"
+"    vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;\n"
+"\n"
+"    vec3 pointAColor = texture2D(inputImageTexture, pointATextureCoordinate).rgb;\n"
+"    vec3 pointBColor = texture2D(inputImageTexture, pointBTextureCoordinate).rgb;\n"
+"    vec3 pointCColor = texture2D(inputImageTexture, pointCTextureCoordinate).rgb;\n"
+"    vec3 pointDColor = texture2D(inputImageTexture, pointDTextureCoordinate).rgb;\n"
+"    vec3 pointEColor = texture2D(inputImageTexture, pointETextureCoordinate).rgb;\n"
+"    vec3 pointFColor = texture2D(inputImageTexture, pointFTextureCoordinate).rgb;\n"
+"    vec3 pointGColor = texture2D(inputImageTexture, pointGTextureCoordinate).rgb;\n"
+"    vec3 pointHColor = texture2D(inputImageTexture, pointHTextureCoordinate).rgb;\n"
+"\n"
+"    vec3 colorComparison = ((pointAColor + pointBColor + pointCColor + pointDColor + pointEColor + pointFColor + pointGColor + pointHColor) * 0.125) - centerColor;\n"
+"\n"
+"    // Direction calculation drawn from Appendix B of Seth Hall's Ph.D. thesis\n"
+"\n"
+"    vec3 dirX = (pointAColor*0.94868) + (pointBColor*0.316227) - (pointCColor*0.316227) - (pointDColor*0.94868) - (pointEColor*0.94868) - (pointFColor*0.316227) + (pointGColor*0.316227) + (pointHColor*0.94868);\n"
+"    vec3 dirY = (pointAColor*0.316227) + (pointBColor*0.94868) + (pointCColor*0.94868) + (pointDColor*0.316227) - (pointEColor*0.316227) - (pointFColor*0.94868) - (pointGColor*0.94868) - (pointHColor*0.316227);\n"
+"    vec3 absoluteDifference = abs(colorComparison);\n"
+"    float componentLength = length(colorComparison);\n"
+"    float avgX = dot(absoluteDifference, dirX) / componentLength;\n"
+"    float avgY = dot(absoluteDifference, dirY) / componentLength;\n"
+"    float angle = atan(avgY, avgX);\n"
+"\n"
+"    vec3 normalizedColorComparison = (colorComparison + 1.0) * 0.5;\n"
+"\n"
+"    gl_FragColor = vec4(normalizedColorComparison, (angle+PI)/PITwo);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _colourFASTSamplingOperation_fragment_shader[]=
 "precision mediump float;\n"
@@ -94,6 +147,12 @@ extern const char _colourFASTSamplingOperation_fragment_shader[]=
 "    gl_FragColor = vec4(normalizedColorComparison, (angle+PI)/PITwo);\n"
 "}"
 ;
+
+#endif
+
+
+
+
 
 GPUImageColourFASTSamplingOperation::GPUImageColourFASTSamplingOperation()
         : GPUImageTwoInputFilter(_colourFASTSamplingOperation_vertex_shader, _colourFASTSamplingOperation_fragment_shader)

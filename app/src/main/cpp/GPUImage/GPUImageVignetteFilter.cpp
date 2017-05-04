@@ -8,6 +8,29 @@
 #include "GPUImageVignetteFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _vignette_fragment_shader[]=
+"uniform sampler2D inputImageTexture;\n"
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform lowp vec2 vignetteCenter;\n"
+"uniform lowp vec3 vignetteColor;\n"
+"uniform highp float vignetteStart;\n"
+"uniform highp float vignetteEnd;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    lowp float d = distance(textureCoordinate, vec2(vignetteCenter.x, vignetteCenter.y));\n"
+"    lowp float percent = smoothstep(vignetteStart, vignetteEnd, d);\n"
+"    gl_FragColor = vec4(mix(sourceImageColor.rgb, vignetteColor, percent), sourceImageColor.a);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _vignette_fragment_shader[]=
 "precision mediump float;\n"
@@ -27,6 +50,10 @@ extern const char _vignette_fragment_shader[]=
 "    gl_FragColor = vec4(mix(sourceImageColor.rgb, vignetteColor, percent), sourceImageColor.a);\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImageVignetteFilter::GPUImageVignetteFilter()

@@ -8,6 +8,7 @@
 #ifndef CGPUIMAGE_ANDROID_CONST_H
 #define CGPUIMAGE_ANDROID_CONST_H
 
+#define __GLSL_SUPPORT_HIGHP__      1
 
 const int ABS_FLIE_LEN_MAX = 1024;
 

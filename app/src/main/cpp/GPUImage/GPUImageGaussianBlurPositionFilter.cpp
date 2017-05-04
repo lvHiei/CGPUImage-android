@@ -8,6 +8,7 @@
 #include "GPUImageGaussianBlurPositionFilter.h"
 
 
+
 // 顶点着色器
 extern const char _gaussianBlurPosition_vertex_shader[]=
 //"precision mediump float;\n"
@@ -39,6 +40,50 @@ extern const char _gaussianBlurPosition_vertex_shader[]=
 "    }\n"
 "}"
 ;
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _gaussianBlurPosition_fragment_shader[]=
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"const lowp int GAUSSIAN_SAMPLES = 9;\n"
+"\n"
+"varying highp vec2 textureCoordinate;\n"
+"varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
+"\n"
+"uniform highp float aspectRatio;\n"
+"uniform lowp vec2 blurCenter;\n"
+"uniform highp float blurRadius;\n"
+"\n"
+"void main() {\n"
+"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
+"    highp float dist = distance(blurCenter, textureCoordinateToUse);\n"
+"\n"
+"    if (dist < blurRadius)\n"
+"    {\n"
+"        lowp vec4 sum = vec4(0.0);\n"
+"\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.05;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.09;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.12;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.15;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.18;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[5]) * 0.15;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[6]) * 0.12;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.09;\n"
+"        sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.05;\n"
+"\n"
+"        gl_FragColor = sum;\n"
+"    }\n"
+"    else\n"
+"    {\n"
+"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    }\n"
+"}"
+;
+
+#else
 
 // 片元着色器
 extern const char _gaussianBlurPosition_fragment_shader[]=
@@ -81,6 +126,11 @@ extern const char _gaussianBlurPosition_fragment_shader[]=
 "    }\n"
 "}"
 ;
+
+#endif
+
+
+
 
 
 GPUImageGaussianBlurPositionFilter::GPUImageGaussianBlurPositionFilter()

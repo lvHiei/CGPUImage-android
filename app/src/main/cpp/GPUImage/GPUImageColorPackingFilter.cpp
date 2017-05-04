@@ -7,7 +7,6 @@
 
 #include "GPUImageColorPackingFilter.h"
 
-
 // 顶点着色器
 extern const char _colorPacking_vertex_shader[]=
 //"precision mediump float;\n"
@@ -33,6 +32,37 @@ extern const char _colorPacking_vertex_shader[]=
 "}"
 ;
 
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _colorPacking_fragment_shader[]=
+"precision lowp float;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform mediump mat3 convolutionMatrix;\n"
+"\n"
+"varying highp vec2 outputTextureCoordinate;\n"
+"\n"
+"varying highp vec2 upperLeftInputTextureCoordinate;\n"
+"varying highp vec2 upperRightInputTextureCoordinate;\n"
+"varying highp vec2 lowerLeftInputTextureCoordinate;\n"
+"varying highp vec2 lowerRightInputTextureCoordinate;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    float upperLeftIntensity = texture2D(inputImageTexture, upperLeftInputTextureCoordinate).r;\n"
+"    float upperRightIntensity = texture2D(inputImageTexture, upperRightInputTextureCoordinate).r;\n"
+"    float lowerLeftIntensity = texture2D(inputImageTexture, lowerLeftInputTextureCoordinate).r;\n"
+"    float lowerRightIntensity = texture2D(inputImageTexture, lowerRightInputTextureCoordinate).r;\n"
+"\n"
+"    gl_FragColor = vec4(upperLeftIntensity, upperRightIntensity, lowerLeftIntensity, lowerRightIntensity);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _colorPacking_fragment_shader[]=
 "precision mediump float;\n"
@@ -57,6 +87,9 @@ extern const char _colorPacking_fragment_shader[]=
 "    gl_FragColor = vec4(upperLeftIntensity, upperRightIntensity, lowerLeftIntensity, lowerRightIntensity);\n"
 "}"
 ;
+
+
+#endif
 
 
 GPUImageColorPackingFilter::GPUImageColorPackingFilter()

@@ -8,6 +8,30 @@
 #include "GPUImageDissolveBlendFilter.h"
 #include "../util/FileUtil.h"
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _dissolveBlend_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"varying highp vec2 textureCoordinate2;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"uniform lowp float mixturePercent;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    lowp vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
+"\n"
+"    gl_FragColor = mix(textureColor, textureColor2, mixturePercent);\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _dissolveBlend_fragment_shader[]=
 "precision mediump float;\n"
@@ -26,6 +50,10 @@ extern const char _dissolveBlend_fragment_shader[]=
 "    gl_FragColor = mix(textureColor, textureColor2, mixturePercent);\n"
 "}"
 ;
+
+#endif
+
+
 
 GPUImageDissolveBlendFilter::GPUImageDissolveBlendFilter()
     : GPUImageImageFilter(_dissolveBlend_fragment_shader)

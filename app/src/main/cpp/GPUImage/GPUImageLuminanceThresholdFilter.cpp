@@ -8,6 +8,32 @@
 #include "GPUImageLuminanceThresholdFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _luminanceThreshold_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform highp float threshold;\n"
+"\n"
+"const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    highp float luminance = dot(textureColor.rgb, W);\n"
+"    highp float thresholdResult = step(threshold, luminance);\n"
+"\n"
+"    gl_FragColor = vec4(vec3(thresholdResult), textureColor.w);\n"
+"}"
+;
+
+
+#else
+
+
 // 片元着色器
 extern const char _luminanceThreshold_fragment_shader[]=
 "precision mediump float;\n"
@@ -27,6 +53,9 @@ extern const char _luminanceThreshold_fragment_shader[]=
 "    gl_FragColor = vec4(vec3(thresholdResult), textureColor.w);\n"
 "}"
 ;
+
+
+#endif
 
 
 GPUImageLuminanceThresholdFilter::GPUImageLuminanceThresholdFilter()

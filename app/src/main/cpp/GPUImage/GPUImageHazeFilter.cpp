@@ -8,6 +8,34 @@
 #include "GPUImageHazeFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _haze_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform lowp float hazeDistance;\n"
+"uniform highp float slope;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    //todo reconsider precision modifiers\t \n"
+"    highp vec4 color = vec4(1.0);//todo reimplement as a parameter\n"
+"\n"
+"    highp float  d = textureCoordinate.y * slope  +  hazeDistance;\n"
+"\n"
+"    highp vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply\n"
+"\n"
+"    c = (c - d * color) / (1.0 -d);\n"
+"\n"
+"    gl_FragColor = c; //consider using premultiply(c);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _haze_fragment_shader[]=
 "precision mediump float;\n"
@@ -32,6 +60,10 @@ extern const char _haze_fragment_shader[]=
 "    gl_FragColor = c; //consider using premultiply(c);\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImageHazeFilter::GPUImageHazeFilter()

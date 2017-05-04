@@ -8,6 +8,27 @@
 #include "GPUImageRGBFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _rgb_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform highp float redAdjustment;\n"
+"uniform highp float greenAdjustment;\n"
+"uniform highp float blueAdjustment;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"\n"
+"    gl_FragColor = vec4(textureColor.r * redAdjustment, textureColor.g * greenAdjustment, textureColor.b * blueAdjustment, textureColor.a);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _rgb_fragment_shader[]=
 "precision mediump float;\n"
@@ -25,6 +46,11 @@ extern const char _rgb_fragment_shader[]=
 "    gl_FragColor = vec4(textureColor.r * redAdjustment, textureColor.g * greenAdjustment, textureColor.b * blueAdjustment, textureColor.a);\n"
 "}"
 ;
+
+#endif
+
+
+
 
 
 GPUImageRGBFilter::GPUImageRGBFilter()

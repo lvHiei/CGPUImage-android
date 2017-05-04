@@ -8,6 +8,30 @@
 #include "GPUImageLuminanceRangeFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _luminanceRange_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform lowp float rangeReduction;\n"
+"\n"
+"// Values from \"Graphics Shaders: Theory and Practice\" by Bailey and Cunningham\n"
+"const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    mediump float luminance = dot(textureColor.rgb, luminanceWeighting);\n"
+"    mediump float luminanceRatio = ((0.5 - luminance) * rangeReduction);\n"
+"\n"
+"    gl_FragColor = vec4((textureColor.rgb) + (luminanceRatio), textureColor.w);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _luminanceRange_fragment_shader[]=
 "precision mediump float;\n"
@@ -28,6 +52,10 @@ extern const char _luminanceRange_fragment_shader[]=
 "    gl_FragColor = vec4((textureColor.rgb) + (luminanceRatio), textureColor.w);\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImageLuminanceRangeFilter::GPUImageLuminanceRangeFilter()

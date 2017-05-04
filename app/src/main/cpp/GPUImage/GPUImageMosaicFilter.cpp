@@ -9,6 +9,56 @@
 #include "../util/FileUtil.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _mosaic_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"\n"
+"uniform vec2 inputTileSize;\n"
+"uniform vec2 displayTileSize;\n"
+"uniform float numTiles;\n"
+"uniform int colorOn;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    vec2 xy = textureCoordinate;\n"
+"    xy = xy - mod(xy, displayTileSize);\n"
+"\n"
+"    vec4 lumcoeff = vec4(0.299,0.587,0.114,0.0);\n"
+"\n"
+"    vec4 inputColor = texture2D(inputImageTexture2, xy);\n"
+"    float lum = dot(inputColor,lumcoeff);\n"
+"    lum = 1.0 - lum;\n"
+"\n"
+"    float stepsize = 1.0 / numTiles;\n"
+"    float lumStep = (lum - mod(lum, stepsize)) / stepsize;\n"
+"\n"
+"    float rowStep = 1.0 / inputTileSize.x;\n"
+"    float x = mod(lumStep, rowStep);\n"
+"    float y = floor(lumStep / rowStep);\n"
+"\n"
+"    vec2 startCoord = vec2(float(x) *  inputTileSize.x, float(y) * inputTileSize.y);\n"
+"    vec2 finalCoord = startCoord + ((textureCoordinate - xy) * (inputTileSize / displayTileSize));\n"
+"\n"
+"    vec4 color = texture2D(inputImageTexture, finalCoord);\n"
+"    if (colorOn == 1) {\n"
+"        color = color * inputColor;\n"
+"    }\n"
+"    gl_FragColor = color;\n"
+"\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _mosaic_fragment_shader[]=
 "precision mediump float;\n"
@@ -51,6 +101,9 @@ extern const char _mosaic_fragment_shader[]=
 //"    gl_FragColor = inputColor;\n"
 "}"
 ;
+
+#endif
+
 
 
 GPUImageMosaicFilter::GPUImageMosaicFilter()

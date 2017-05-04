@@ -9,6 +9,27 @@
 #include "../util/FileUtil.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _subractBlend_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"varying highp vec2 textureCoordinate2;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    lowp vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
+"\n"
+"    gl_FragColor = vec4(textureColor.rgb - textureColor2.rgb, textureColor.a);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _subractBlend_fragment_shader[]=
 "precision mediump float;\n"
@@ -26,6 +47,10 @@ extern const char _subractBlend_fragment_shader[]=
 "    gl_FragColor = vec4(textureColor.rgb - textureColor2.rgb, textureColor.a);\n"
 "}"
 ;
+
+#endif
+
+
 
 
 

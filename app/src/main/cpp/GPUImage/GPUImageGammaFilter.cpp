@@ -7,6 +7,28 @@
 
 #include "GPUImageGammaFilter.h"
 
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _gamma_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform lowp float gamma;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"\n"
+"    gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _gamma_fragment_shader[]=
 "precision mediump float;\n"
@@ -20,6 +42,9 @@ extern const char _gamma_fragment_shader[]=
 "   gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);\n"
 "}\n"
 ;
+
+#endif
+
 
 GPUImageGammaFilter::GPUImageGammaFilter()
     : GPUImageFilter(_gamma_fragment_shader)

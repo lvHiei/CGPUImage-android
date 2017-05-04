@@ -8,6 +8,41 @@
 #include "GPUImageZoomBlurFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _zoomBlur_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform highp vec2 blurCenter;\n"
+"uniform highp float blurSize;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    // TODO: Do a more intelligent scaling based on resolution here\n"
+"    highp vec2 samplingOffset = 1.0/100.0 * (blurCenter - textureCoordinate) * blurSize;\n"
+"\n"
+"    lowp vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.18;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate + samplingOffset) * 0.15;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate + (2.0 * samplingOffset)) *  0.12;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate + (3.0 * samplingOffset)) * 0.09;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate + (4.0 * samplingOffset)) * 0.05;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate - samplingOffset) * 0.15;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate - (2.0 * samplingOffset)) *  0.12;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate - (3.0 * samplingOffset)) * 0.09;\n"
+"    fragmentColor += texture2D(inputImageTexture, textureCoordinate - (4.0 * samplingOffset)) * 0.05;\n"
+"\n"
+"    gl_FragColor = fragmentColor;\n"
+"}"
+;
+
+
+#else
+
+
 // 片元着色器
 extern const char _zoomBlur_fragment_shader[]=
 "precision mediump float;\n"
@@ -36,6 +71,9 @@ extern const char _zoomBlur_fragment_shader[]=
 "    gl_FragColor = fragmentColor;\n"
 "}"
 ;
+
+
+#endif
 
 
 GPUImageZoomBlurFilter::GPUImageZoomBlurFilter()

@@ -8,6 +8,26 @@
 #include "GPUImageExposureFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _exposure_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform highp float exposure;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"\n"
+"    gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);\n"
+"}"
+;
+
+
+#else
+
 // 片元着色器
 extern const char _exposure_fragment_shader[]=
 "precision mediump float;\n"
@@ -23,6 +43,10 @@ extern const char _exposure_fragment_shader[]=
 "    gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);\n"
 "}"
 ;
+
+
+#endif
+
 
 GPUImageExposureFilter::GPUImageExposureFilter()
     : GPUImageFilter(_exposure_fragment_shader)

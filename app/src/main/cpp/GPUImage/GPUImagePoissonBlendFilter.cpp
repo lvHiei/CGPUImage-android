@@ -8,6 +8,60 @@
 #include "GPUImagePoissonBlendFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _poissonBlend_fragment_shader[]=
+"precision mediump float;\n"
+"\n"
+"varying vec2 textureCoordinate;\n"
+"varying vec2 leftTextureCoordinate;\n"
+"varying vec2 rightTextureCoordinate;\n"
+"varying vec2 topTextureCoordinate;\n"
+"varying vec2 bottomTextureCoordinate;\n"
+"\n"
+"varying vec2 textureCoordinate2;\n"
+"varying vec2 leftTextureCoordinate2;\n"
+"varying vec2 rightTextureCoordinate2;\n"
+"varying vec2 topTextureCoordinate2;\n"
+"varying vec2 bottomTextureCoordinate2;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"\n"
+"uniform lowp float mixturePercent;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    vec4 centerColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    vec3 bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;\n"
+"    vec3 leftColor = texture2D(inputImageTexture, leftTextureCoordinate).rgb;\n"
+"    vec3 rightColor = texture2D(inputImageTexture, rightTextureCoordinate).rgb;\n"
+"    vec3 topColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;\n"
+"\n"
+"    vec4 centerColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
+"    vec3 bottomColor2 = texture2D(inputImageTexture2, bottomTextureCoordinate2).rgb;\n"
+"    vec3 leftColor2 = texture2D(inputImageTexture2, leftTextureCoordinate2).rgb;\n"
+"    vec3 rightColor2 = texture2D(inputImageTexture2, rightTextureCoordinate2).rgb;\n"
+"    vec3 topColor2 = texture2D(inputImageTexture2, topTextureCoordinate2).rgb;\n"
+"\n"
+"    vec3 meanColor = (bottomColor + leftColor + rightColor + topColor) / 4.0;\n"
+"    vec3 diffColor = centerColor.rgb - meanColor;\n"
+"\n"
+"    vec3 meanColor2 = (bottomColor2 + leftColor2 + rightColor2 + topColor2) / 4.0;\n"
+"    vec3 diffColor2 = centerColor2.rgb - meanColor2;\n"
+"\n"
+"    vec3 gradColor = (meanColor + diffColor2);\n"
+"\n"
+"    gl_FragColor = vec4(mix(centerColor.rgb, gradColor, centerColor2.a * mixturePercent), centerColor.a);\n"
+"}"
+;
+
+
+#else
+
+
 // 片元着色器
 extern const char _poissonBlend_fragment_shader[]=
 "precision mediump float;\n"
@@ -53,6 +107,10 @@ extern const char _poissonBlend_fragment_shader[]=
 "    gl_FragColor = vec4(mix(centerColor.rgb, gradColor, centerColor2.a * mixturePercent), centerColor.a);\n"
 "}"
 ;
+
+
+#endif
+
 
 
 GPUImagePoissonBlendFilter::GPUImagePoissonBlendFilter()

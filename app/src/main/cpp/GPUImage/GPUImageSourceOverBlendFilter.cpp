@@ -9,6 +9,29 @@
 #include "../util/FileUtil.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _sourceOverBlend_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"varying highp vec2 textureCoordinate2;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+//"    这里应该是写错了， 我想...\n"
+//"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate);\n"
+"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
+"\n"
+"    gl_FragColor = mix(textureColor, textureColor2, textureColor2.a);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _sourceOverBlend_fragment_shader[]=
 "precision mediump float;\n"
@@ -28,6 +51,11 @@ extern const char _sourceOverBlend_fragment_shader[]=
 "    gl_FragColor = mix(textureColor, textureColor2, textureColor2.a);\n"
 "}"
 ;
+
+#endif
+
+
+
 
 
 GPUImageSourceOverBlendFilter::GPUImageSourceOverBlendFilter()

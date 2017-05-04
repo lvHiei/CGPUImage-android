@@ -21,6 +21,44 @@
 #define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput) 	LevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _levels_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform mediump vec3 levelMinimum;\n"
+"uniform mediump vec3 levelMiddle;\n"
+"uniform mediump vec3 levelMaximum;\n"
+"uniform mediump vec3 minOutput;\n"
+"uniform mediump vec3 maxOutput;\n"
+"\n"
+"#define GammaCorrection(color, gamma)\t\t\t\t\t\t\t\tpow(color, 1.0 / gamma)\n"
+"\n"
+"/*\n"
+" ** Levels control (input (+gamma), output)\n"
+" ** Details: http://blog.mouaif.org/2009/01/28/levels-control-shader/\n"
+" */\n"
+"\n"
+"#define LevelsControlInputRange(color, minInput, maxInput)\t\t\t\tmin(max(color - minInput, vec3(0.0)) / (maxInput - minInput), vec3(1.0))\n"
+"#define LevelsControlInput(color, minInput, gamma, maxInput)\t\t\t\tGammaCorrection(LevelsControlInputRange(color, minInput, maxInput), gamma)\n"
+"#define LevelsControlOutputRange(color, minOutput, maxOutput) \t\t\tmix(minOutput, maxOutput, color)\n"
+"#define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput) \tLevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)"
+"\n"
+"void main()\n"
+"{\n"
+"    mediump vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"\n"
+"    gl_FragColor = vec4(LevelsControl(textureColor.rgb, levelMinimum, levelMiddle, levelMaximum, minOutput, maxOutput), textureColor.a);\n"
+"}"
+;
+
+
+#else
+
+
 // 片元着色器
 extern const char _levels_fragment_shader[]=
 "precision mediump float;\n"
@@ -52,6 +90,9 @@ extern const char _levels_fragment_shader[]=
 "    gl_FragColor = vec4(LevelsControl(textureColor.rgb, levelMinimum, levelMiddle, levelMaximum, minOutput, maxOutput), textureColor.a);\n"
 "}"
 ;
+
+
+#endif
 
 
 GPUImageLevelsFilter::GPUImageLevelsFilter()

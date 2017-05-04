@@ -8,6 +8,8 @@
 
 #include "GPUImageDilationFilter.h"
 
+
+
 // 顶点着色器
 extern const char _dilationRadiusOne_vertex_shader[]=
 //"precision mediump float;\n"
@@ -136,6 +138,142 @@ extern const char _dilationRadiusFour_vertex_shader[]=
 
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _dilationRadiusOne_fragment_shader[]=
+"precision lowp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
+"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
+"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
+"\n"
+"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
+"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
+"\n"
+"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
+"}"
+;
+
+
+// 片元着色器
+extern const char _dilationRadiusTwo_fragment_shader[]=
+"precision lowp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"varying vec2 twoStepsPositiveTextureCoordinate;\n"
+"varying vec2 twoStepsNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
+"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
+"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
+"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
+"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
+"\n"
+"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
+"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
+"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
+"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
+"\n"
+"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
+"}"
+;
+
+
+
+// 片元着色器
+extern const char _dilationRadiusThree_fragment_shader[]=
+"precision lowp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"varying vec2 twoStepsPositiveTextureCoordinate;\n"
+"varying vec2 twoStepsNegativeTextureCoordinate;\n"
+"varying vec2 threeStepsPositiveTextureCoordinate;\n"
+"varying vec2 threeStepsNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
+"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
+"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
+"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
+"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
+"    float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;\n"
+"    float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;\n"
+"\n"
+"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
+"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
+"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
+"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
+"    maxValue = max(maxValue, threeStepsPositiveIntensity);\n"
+"    maxValue = max(maxValue, threeStepsNegativeIntensity);\n"
+"\n"
+"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
+"}"
+;
+
+
+// 片元着色器
+extern const char _dilationRadiusFour_fragment_shader[]=
+"precision lowp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"varying vec2 twoStepsPositiveTextureCoordinate;\n"
+"varying vec2 twoStepsNegativeTextureCoordinate;\n"
+"varying vec2 threeStepsPositiveTextureCoordinate;\n"
+"varying vec2 threeStepsNegativeTextureCoordinate;\n"
+"varying vec2 fourStepsPositiveTextureCoordinate;\n"
+"varying vec2 fourStepsNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
+"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
+"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
+"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
+"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
+"    float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;\n"
+"    float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;\n"
+"    float fourStepsPositiveIntensity = texture2D(inputImageTexture, fourStepsPositiveTextureCoordinate).r;\n"
+"    float fourStepsNegativeIntensity = texture2D(inputImageTexture, fourStepsNegativeTextureCoordinate).r;\n"
+"\n"
+"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
+"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
+"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
+"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
+"    maxValue = max(maxValue, threeStepsPositiveIntensity);\n"
+"    maxValue = max(maxValue, threeStepsNegativeIntensity);\n"
+"    maxValue = max(maxValue, fourStepsPositiveIntensity);\n"
+"    maxValue = max(maxValue, fourStepsNegativeIntensity);\n"
+"\n"
+"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
+"}"
+;
+
+#else
 
 
 // 片元着色器
@@ -265,6 +403,10 @@ extern const char _dilationRadiusFour_fragment_shader[]=
 "    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImageDilationFilter::GPUImageDilationFilter()

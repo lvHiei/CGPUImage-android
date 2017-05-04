@@ -24,6 +24,22 @@ extern const char _base_vertex_shader[]=
 "}\n"
 ;
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _base_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _base_fragment_shader[]=
 "precision mediump float;\n"
@@ -36,6 +52,10 @@ extern const char _base_fragment_shader[]=
 "   gl_FragColor = textureColor;\n"
 "}\n"
 ;
+
+#endif
+
+
 
 const int VERTEX_COORDINATE_SIZE = 8;
 const int TEXTURE_COORDINATE_SIZE = 8;

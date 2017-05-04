@@ -8,6 +8,28 @@
 #include "GPUImageDarkenBlendFilter.h"
 #include "../util/FileUtil.h"
 
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _darkenBlend_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"varying highp vec2 textureCoordinate2;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 base = texture2D(inputImageTexture, textureCoordinate);\n"
+"    lowp vec4 overlayer = texture2D(inputImageTexture2, textureCoordinate2);\n"
+"\n"
+"    gl_FragColor = vec4(min(overlayer.rgb * base.a, base.rgb * overlayer.a) + overlayer.rgb * (1.0 - base.a) + base.rgb * (1.0 - overlayer.a), 1.0);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _darkenBlend_fragment_shader[]=
 "precision mediump float;\n"
@@ -25,6 +47,10 @@ extern const char _darkenBlend_fragment_shader[]=
 "    gl_FragColor = vec4(min(overlayer.rgb * base.a, base.rgb * overlayer.a) + overlayer.rgb * (1.0 - base.a) + base.rgb * (1.0 - overlayer.a), 1.0);\n"
 "}"
 ;
+
+#endif
+
+
 
 GPUImageDarkenBlendFilter::GPUImageDarkenBlendFilter()
     : GPUImageImageFilter(_darkenBlend_fragment_shader)

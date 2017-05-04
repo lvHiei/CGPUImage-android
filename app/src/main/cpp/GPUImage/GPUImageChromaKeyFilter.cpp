@@ -8,6 +8,43 @@
 #include "GPUImageChromaKeyFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _chromakey_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform float thresholdSensitivity;\n"
+"uniform float smoothing;\n"
+"uniform vec3 colorToReplace;\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform sampler2D inputImageTexture2;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"\n"
+"    float maskY = 0.2989 * colorToReplace.r + 0.5866 * colorToReplace.g + 0.1145 * colorToReplace.b;\n"
+"    float maskCr = 0.7132 * (colorToReplace.r - maskY);\n"
+"    float maskCb = 0.5647 * (colorToReplace.b - maskY);\n"
+"\n"
+"    float Y = 0.2989 * textureColor.r + 0.5866 * textureColor.g + 0.1145 * textureColor.b;\n"
+"    float Cr = 0.7132 * (textureColor.r - Y);\n"
+"    float Cb = 0.5647 * (textureColor.b - Y);\n"
+"\n"
+"    //     float blendValue = 1.0 - smoothstep(thresholdSensitivity - smoothing, thresholdSensitivity , abs(Cr - maskCr) + abs(Cb - maskCb));\n"
+"    float blendValue = smoothstep(thresholdSensitivity, thresholdSensitivity + smoothing, distance(vec2(Cr, Cb), vec2(maskCr, maskCb)));\n"
+"    gl_FragColor = vec4(textureColor.rgb, textureColor.a * blendValue);\n"
+"}"
+;
+
+
+#else
+
+
 // 片元着色器
 extern const char _chromakey_fragment_shader[]=
 "precision mediump float;\n"
@@ -36,6 +73,10 @@ extern const char _chromakey_fragment_shader[]=
 "    gl_FragColor = vec4(textureColor.rgb, textureColor.a * blendValue);\n"
 "}"
 ;
+
+
+#endif
+
 
 
 GPUImageChromaKeyFilter::GPUImageChromaKeyFilter()

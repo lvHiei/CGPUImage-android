@@ -276,8 +276,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageGaussianBlurPositionFilter();
 //    m_pFilter = new GPUImageBilateralFilter();
 //    m_pFilter = new GPUImageBoxBlurFilter();
-//    m_pFilter = new GPUImageSingleComponentGaussianBlurFilter();
-    m_pFilter = new GPUImageVoronoiConsumerFilter();
+    m_pFilter = new GPUImageSingleComponentGaussianBlurFilter();
+//    m_pFilter = new GPUImageVoronoiConsumerFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

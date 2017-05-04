@@ -175,7 +175,7 @@ void GPUImageGaussianBlurFilter::genFragmentShaderForStandardBlurOfRadius(int bl
     char tempShader[20480] = {0};
 
     // Header
-#if 0
+#ifdef __GLSL_SUPPORT_HIGHP__
     const char* part1 =
     "uniform sampler2D inputImageTexture;\n"
     "\n"
@@ -358,7 +358,7 @@ void GPUImageGaussianBlurFilter::genFragmentShaderForOptimizedBlurOfRadius(int b
     char tempShader[20480] = {0};
     // Header
 
-#if 0
+#ifdef __GLSL_SUPPORT_HIGHP__
     const char* part1 =
     "uniform sampler2D inputImageTexture;\n"
     "uniform highp float texelWidthOffset;\n"
@@ -403,7 +403,7 @@ void GPUImageGaussianBlurFilter::genFragmentShaderForOptimizedBlurOfRadius(int b
     // If the number of required samples exceeds the amount we can pass in via varyings, we have to do dependent texture reads in the fragment shader
     if (trueNumberOfOptimizedOffsets > numberOfOptimizedOffsets)
     {
-#if 0
+#ifdef __GLSL_SUPPORT_HIGHP__
         sprintf(tempShader + strlen(tempShader), "highp vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n");
 #else
         sprintf(tempShader + strlen(tempShader), "vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n");

@@ -13,6 +13,139 @@ extern const char _dilationRadiusTwo_vertex_shader[];
 extern const char _dilationRadiusThree_vertex_shader[];
 extern const char _dilationRadiusFour_vertex_shader[];
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _rgbErosionRadiusOne_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate);\n"
+"    lowp vec4 oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate);\n"
+"    lowp vec4 oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate);\n"
+"\n"
+"    lowp vec4 minValue = min(centerIntensity, oneStepPositiveIntensity);\n"
+"\n"
+"    gl_FragColor = min(minValue, oneStepNegativeIntensity);\n"
+"}"
+;
+
+
+// 片元着色器
+extern const char _rgbErosionRadiusTwo_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"varying vec2 twoStepsPositiveTextureCoordinate;\n"
+"varying vec2 twoStepsNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate);\n"
+"    lowp vec4 oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate);\n"
+"    lowp vec4 oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate);\n"
+"    lowp vec4 twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate);\n"
+"    lowp vec4 twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate);\n"
+"\n"
+"    lowp vec4 minValue = min(centerIntensity, oneStepPositiveIntensity);\n"
+"    minValue = min(minValue, oneStepNegativeIntensity);\n"
+"    minValue = min(minValue, twoStepsPositiveIntensity);\n"
+"\n"
+"    gl_FragColor = min(minValue, twoStepsNegativeIntensity);\n"
+"}"
+;
+
+
+// 片元着色器
+extern const char _rgbErosionRadiusThree_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"varying vec2 twoStepsPositiveTextureCoordinate;\n"
+"varying vec2 twoStepsNegativeTextureCoordinate;\n"
+"varying vec2 threeStepsPositiveTextureCoordinate;\n"
+"varying vec2 threeStepsNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate);\n"
+"    lowp vec4 oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate);\n"
+"    lowp vec4 oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate);\n"
+"    lowp vec4 twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate);\n"
+"    lowp vec4 twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate);\n"
+"    lowp vec4 threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate);\n"
+"    lowp vec4 threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate);\n"
+"\n"
+"    lowp vec4 minValue = min(centerIntensity, oneStepPositiveIntensity);\n"
+"    minValue = min(minValue, oneStepNegativeIntensity);\n"
+"    minValue = min(minValue, twoStepsPositiveIntensity);\n"
+"    minValue = min(minValue, twoStepsNegativeIntensity);\n"
+"    minValue = min(minValue, threeStepsPositiveIntensity);\n"
+"\n"
+"    gl_FragColor = min(minValue, threeStepsNegativeIntensity);\n"
+"}"
+;
+
+
+// 片元着色器
+extern const char _rgbErosionRadiusFour_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 centerTextureCoordinate;\n"
+"varying vec2 oneStepPositiveTextureCoordinate;\n"
+"varying vec2 oneStepNegativeTextureCoordinate;\n"
+"varying vec2 twoStepsPositiveTextureCoordinate;\n"
+"varying vec2 twoStepsNegativeTextureCoordinate;\n"
+"varying vec2 threeStepsPositiveTextureCoordinate;\n"
+"varying vec2 threeStepsNegativeTextureCoordinate;\n"
+"varying vec2 fourStepsPositiveTextureCoordinate;\n"
+"varying vec2 fourStepsNegativeTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate);\n"
+"    lowp vec4 oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate);\n"
+"    lowp vec4 oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate);\n"
+"    lowp vec4 twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate);\n"
+"    lowp vec4 twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate);\n"
+"    lowp vec4 threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate);\n"
+"    lowp vec4 threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate);\n"
+"    lowp vec4 fourStepsPositiveIntensity = texture2D(inputImageTexture, fourStepsPositiveTextureCoordinate);\n"
+"    lowp vec4 fourStepsNegativeIntensity = texture2D(inputImageTexture, fourStepsNegativeTextureCoordinate);\n"
+"\n"
+"    lowp vec4 minValue = min(centerIntensity, oneStepPositiveIntensity);\n"
+"    minValue = min(minValue, oneStepNegativeIntensity);\n"
+"    minValue = min(minValue, twoStepsPositiveIntensity);\n"
+"    minValue = min(minValue, twoStepsNegativeIntensity);\n"
+"    minValue = min(minValue, threeStepsPositiveIntensity);\n"
+"    minValue = min(minValue, threeStepsNegativeIntensity);\n"
+"    minValue = min(minValue, fourStepsPositiveIntensity);\n"
+"\n"
+"    gl_FragColor = min(minValue, fourStepsNegativeIntensity);\n"
+"}"
+;
+
+
+#else
+
 
 // 片元着色器
 extern const char _rgbErosionRadiusOne_fragment_shader[]=
@@ -136,6 +269,10 @@ extern const char _rgbErosionRadiusFour_fragment_shader[]=
 "    gl_FragColor = min(minValue, fourStepsNegativeIntensity);\n"
 "}"
 ;
+
+
+#endif
+
 
 
 GPUImageRGBErosionFilter::GPUImageRGBErosionFilter()

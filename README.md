@@ -13,6 +13,8 @@ be 0xffffff, the effect is not correct
 
 3.GPUImageSphereRefractionFilter the effect is incorrect, and I don't know why.
 
+The reason is float precision, with hightp float the effect is correct.
+
 
 4.GPUImagePoissonBlendFilter is not test and the m_uNumIterations is not implement
 

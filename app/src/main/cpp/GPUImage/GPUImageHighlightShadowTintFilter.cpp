@@ -8,6 +8,38 @@
 #include "GPUImageHighlightShadowTintFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _highlightShadowTint_fragment_shader[]=
+"precision lowp float;\n"
+"\n"
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform lowp float shadowTintIntensity;\n"
+"uniform lowp float highlightTintIntensity;\n"
+"uniform highp vec4 shadowTintColor;\n"
+"uniform highp vec4 highlightTintColor;\n"
+"\n"
+"const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    highp float luminance = dot(textureColor.rgb, luminanceWeighting);\n"
+"\n"
+"    highp vec4 shadowResult = mix(textureColor, max(textureColor, vec4( mix(shadowTintColor.rgb, textureColor.rgb, luminance), textureColor.a)), shadowTintIntensity);\n"
+"    highp vec4 highlightResult = mix(textureColor, min(shadowResult, vec4( mix(shadowResult.rgb, highlightTintColor.rgb, luminance), textureColor.a)), highlightTintIntensity);\n"
+"\n"
+"    gl_FragColor = vec4( mix(shadowResult.rgb, highlightResult.rgb, luminance), textureColor.a);\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _highlightShadowTint_fragment_shader[]=
 "precision mediump float;\n"
@@ -33,6 +65,9 @@ extern const char _highlightShadowTint_fragment_shader[]=
 "    gl_FragColor = vec4( mix(shadowResult.rgb, highlightResult.rgb, luminance), textureColor.a);\n"
 "}"
 ;
+
+#endif
+
 
 
 GPUImageHighlightShadowTintFilter::GPUImageHighlightShadowTintFilter()

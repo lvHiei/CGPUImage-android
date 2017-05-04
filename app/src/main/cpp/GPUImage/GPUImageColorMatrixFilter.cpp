@@ -8,23 +8,48 @@
 
 #include "GPUImageColorMatrixFilter.h"
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _colorMatrix_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform lowp mat4 colorMatrix;\n"
+"uniform lowp float intensity;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
+"    lowp vec4 outputColor = textureColor * colorMatrix;\n"
+"\n"
+"    gl_FragColor = (intensity * outputColor) + ((1.0 - intensity) * textureColor);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _colorMatrix_fragment_shader[]=
 "precision mediump float;\n"
 "uniform sampler2D inputImageTexture;\n"
 "varying vec2 textureCoordinate;\n"
-"uniform lowp mat4 colorMatrix;\n"
-"uniform lowp float intensity;\n"
+"uniform mat4 colorMatrix;\n"
+"uniform float intensity;\n"
 
 "void main()\n"
 "{\n"
 "	vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n "
 "   //sepia filter \n"
-"   lowp vec4 outputColor = textureColor * colorMatrix;\n"
+"   vec4 outputColor = textureColor * colorMatrix;\n"
 "   vec4 sepiaColor = (intensity * outputColor) + ((1.0 - intensity) * textureColor);\n"
 "   gl_FragColor = sepiaColor;\n"
 "}\n"
 ;
+
+#endif
+
 
 /*
  * 转换矩阵

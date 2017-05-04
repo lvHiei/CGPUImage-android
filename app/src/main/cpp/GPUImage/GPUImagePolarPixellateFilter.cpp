@@ -8,6 +8,47 @@
 #include "GPUImagePolarPixellateFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _polarPixellate_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform highp vec2 center;\n"
+"uniform highp vec2 pixelSize;\n"
+"\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp vec2 normCoord = 2.0 * textureCoordinate - 1.0;\n"
+"    highp vec2 normCenter = 2.0 * center - 1.0;\n"
+"\n"
+"    normCoord -= normCenter;\n"
+"\n"
+"    highp float r = length(normCoord); // to polar coords \n"
+"    highp float phi = atan(normCoord.y, normCoord.x); // to polar coords \n"
+"\n"
+"    r = r - mod(r, pixelSize.x) + 0.03;\n"
+"    phi = phi - mod(phi, pixelSize.y);\n"
+"\n"
+"    normCoord.x = r * cos(phi);\n"
+"    normCoord.y = r * sin(phi);\n"
+"\n"
+"    normCoord += normCenter;\n"
+"\n"
+"    mediump vec2 textureCoordinateToUse = normCoord / 2.0 + 0.5;\n"
+"\n"
+"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
+"\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _polarPixellate_fragment_shader[]=
 "precision mediump float;\n"
@@ -43,6 +84,10 @@ extern const char _polarPixellate_fragment_shader[]=
 "\n"
 "}"
 ;
+
+#endif
+
+
 
 
 GPUImagePolarPixellateFilter::GPUImagePolarPixellateFilter()

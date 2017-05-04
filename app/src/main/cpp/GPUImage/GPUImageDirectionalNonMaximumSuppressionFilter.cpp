@@ -7,6 +7,41 @@
 
 #include "GPUImageDirectionalNonMaximumSuppressionFilter.h"
 
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _directionalNonMaximumSuppression_fragment_shader[]=
+"precision mediump float;\n"
+"\n"
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"uniform highp float texelWidth;\n"
+"uniform highp float texelHeight;\n"
+"uniform mediump float upperThreshold;\n"
+"uniform mediump float lowerThreshold;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    vec3 currentGradientAndDirection = texture2D(inputImageTexture, textureCoordinate).rgb;\n"
+"    vec2 gradientDirection = ((currentGradientAndDirection.gb * 2.0) - 1.0) * vec2(texelWidth, texelHeight);\n"
+"\n"
+"    float firstSampledGradientMagnitude = texture2D(inputImageTexture, textureCoordinate + gradientDirection).r;\n"
+"    float secondSampledGradientMagnitude = texture2D(inputImageTexture, textureCoordinate - gradientDirection).r;\n"
+"\n"
+"    float multiplier = step(firstSampledGradientMagnitude, currentGradientAndDirection.r);\n"
+"    multiplier = multiplier * step(secondSampledGradientMagnitude, currentGradientAndDirection.r);\n"
+"\n"
+"    float thresholdCompliance = smoothstep(lowerThreshold, upperThreshold, currentGradientAndDirection.r);\n"
+"    multiplier = multiplier * thresholdCompliance;\n"
+"\n"
+"    gl_FragColor = vec4(multiplier, multiplier, multiplier, 1.0);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _directionalNonMaximumSuppression_fragment_shader[]=
 "precision mediump float;\n"
@@ -35,6 +70,10 @@ extern const char _directionalNonMaximumSuppression_fragment_shader[]=
 "    gl_FragColor = vec4(multiplier, multiplier, multiplier, 1.0);\n"
 "}"
 ;
+
+#endif
+
+
 
 
 

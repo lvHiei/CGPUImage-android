@@ -8,6 +8,56 @@
 #include "GPUImageLocalBinaryPatternFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _localBinaryPattern_fragment_shader[]=
+"precision highp float;\n"
+"\n"
+"varying vec2 textureCoordinate;\n"
+"varying vec2 leftTextureCoordinate;\n"
+"varying vec2 rightTextureCoordinate;\n"
+"\n"
+"varying vec2 topTextureCoordinate;\n"
+"varying vec2 topLeftTextureCoordinate;\n"
+"varying vec2 topRightTextureCoordinate;\n"
+"\n"
+"varying vec2 bottomTextureCoordinate;\n"
+"varying vec2 bottomLeftTextureCoordinate;\n"
+"varying vec2 bottomRightTextureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    lowp float centerIntensity = texture2D(inputImageTexture, textureCoordinate).r;\n"
+"    lowp float bottomLeftIntensity = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;\n"
+"    lowp float topRightIntensity = texture2D(inputImageTexture, topRightTextureCoordinate).r;\n"
+"    lowp float topLeftIntensity = texture2D(inputImageTexture, topLeftTextureCoordinate).r;\n"
+"    lowp float bottomRightIntensity = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;\n"
+"    lowp float leftIntensity = texture2D(inputImageTexture, leftTextureCoordinate).r;\n"
+"    lowp float rightIntensity = texture2D(inputImageTexture, rightTextureCoordinate).r;\n"
+"    lowp float bottomIntensity = texture2D(inputImageTexture, bottomTextureCoordinate).r;\n"
+"    lowp float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;\n"
+"\n"
+"    lowp float byteTally = 1.0 / 255.0 * step(centerIntensity, topRightIntensity);\n"
+"    byteTally += 2.0 / 255.0 * step(centerIntensity, topIntensity);\n"
+"    byteTally += 4.0 / 255.0 * step(centerIntensity, topLeftIntensity);\n"
+"    byteTally += 8.0 / 255.0 * step(centerIntensity, leftIntensity);\n"
+"    byteTally += 16.0 / 255.0 * step(centerIntensity, bottomLeftIntensity);\n"
+"    byteTally += 32.0 / 255.0 * step(centerIntensity, bottomIntensity);\n"
+"    byteTally += 64.0 / 255.0 * step(centerIntensity, bottomRightIntensity);\n"
+"    byteTally += 128.0 / 255.0 * step(centerIntensity, rightIntensity);\n"
+"\n"
+"    // TODO: Replace the above with a dot product and two vec4s\n"
+"    // TODO: Apply step to a matrix, rather than individually\n"
+"\n"
+"    gl_FragColor = vec4(byteTally, byteTally, byteTally, 1.0);\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _localBinaryPattern_fragment_shader[]=
 "precision mediump float;\n"
@@ -52,6 +102,10 @@ extern const char _localBinaryPattern_fragment_shader[]=
 "    gl_FragColor = vec4(byteTally, byteTally, byteTally, 1.0);\n"
 "}"
 ;
+
+#endif
+
+
 
 GPUImageLocalBinaryPatternFilter::GPUImageLocalBinaryPatternFilter()
     : GPUImage3x3TextureSamplingFilter(_localBinaryPattern_fragment_shader)

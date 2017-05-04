@@ -8,6 +8,60 @@
 #include "GPUImageCrosshatchFilter.h"
 
 
+
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _crosshatch_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform highp float crossHatchSpacing;\n"
+"uniform highp float lineWidth;\n"
+"\n"
+"const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp float luminance = dot(texture2D(inputImageTexture, textureCoordinate).rgb, W);\n"
+"\n"
+"    lowp vec4 colorToDisplay = vec4(1.0, 1.0, 1.0, 1.0);\n"
+"    if (luminance < 1.00)\n"
+"    {\n"
+"        if (mod(textureCoordinate.x + textureCoordinate.y, crossHatchSpacing) <= lineWidth)\n"
+"        {\n"
+"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
+"        }\n"
+"    }\n"
+"    if (luminance < 0.75)\n"
+"    {\n"
+"        if (mod(textureCoordinate.x - textureCoordinate.y, crossHatchSpacing) <= lineWidth)\n"
+"        {\n"
+"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
+"        }\n"
+"    }\n"
+"    if (luminance < 0.50)\n"
+"    {\n"
+"        if (mod(textureCoordinate.x + textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)\n"
+"        {\n"
+"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
+"        }\n"
+"    }\n"
+"    if (luminance < 0.3)\n"
+"    {\n"
+"        if (mod(textureCoordinate.x - textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)\n"
+"        {\n"
+"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
+"        }\n"
+"    }\n"
+"\n"
+"    gl_FragColor = colorToDisplay;\n"
+"}"
+;
+
+#else
+
 // 片元着色器
 extern const char _crosshatch_fragment_shader[]=
 "precision mediump float;\n"
@@ -57,6 +111,10 @@ extern const char _crosshatch_fragment_shader[]=
 "    gl_FragColor = colorToDisplay;\n"
 "}"
 ;
+
+#endif
+
+
 
 GPUImageCrosshatchFilter::GPUImageCrosshatchFilter()
     : GPUImageFilter(_crosshatch_fragment_shader)

@@ -8,6 +8,41 @@
 #include "GPUImageStretchDistortionFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+
+// 片元着色器
+extern const char _stretchDistortion_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform highp vec2 center;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp vec2 normCoord = 2.0 * textureCoordinate - 1.0;\n"
+"    highp vec2 normCenter = 2.0 * center - 1.0;\n"
+"\n"
+"    normCoord -= normCenter;\n"
+"    mediump vec2 s = sign(normCoord);\n"
+"    normCoord = abs(normCoord);\n"
+"    normCoord = 0.5 * normCoord + 0.5 * smoothstep(0.25, 0.5, normCoord) * normCoord;\n"
+"    normCoord = s * normCoord;\n"
+"\n"
+"    normCoord += normCenter;\n"
+"\n"
+"    mediump vec2 textureCoordinateToUse = normCoord / 2.0 + 0.5;\n"
+"\n"
+"\n"
+"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
+"\n"
+"}"
+;
+
+#else
+
+
 // 片元着色器
 extern const char _stretchDistortion_fragment_shader[]=
 "precision mediump float;\n"
@@ -35,6 +70,9 @@ extern const char _stretchDistortion_fragment_shader[]=
 "    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);\n"
 "}"
 ;
+
+#endif
+
 
 
 GPUImageStretchDistortionFilter::GPUImageStretchDistortionFilter()

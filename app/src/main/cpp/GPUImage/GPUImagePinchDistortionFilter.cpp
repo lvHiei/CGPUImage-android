@@ -8,6 +8,44 @@
 #include "GPUImagePinchDistortionFilter.h"
 
 
+#ifdef __GLSL_SUPPORT_HIGHP__
+
+// 片元着色器
+extern const char _pinchDistortion_fragment_shader[]=
+"varying highp vec2 textureCoordinate;\n"
+"\n"
+"uniform sampler2D inputImageTexture;\n"
+"\n"
+"uniform highp float aspectRatio;\n"
+"uniform highp vec2 center;\n"
+"uniform highp float radius;\n"
+"uniform highp float scale;\n"
+"\n"
+"void main()\n"
+"{\n"
+"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
+"    highp float dist = distance(center, textureCoordinateToUse);\n"
+"    textureCoordinateToUse = textureCoordinate;\n"
+"\n"
+"    if (dist < radius)\n"
+"    {\n"
+"        textureCoordinateToUse -= center;\n"
+"        highp float percent = 1.0 + ((0.5 - dist) / 0.5) * scale;\n"
+"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
+"        textureCoordinateToUse += center;\n"
+"\n"
+"        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
+"    }\n"
+"    else\n"
+"    {\n"
+"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate );\n"
+"    }\n"
+"}"
+;
+
+
+#else
+
 // 片元着色器
 extern const char _pinchDistortion_fragment_shader[]=
 "precision mediump float;\n"
@@ -41,6 +79,10 @@ extern const char _pinchDistortion_fragment_shader[]=
 "    }\n"
 "}"
 ;
+
+
+#endif
+
 
 
 GPUImagePinchDistortionFilter::GPUImagePinchDistortionFilter()
