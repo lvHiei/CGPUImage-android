@@ -225,6 +225,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         String blend = "blend.rgba";
         String mask = "mask.rgba";
         String squares = "squares.rgba";
+        String voroni_points2 = "voroni_points2.rgba";
 
         copyAssetsToSD(lookup_amatoka, cgpuimagePath + lookup_amatoka);
         copyAssetsToSD(lookup_miss_etikate, cgpuimagePath + lookup_miss_etikate);
@@ -233,6 +234,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         copyAssetsToSD(blend, cgpuimagePath + blend);
         copyAssetsToSD(mask, cgpuimagePath + mask);
         copyAssetsToSD(squares, cgpuimagePath + squares);
+        copyAssetsToSD(voroni_points2, cgpuimagePath + voroni_points2);
     }
 
     private void copyAssetsToSD(String assetName, String sdFile)
