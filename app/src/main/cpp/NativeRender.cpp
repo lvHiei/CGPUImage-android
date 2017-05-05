@@ -109,6 +109,7 @@
 #include "GPUImage/GPUImageBoxBlurFilter.h"
 #include "GPUImage/GPUImageSingleComponentGaussianBlurFilter.h"
 #include "GPUImage/GPUImageVoronoiConsumerFilter.h"
+#include "GPUImage/GPUImageGlassSphereFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -276,8 +277,9 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageGaussianBlurPositionFilter();
 //    m_pFilter = new GPUImageBilateralFilter();
 //    m_pFilter = new GPUImageBoxBlurFilter();
-    m_pFilter = new GPUImageSingleComponentGaussianBlurFilter();
+//    m_pFilter = new GPUImageSingleComponentGaussianBlurFilter();
 //    m_pFilter = new GPUImageVoronoiConsumerFilter();
+    m_pFilter = new GPUImageGlassSphereFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

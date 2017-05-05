@@ -14,6 +14,7 @@
 class GPUImageSphereRefractionFilter : public GPUImageFilter{
 public:
     GPUImageSphereRefractionFilter();
+    GPUImageSphereRefractionFilter(const char* fragment);
     virtual ~GPUImageSphereRefractionFilter();
 
     void setCenter(float x, float y);

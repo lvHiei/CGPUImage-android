@@ -94,6 +94,27 @@ GPUImageSphereRefractionFilter::GPUImageSphereRefractionFilter()
     m_iRefractiveIndexUniformLocation = -1;
 }
 
+
+GPUImageSphereRefractionFilter::GPUImageSphereRefractionFilter(const char *fragment)
+    : GPUImageFilter(fragment)
+{
+
+    updateAspectRatio();
+
+    m_fRadius = 0.25f;
+//    m_fRadius = 0.15f;
+    m_fRefractiveIndex = 0.71f;
+
+    m_pCenter[0] = 0.5f;
+    m_pCenter[1] = 0.5f;
+
+    m_iRadiusUniformLocation = -1;
+    m_iCenterUniformLocation = -1;
+    m_iAspectRatioUniformLocation = -1;
+    m_iRefractiveIndexUniformLocation = -1;
+}
+
+
 GPUImageSphereRefractionFilter::~GPUImageSphereRefractionFilter()
 {
 
