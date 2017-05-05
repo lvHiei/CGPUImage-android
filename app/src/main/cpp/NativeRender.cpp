@@ -111,6 +111,7 @@
 #include "GPUImage/GPUImageVoronoiConsumerFilter.h"
 #include "GPUImage/GPUImageGlassSphereFilter.h"
 #include "GPUImage/GPUImageJFAVoronoiFilter.h"
+#include "GPUImage/GPUImageToneCurveFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -281,7 +282,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageSingleComponentGaussianBlurFilter();
 //    m_pFilter = new GPUImageVoronoiConsumerFilter();
 //    m_pFilter = new GPUImageGlassSphereFilter();
-    m_pFilter = new GPUImageJFAVoronoiFilter();
+//    m_pFilter = new GPUImageJFAVoronoiFilter();
+    m_pFilter = new GPUImageToneCurveFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
