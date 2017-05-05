@@ -24,3 +24,5 @@ don't know the function of this property.
 6.GPUImageGaussianBlurFilter bypasses is not used
 
 7.GPUImageVoronoiConsumerFilter the same with GPUImageMosaicFilter
+
+8.GPUImageJFAVoronoiFilter the fiter I don't known how to implements, the code is incorrect.
