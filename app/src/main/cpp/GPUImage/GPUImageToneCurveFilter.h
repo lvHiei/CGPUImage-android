@@ -32,14 +32,15 @@ public:
 
     virtual bool release();
 
-protected:
-    void initDefalutCurve();
-
+public:
     void setRGBControPoints(CurvePointArray points);
     void setRgbCompositeControlPoints(CurvePointArray points);
     void setRedControlPoints(CurvePointArray points);
     void setGreenControlPoints(CurvePointArray points);
     void setBlueControlPoints(CurvePointArray points);
+
+protected:
+    void initDefalutCurve();
 
     CurveArray getPreparedSplineCurve(CurvePointArray points);
 
