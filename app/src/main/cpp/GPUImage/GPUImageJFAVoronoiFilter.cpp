@@ -399,9 +399,7 @@ bool GPUImageJFAVoronoiFilter::draw(GLuint textureId, int viewWidth, int viewHei
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
-
-    return GPUImageFilter::draw(lastTextureID, viewWidth, viewHeight);
+    return GPUImageFilter::draw(lastTextureID, viewWidth, viewHeight, frameBufferId);
 }
 
 

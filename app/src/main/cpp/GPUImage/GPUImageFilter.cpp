@@ -236,6 +236,7 @@ bool GPUImageFilter::createFragmentShader(char *fragment, int &length)
 
 bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId)
 {
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
     glUseProgram(m_uProgram);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -253,6 +254,8 @@ bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight, GLuin
     glFlush();
 
     this->onDraw();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     return !checkGLError("draw");
 }

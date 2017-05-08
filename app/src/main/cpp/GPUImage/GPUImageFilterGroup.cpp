@@ -94,14 +94,10 @@ bool GPUImageFilterGroup::draw(GLuint textureId, int viewWidth, int viewHeight, 
     for(int i = 0; i < m_uFilterCnt; ++i){
         GPUImageFilter* filter = m_vFilters[i];
         if(i != m_uFilterCnt - 1){
-            glBindFramebuffer(GL_FRAMEBUFFER, m_pFrameBuffers[i]);
             ret = ret && filter->draw(lastTextureId, m_iTextureWidth, m_iTextureHeight, m_pFrameBuffers[i]);
-
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
             lastTextureId = m_pFrameBufferTextures[i];
         }else{
-            glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
-            ret = ret && filter->draw(lastTextureId, viewWidth, viewHeight);
+            ret = ret && filter->draw(lastTextureId, viewWidth, viewHeight, frameBufferId);
         }
     }
 

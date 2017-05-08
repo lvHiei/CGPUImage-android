@@ -169,6 +169,7 @@ bool GPUImageCropFilter::draw(GLuint textureId, int viewWidth, int viewHeight, G
     viewWidth = viewWidth * maxX;
     viewHeight = viewHeight * maxY;
 
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
 
     glUseProgram(m_uProgram);
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -183,6 +184,8 @@ bool GPUImageCropFilter::draw(GLuint textureId, int viewWidth, int viewHeight, G
     glFlush();
 
     this->onDraw();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     return !checkGLError("draw");
 }

@@ -186,6 +186,8 @@ bool GPUImageTwoPassFilter::draw(GLuint textureId, int viewWidth, int viewHeight
 
     this->secondOnDraw();
 
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     return !checkGLError("draw");
 }
 

@@ -286,8 +286,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageGlassSphereFilter();
 //    m_pFilter = new GPUImageJFAVoronoiFilter();
 //    m_pFilter = new GPUImageToneCurveFilter();
-//    m_pFilter = new GPUImageCropFilter();
-    m_pFilter = new GPUImageAdaptiveThresholdFilter();
+    m_pFilter = new GPUImageCropFilter();
+//    m_pFilter = new GPUImageAdaptiveThresholdFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
@@ -297,8 +297,6 @@ bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
     }
 
     LOGI("NativeRender::draw...");
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, viewWidth, viewHeight);
     return m_pFilter->draw(textureId, viewWidth, viewHeight);
 }
 
