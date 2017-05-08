@@ -17,6 +17,7 @@ class FileUtil {
 public:
     static uint32_t getFileSize(const char* filename);
     static bool loadFile(const char* filename, uint8_t* data, int length);
+    static bool loadABSFile(const char* absfilename, uint8_t* data, int length);
 
 private:
     static const char* getFileAbsPath(const char* filename);

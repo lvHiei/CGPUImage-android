@@ -38,7 +38,17 @@ bool FileUtil::loadFile(const char *filename, uint8_t *data, int length)
     }
 
     const char* absFile = getFileAbsPath(filename);
-    FILE* pFile = fopen(absFile, "rb");
+    return loadABSFile(absFile, data, length);
+}
+
+
+bool FileUtil::loadABSFile(const char *absfilename, uint8_t *data, int length)
+{
+    if(!absfilename || !data){
+        return false;
+    }
+
+    FILE* pFile = fopen(absfilename, "rb");
     if(!pFile){
         return false;
     }
@@ -48,6 +58,7 @@ bool FileUtil::loadFile(const char *filename, uint8_t *data, int length)
     fclose(pFile);
     return true;
 }
+
 
 const char* FileUtil::getFileAbsPath(const char *filename)
 {

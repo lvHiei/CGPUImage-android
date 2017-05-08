@@ -21,13 +21,64 @@ typedef struct Point{
     float y;
 }GLPoint;
 
+
 typedef std::vector<GLPoint> CurvePointArray;
 typedef std::vector<float > CurveArray;
 typedef std::list<GLPoint> CurvePointList;
 
+
+//  GPUImageACVFile
+//
+//  ACV File format Parser
+//  Please refer to http://www.adobe.com/devnet-apps/photoshop/fileformatashtml/PhotoshopFileFormats.htm#50577411_pgfId-1056330
+//
+class GPUImageACVFile{
+public:
+    GPUImageACVFile();
+    virtual ~GPUImageACVFile();
+
+    void initWithACVFileData(uint8_t* data, uint32_t length);
+
+    void clear();
+protected:
+    uint16_t int16WithBytes(uint8_t* bytes);
+    CurvePointArray getCurvePointArrya(int idx);
+    bool isHostBigendian();
+    uint16_t little_byte2short(uint8_t* bytes);
+    uint16_t big_byte2short(uint8_t* bytes);
+
+public:
+    const CurvePointArray &getRedControlPoints() const {
+        return m_vRedControlPoints;
+    }
+
+    const CurvePointArray &getGreenControlPoints() const {
+        return m_vGreenControlPoints;
+    }
+
+    const CurvePointArray &getBlueControlPoints() const {
+        return m_vBlueControlPoints;
+    }
+
+    const CurvePointArray &getRGBCompositeControlPoints() const {
+        return m_vRGBCompositeControlPoints;
+    }
+
+private:
+    CurvePointArray m_vRedControlPoints;
+    CurvePointArray m_vGreenControlPoints;
+    CurvePointArray m_vBlueControlPoints;
+    CurvePointArray m_vRGBCompositeControlPoints;
+
+    uint16_t m_iVersion;
+    uint16_t m_iTotalCurves;
+};
+
 class GPUImageToneCurveFilter : public GPUImageFilter{
 public:
     GPUImageToneCurveFilter();
+    GPUImageToneCurveFilter(const char* acvfilenmae);
+    GPUImageToneCurveFilter(uint8_t* data, uint32_t length);
     virtual ~GPUImageToneCurveFilter();
 
     virtual bool release();
@@ -39,8 +90,13 @@ public:
     void setGreenControlPoints(CurvePointArray points);
     void setBlueControlPoints(CurvePointArray points);
 
+    void setPointsWithACVFileName(const char* filename);
+    void setPointsWithACVData(uint8_t* data, uint32_t length);
+
 protected:
+    void initValue();
     void initDefalutCurve();
+    void initACVCurve(uint8_t* data, uint32_t length);
 
     CurveArray getPreparedSplineCurve(CurvePointArray points);
 
@@ -69,6 +125,9 @@ protected:
     CurveArray m_v_rgbCompositeCurve;
 
     bool m_bToneTextureUpdated;
+
+protected:
+    GPUImageACVFile* m_pACVFile;
 };
 
 

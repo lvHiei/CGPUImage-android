@@ -8,6 +8,7 @@
 #include <math.h>
 
 #include "GPUImageToneCurveFilter.h"
+#include "../util/FileUtil.h"
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
@@ -50,10 +51,166 @@ extern const char _toneCurve_fragment_shader[]=
 #endif
 
 
+GPUImageACVFile::GPUImageACVFile()
+{
+
+}
+
+GPUImageACVFile::~GPUImageACVFile()
+{
+    clear();
+}
+
+void GPUImageACVFile::initWithACVFileData(uint8_t *data, uint32_t length)
+{
+    if(0 == length){
+        return;
+    }
+
+    uint8_t * rawBytes = data;
+
+    m_iVersion = int16WithBytes(rawBytes);
+    rawBytes += 2;
+
+    m_iTotalCurves = int16WithBytes(rawBytes);
+    rawBytes += 2;
+
+    float pointRate = (1.0 / 255);
+    // The following is the data for each curve specified by count above
+    for (int x = 0; x < m_iTotalCurves; x++)
+    {
+        unsigned short pointCount = int16WithBytes(rawBytes);
+        rawBytes+=2;
+
+        CurvePointArray array = getCurvePointArrya(x);
+        // point count * 4
+        // Curve points. Each curve point is a pair of short integers where
+        // the first number is the output value (vertical coordinate on the
+        // Curves dialog graph) and the second is the input value. All coordinates have range 0 to 255.
+        for (int y = 0; y<pointCount; y++)
+        {
+            unsigned short yy = int16WithBytes(rawBytes);
+            rawBytes += 2;
+            unsigned short xx = int16WithBytes(rawBytes);
+            rawBytes += 2;
+            array.push_back(Point(xx * pointRate, yy * pointRate));
+        }
+    }
+}
+
+
+CurvePointArray GPUImageACVFile::getCurvePointArrya(int idx)
+{
+    switch (idx){
+        case 0:
+            return m_vRGBCompositeControlPoints;
+        case 1:
+            return m_vRedControlPoints;
+        case 2:
+            return m_vGreenControlPoints;
+        case 3:
+            return m_vBlueControlPoints;
+        default:
+            return std::vector<GLPoint>();
+    }
+
+    return std::vector<GLPoint>();
+}
+
+
+void GPUImageACVFile::clear()
+{
+    m_vRGBCompositeControlPoints.clear();
+    m_vRedControlPoints.clear();
+    m_vBlueControlPoints.clear();
+    m_vGreenControlPoints.clear();
+}
+
+
+uint16_t GPUImageACVFile::int16WithBytes(uint8_t *bytes)
+{
+    if(isHostBigendian()){
+        return big_byte2short(bytes);
+    }else{
+        return little_byte2short(bytes);
+    }
+
+    return 0;
+}
+
+
+bool GPUImageACVFile::isHostBigendian()
+{
+    short i = 0x1;
+    bool bRet = ((i >> 8) == 0x1);
+    return bRet;
+}
+
+uint16_t GPUImageACVFile::little_byte2short(uint8_t *bytes)
+{
+    uint16_t ret = 0;
+    uint16_t high = bytes[1];
+    uint8_t low = bytes[0];
+    ret = low;
+    ret |= (high << 8) & 0xFF00;
+    return ret;
+}
+
+uint16_t GPUImageACVFile::big_byte2short(uint8_t *bytes)
+{
+    uint16_t ret = 0;
+    uint16_t high = bytes[0];
+    uint8_t low = bytes[1];
+    ret = low;
+    ret |= (high << 8) & 0xFF00;
+    return ret;
+}
+
 
 GPUImageToneCurveFilter::GPUImageToneCurveFilter()
     : GPUImageFilter(_toneCurve_fragment_shader)
 {
+    initValue();
+    initDefalutCurve();
+}
+
+
+GPUImageToneCurveFilter::GPUImageToneCurveFilter(const char *acvfilenmae)
+    : GPUImageFilter(_toneCurve_fragment_shader)
+{
+    initValue();
+
+    uint32_t fileSize = FileUtil::getFileSize(acvfilenmae);
+    uint8_t *data = (uint8_t *) malloc(fileSize * sizeof(uint8_t));
+    if(!data){
+        return ;
+    }
+
+    FileUtil::loadABSFile(acvfilenmae, data, fileSize);
+
+    initACVCurve(data, fileSize);
+
+    free(data);
+}
+
+GPUImageToneCurveFilter::GPUImageToneCurveFilter(uint8_t *data, uint32_t length)
+    : GPUImageFilter(_toneCurve_fragment_shader)
+{
+    initValue();
+    initACVCurve(data, length);
+}
+
+
+GPUImageToneCurveFilter::~GPUImageToneCurveFilter()
+{
+    this->release();
+}
+
+
+void GPUImageToneCurveFilter::initValue()
+{
+    m_pACVFile = NULL;
+
     m_iToneCurveTextureUnifomLocation = -1;
 
     m_uToneCurveTextureId = 0;
@@ -62,13 +219,6 @@ GPUImageToneCurveFilter::GPUImageToneCurveFilter()
     if(!m_pToneCurveByteArray){
         return ;
     }
-
-    initDefalutCurve();
-}
-
-GPUImageToneCurveFilter::~GPUImageToneCurveFilter()
-{
-    this->release();
 }
 
 
@@ -89,6 +239,21 @@ void GPUImageToneCurveFilter::initDefalutCurve()
     setBlueControlPoints(defaultCurve);
 }
 
+void GPUImageToneCurveFilter::initACVCurve(uint8_t* data, uint32_t length)
+{
+    if(!m_pACVFile){
+        m_pACVFile = new GPUImageACVFile();
+    }
+
+    m_pACVFile->clear();
+    m_pACVFile->initWithACVFileData(data, length);
+
+    setRgbCompositeControlPoints(m_pACVFile->getRGBCompositeControlPoints());
+    setRedControlPoints(m_pACVFile->getRedControlPoints());
+    setGreenControlPoints(m_pACVFile->getGreenControlPoints());
+    setBlueControlPoints(m_pACVFile->getBlueControlPoints());
+}
+
 
 bool GPUImageToneCurveFilter::release()
 {
@@ -100,6 +265,11 @@ bool GPUImageToneCurveFilter::release()
     if(m_pToneCurveByteArray){
         free(m_pToneCurveByteArray);
         m_pToneCurveByteArray = NULL;
+    }
+
+    if(m_pACVFile){
+        delete m_pACVFile;
+        m_pACVFile = NULL;
     }
 
     return true;
@@ -160,6 +330,27 @@ bool GPUImageToneCurveFilter::beforeDrawExtra()
     }
 
     return GPUImageFilter::beforeDrawExtra();
+}
+
+
+void GPUImageToneCurveFilter::setPointsWithACVFileName(const char *acvfilenmae)
+{
+    uint32_t fileSize = FileUtil::getFileSize(acvfilenmae);
+    uint8_t *data = (uint8_t *) malloc(fileSize * sizeof(uint8_t));
+    if(!data){
+        return ;
+    }
+
+    FileUtil::loadABSFile(acvfilenmae, data, fileSize);
+
+    setPointsWithACVData(data, fileSize);
+
+    free(data);
+}
+
+void GPUImageToneCurveFilter::setPointsWithACVData(uint8_t *data, uint32_t length)
+{
+    initACVCurve(data, length);
 }
 
 

@@ -25,4 +25,8 @@ don't know the function of this property.
 
 7.GPUImageVoronoiConsumerFilter the same with GPUImageMosaicFilter
 
-8.GPUImageJFAVoronoiFilter the fiter I don't known how to implements, the code is incorrect.
+8.GPUImageJFAVoronoiFilter the fiter I don't known how to implements,
+the code is incorrect.
+
+9.GPUImageACVFile not support url, only support data array and local file.
+It is not tested.
