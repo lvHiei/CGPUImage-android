@@ -23,6 +23,8 @@ public:
 
     bool setFrontCamera(bool front);
 
+    bool setPercent(int percent);
+
 private:
     void intenalCreateFilter(int filterType);
 

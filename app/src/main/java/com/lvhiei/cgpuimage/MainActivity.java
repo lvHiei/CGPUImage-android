@@ -5,12 +5,11 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.SeekBar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,6 +46,27 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     };
 
+    private SeekBar mSeekBar;
+
+    private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if(null != mRender){
+                mRender.setFilterPercent(progress);
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+
     private int mTextureId = OpenGLUtils.NO_TEXTURE;
 
     private int mCameraId = 1;
@@ -64,6 +84,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         Button btn = (Button) findViewById(R.id.cgpuimage_switchCamera);
         btn.setOnClickListener(this);
+
+        mSeekBar = (SeekBar) findViewById(R.id.cgpuimage_seekBar);
+        mSeekBar.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
         copyAssets();
 

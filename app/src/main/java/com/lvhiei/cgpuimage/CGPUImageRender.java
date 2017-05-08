@@ -79,6 +79,11 @@ public class CGPUImageRender implements GLSurfaceView.Renderer {
         mFrameHeight = height;
     }
 
+    public void setFilterPercent(int percent){
+        nativeSetFilterPercent(percent);
+    }
+
     private native boolean nativeCreateFilter(int filtertype);
     private native boolean nativeDraw(int textureId, int viewWidth, int viewHeight);
+    private native boolean nativeSetFilterPercent(int percent);
 }

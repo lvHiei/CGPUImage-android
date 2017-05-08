@@ -54,3 +54,16 @@ Java_com_lvhiei_cgpuimage_MainActivity_nativeSetFrontCamera(
 
     g_pRender->setFrontCamera(isfront);
 }
+
+
+extern "C"
+void
+Java_com_lvhiei_cgpuimage_CGPUImageRender_nativeSetFilterPercent(
+        JNIEnv *env, jobject, jint percent) {
+
+    if(NULL == g_pRender){
+        return ;
+    }
+
+    g_pRender->setPercent(percent);
+}

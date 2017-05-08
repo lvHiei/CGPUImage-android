@@ -316,3 +316,19 @@ bool NativeRender::setFrontCamera(bool front)
 
     return true;
 }
+
+
+bool NativeRender::setPercent(int percent)
+{
+    if(!m_pFilter){
+        return false;
+    }
+
+    GPUImageCropFilter* filter = dynamic_cast<GPUImageCropFilter*>(m_pFilter);
+    if(NULL != filter){
+        filter->setCropRegion(GLRect(0.0, 0.0, 1.0, 1.0*percent/100));
+    }
+
+    return true;
+}
+
