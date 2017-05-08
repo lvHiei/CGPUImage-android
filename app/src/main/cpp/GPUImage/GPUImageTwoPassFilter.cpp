@@ -154,7 +154,7 @@ bool GPUImageTwoPassFilter::createProgram()
     return !checkGLError("createProgram");
 }
 
-bool GPUImageTwoPassFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
+bool GPUImageTwoPassFilter::draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId)
 {
     // 绘制第一个到framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, m_uFrameBufferId);
@@ -172,7 +172,7 @@ bool GPUImageTwoPassFilter::draw(GLuint textureId, int viewWidth, int viewHeight
     this->firstOnDraw();
 
     // 绘制第二个
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
     glUseProgram(m_uSecondProgram);
 
     this->secondBeforeDraw();

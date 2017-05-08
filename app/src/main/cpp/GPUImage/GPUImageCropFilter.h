@@ -40,7 +40,7 @@ public:
 
     virtual void setTextureRotation(Rotation rotation);
 
-    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight);
+    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId);
 
 protected:
     void calculateCropTextureCoordinates();

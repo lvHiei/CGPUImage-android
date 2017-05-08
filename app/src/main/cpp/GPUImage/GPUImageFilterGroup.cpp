@@ -60,6 +60,8 @@ bool GPUImageFilterGroup::createProgram()
 
 void GPUImageFilterGroup::setVertexCoordinate(float *vertexCoordinate)
 {
+    GPUImageFilter::setVertexCoordinate(vertexCoordinate);
+
     for(int i = 0; i < m_uFilterCnt; ++i){
         GPUImageFilter* filter = m_vFilters[i];
         filter->setVertexCoordinate(vertexCoordinate);
@@ -68,6 +70,8 @@ void GPUImageFilterGroup::setVertexCoordinate(float *vertexCoordinate)
 
 void GPUImageFilterGroup::setTextureCoordinate(float *textureCoordinate)
 {
+    GPUImageFilter::setTextureCoordinate(textureCoordinate);
+
     for(int i = 0; i < m_uFilterCnt; ++i){
         GPUImageFilter* filter = m_vFilters[i];
         if(i != m_uFilterCnt - 1){
@@ -82,7 +86,7 @@ void GPUImageFilterGroup::setTextureCoordinate(float *textureCoordinate)
     }
 }
 
-bool GPUImageFilterGroup::draw(GLuint textureId, int viewWidth, int viewHeight)
+bool GPUImageFilterGroup::draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId)
 {
     bool ret = true;
 
@@ -91,12 +95,12 @@ bool GPUImageFilterGroup::draw(GLuint textureId, int viewWidth, int viewHeight)
         GPUImageFilter* filter = m_vFilters[i];
         if(i != m_uFilterCnt - 1){
             glBindFramebuffer(GL_FRAMEBUFFER, m_pFrameBuffers[i]);
-            ret = ret && filter->draw(lastTextureId, m_iTextureWidth, m_iTextureHeight);
+            ret = ret && filter->draw(lastTextureId, m_iTextureWidth, m_iTextureHeight, m_pFrameBuffers[i]);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             lastTextureId = m_pFrameBufferTextures[i];
         }else{
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
             ret = ret && filter->draw(lastTextureId, viewWidth, viewHeight);
         }
     }
@@ -121,6 +125,8 @@ bool GPUImageFilterGroup::release()
 
 void GPUImageFilterGroup::setTextureRotation(Rotation rotation)
 {
+    GPUImageFilter::setTextureRotation(rotation);
+
     for(int i = 0; i < m_uFilterCnt - 1; ++i){
         GPUImageFilter* filter = m_vFilters[i];
         filter->setTextureRotation(ROTATION_NORMAL);

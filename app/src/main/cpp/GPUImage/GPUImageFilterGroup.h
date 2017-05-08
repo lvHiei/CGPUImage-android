@@ -24,7 +24,7 @@ public:
     virtual bool createProgram();
     virtual void setVertexCoordinate(float *vertexCoordinate);
     virtual void setTextureCoordinate(float *textureCoordinate);
-    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight);
+    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId = 0);
     virtual bool release();
     virtual void setTextureRotation(Rotation rotation);
     virtual void setTextureSize(int width, int height);

@@ -19,7 +19,9 @@ public:
 
     virtual bool release();
 
-    void setTexture2Id(GLuint texture2Id);
+    virtual void setTexture2Id(GLuint texture2Id);
+    virtual void setTexture2Coordinate(float *textureCoordinate);
+    virtual void setTexture2Rotation(Rotation rotation);
 
 protected:
     virtual bool createProgramExtra();
@@ -31,6 +33,9 @@ protected:
     GLint m_iTexture2IdLocation;
     GLint m_iTexture2IdCoordinateLocation;
 
+    GLfloat* m_pTexture2Coordinate;
+
+    Rotation m_eTexture2Rotation;
 };
 
 

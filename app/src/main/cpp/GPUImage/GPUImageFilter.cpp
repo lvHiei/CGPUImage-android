@@ -57,8 +57,7 @@ extern const char _base_fragment_shader[]=
 
 
 
-const int VERTEX_COORDINATE_SIZE = 8;
-const int TEXTURE_COORDINATE_SIZE = 8;
+
 
 GPUImageFilter::GPUImageFilter()
 {
@@ -177,7 +176,7 @@ bool GPUImageFilter::createProgram()
 
     m_uPositionLocation = glGetAttribLocation(m_uProgram, "position");
     m_uTextureCoordLocation = glGetAttribLocation(m_uProgram, "inputTextureCoordinate");
-
+    m_iInputTextureUniformLocation = glGetUniformLocation(m_uProgram, "inputImageTexture");
     this->createProgramExtra();
 
     return !checkGLError("createProgram");
@@ -235,7 +234,7 @@ bool GPUImageFilter::createFragmentShader(char *fragment, int &length)
     return true;
 }
 
-bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
+bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId)
 {
     glUseProgram(m_uProgram);
 
@@ -247,6 +246,8 @@ bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
     glActiveTexture(GL_TEXTURE0);
     glViewport(0 ,0 , viewWidth, viewHeight);
     glBindTexture(GL_TEXTURE_2D, textureId);
+    glUniform1i(m_iInputTextureUniformLocation, 0);
+
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glFlush();

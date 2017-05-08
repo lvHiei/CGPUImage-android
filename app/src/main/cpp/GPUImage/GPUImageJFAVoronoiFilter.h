@@ -22,7 +22,7 @@ public:
     void setNumPasses(int numpasses);
 
 public:
-    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight);
+    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId = 0);
 
     virtual bool release();
 

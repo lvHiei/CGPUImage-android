@@ -158,7 +158,7 @@ float GPUImageCropFilter::getMaxY() {
 }
 
 
-bool GPUImageCropFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
+bool GPUImageCropFilter::draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId)
 {
     float maxX = getMaxX();
     float maxY = getMaxY();

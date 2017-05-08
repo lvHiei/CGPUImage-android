@@ -32,7 +32,7 @@ public:
 
     virtual void setTextureCoordinate(float* textureCoordinate);
 
-    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight);
+    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId = 0);
     virtual bool release();
 
     virtual bool createTexture(int textureWidth, int textureHeight);
@@ -81,6 +81,8 @@ protected:
     int m_iTextureHeight;
 
     Rotation m_eRotation;
+
+    GLint m_iInputTextureUniformLocation;
 };
 
 

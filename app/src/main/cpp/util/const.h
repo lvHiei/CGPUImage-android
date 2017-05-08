@@ -12,6 +12,9 @@
 
 const int ABS_FLIE_LEN_MAX = 1024;
 
+const int VERTEX_COORDINATE_SIZE = 8;
+const int TEXTURE_COORDINATE_SIZE = 8;
+
 
 enum Rotation{
     ROTATION_NORMAL = 0,

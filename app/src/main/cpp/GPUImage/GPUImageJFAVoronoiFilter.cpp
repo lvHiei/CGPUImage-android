@@ -363,7 +363,7 @@ void GPUImageJFAVoronoiFilter::setNumPasses(int numpasses)
     m_iNumPasses = numpasses;
 }
 
-bool GPUImageJFAVoronoiFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
+bool GPUImageJFAVoronoiFilter::draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId)
 {
     glUseProgram(m_uProgram);
     glBindFramebuffer(GL_FRAMEBUFFER, m_uFrameBufferId);
@@ -399,7 +399,7 @@ bool GPUImageJFAVoronoiFilter::draw(GLuint textureId, int viewWidth, int viewHei
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
 
     return GPUImageFilter::draw(lastTextureID, viewWidth, viewHeight);
 }
