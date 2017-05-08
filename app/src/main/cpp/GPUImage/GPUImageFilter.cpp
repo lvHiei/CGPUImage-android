@@ -238,6 +238,10 @@ bool GPUImageFilter::createFragmentShader(char *fragment, int &length)
 bool GPUImageFilter::draw(GLuint textureId, int viewWidth, int viewHeight)
 {
     glUseProgram(m_uProgram);
+
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     this->beforeDraw();
 
     glActiveTexture(GL_TEXTURE0);
