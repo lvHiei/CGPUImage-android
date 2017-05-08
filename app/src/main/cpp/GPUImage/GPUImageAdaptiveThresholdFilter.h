@@ -5,7 +5,9 @@
 #ifndef CGPUIMAGE_ANDROID_GPUIMAGEADAPTIVETHRESHOLDFILTER_H
 #define CGPUIMAGE_ANDROID_GPUIMAGEADAPTIVETHRESHOLDFILTER_H
 
-
+#include "GPUImageGreyscaleFilter.h"
+#include "GPUImageBoxBlurFilter.h"
+#include "GPUImageTwoInputFilter.h"
 #include "GPUImageFilterGroup.h"
 
 class GPUImageAdaptiveThresholdFilter : public GPUImageFilterGroup{
@@ -24,9 +26,9 @@ protected:
     GLfloat m_fBlurRadiusInPixels;
 
 protected:
-    GPUImageFilter* m_pGreyScaleFilter;
-    GPUImageFilter* m_pBoxBlurFilter;
-    GPUImageFilter* m_pAdaptiveThresholdFilter;
+    GPUImageGreyscaleFilter* m_pGreyScaleFilter;
+    GPUImageBoxBlurFilter* m_pBoxBlurFilter;
+    GPUImageTwoInputFilter* m_pAdaptiveThresholdFilter;
 };
 
 

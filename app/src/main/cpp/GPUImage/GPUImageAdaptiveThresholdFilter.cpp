@@ -3,9 +3,7 @@
  */
 
 #include "GPUImageAdaptiveThresholdFilter.h"
-#include "GPUImageGreyscaleFilter.h"
-#include "GPUImageBoxBlurFilter.h"
-#include "GPUImageTwoInputFilter.h"
+
 #include "../util/TextureRotateUtil.h"
 
 
@@ -77,14 +75,13 @@ bool GPUImageAdaptiveThresholdFilter::createProgram()
 {
     bool ret =  GPUImageFilterGroup::createProgram();
 
-    GPUImageTwoInputFilter* filter = dynamic_cast<GPUImageTwoInputFilter*>(m_pAdaptiveThresholdFilter);
-    if(NULL != filter){
-        filter->setTexture2Id(m_pFrameBufferTextures[0]);
-        filter->setTexture2Rotation(m_eRotation);
+    if(NULL != m_pAdaptiveThresholdFilter){
+        m_pAdaptiveThresholdFilter->setTexture2Id(m_pFrameBufferTextures[0]);
+        m_pAdaptiveThresholdFilter->setTexture2Rotation(m_eRotation);
         if(m_uFilterCnt % 2 != 0){
-            filter->setTexture2Coordinate(TextureRotateUtil::getTextureCoordinate(m_eRotation, false, true));
+            m_pAdaptiveThresholdFilter->setTexture2Coordinate(TextureRotateUtil::getTextureCoordinate(m_eRotation, false, true));
         }else{
-            filter->setTexture2Coordinate(m_pTextureCoordinate);
+            m_pAdaptiveThresholdFilter->setTexture2Coordinate(m_pTextureCoordinate);
         }
     }
 
