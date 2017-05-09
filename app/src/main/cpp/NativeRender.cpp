@@ -121,6 +121,7 @@
 #include "GPUImage/GPUImageRGBOpeningFilter.h"
 #include "GPUImage/GPUImageColourFASTFeatureDetector.h"
 #include "GPUImage/GPUImageGaussianSelectiveBlurFilter.h"
+#include "GPUImage/GPUImageHalftoneFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -301,7 +302,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageRGBClosingFilter();
 //    m_pFilter = new GPUImageRGBOpeningFilter();
 //    m_pFilter = new GPUImageColourFASTFeatureDetector();
-    m_pFilter = new GPUImageGaussianSelectiveBlurFilter();
+//    m_pFilter = new GPUImageGaussianSelectiveBlurFilter();
+    m_pFilter = new GPUImageHalftoneFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
