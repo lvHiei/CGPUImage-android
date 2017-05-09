@@ -115,6 +115,7 @@
 #include "GPUImage/GPUImageCropFilter.h"
 #include "GPUImage/GPUImageAdaptiveThresholdFilter.h"
 #include "GPUImage/GPUImageCannyEdgeDetectionFilter.h"
+#include "GPUImage/GPUImageClosingFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -289,7 +290,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageToneCurveFilter();
 //    m_pFilter = new GPUImageCropFilter();
 //    m_pFilter = new GPUImageAdaptiveThresholdFilter();
-    m_pFilter = new GPUImageCannyEdgeDetectionFilter();
+//    m_pFilter = new GPUImageCannyEdgeDetectionFilter();
+    m_pFilter = new GPUImageClosingFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)

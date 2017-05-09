@@ -108,6 +108,8 @@ bool GPUImageAdaptiveThresholdFilter::release()
         delete m_pAdaptiveThresholdFilter;
         m_pAdaptiveThresholdFilter = NULL;
     }
+
+    return true;
 }
 
 

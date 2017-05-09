@@ -104,5 +104,7 @@ bool GPUImageCannyEdgeDetectionFilter::release()
         delete m_pWeakPixelInclusionFilter;
         m_pWeakPixelInclusionFilter = NULL;
     }
+
+    return true;
 }
 
