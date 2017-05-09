@@ -155,7 +155,7 @@ void GPUImageSingleComponentGaussianBlurFilter::genFragmentShaderForOptimizedBlu
     "\n"
     "void main()\n"
     "{\n"
-    "    lowp vec4 sum = 0.0;\n"
+    "    lowp float sum = 0.0;\n"
     ;
 #else
     const char* part1 =

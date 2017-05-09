@@ -52,7 +52,10 @@ extern const char _adaptiveThreshold_fragment_shader[]=
 
 
 GPUImageAdaptiveThresholdFilter::GPUImageAdaptiveThresholdFilter()
-    : GPUImageFilterGroup()
+    : GPUImageFilterGroup(),
+      m_pGreyScaleFilter(NULL),
+      m_pBoxBlurFilter(NULL),
+      m_pAdaptiveThresholdFilter(NULL)
 {
     m_pGreyScaleFilter = new GPUImageGreyscaleFilter();
 
@@ -104,6 +107,14 @@ bool GPUImageAdaptiveThresholdFilter::release()
     if(m_pAdaptiveThresholdFilter){
         delete m_pAdaptiveThresholdFilter;
         m_pAdaptiveThresholdFilter = NULL;
+    }
+}
+
+
+void GPUImageAdaptiveThresholdFilter::setBlurRadiusInPixels(float blurRadiusInPixels)
+{
+    if(m_pBoxBlurFilter){
+        m_pBoxBlurFilter->setBlurRadiusInPixels(blurRadiusInPixels);
     }
 }
 

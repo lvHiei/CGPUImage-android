@@ -19,6 +19,7 @@ public:
 
 public:
     void setTexelSpacingMultiplier(float mutiplier);
+    void setBlurRadiusInPixels(float blurRadiusInPixels);
     void setBlurRadiusAsFractionOfImageWidth(float blurRadiusAsFractionOfImageWidth);
     void setBlurRadiusAsFractionOfImageHeight(float blurRadiusAsFractionOfImageHeight);
 

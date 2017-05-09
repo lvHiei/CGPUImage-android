@@ -66,6 +66,13 @@ void GPUImageGaussianBlurFilter::setTexelSpacingMultiplier(float mutiplier)
     updateBlurRadiusInPixels();
 }
 
+
+void GPUImageGaussianBlurFilter::setBlurRadiusInPixels(float blurRadiusInPixels)
+{
+    // todo not implement
+}
+
+
 void GPUImageGaussianBlurFilter::setBlurRadiusAsFractionOfImageWidth(
         float blurRadiusAsFractionOfImageWidth)
 {

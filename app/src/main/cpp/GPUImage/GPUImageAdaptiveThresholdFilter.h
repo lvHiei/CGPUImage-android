@@ -18,6 +18,7 @@ public:
     virtual bool createProgram();
     virtual bool release();
 
+    void setBlurRadiusInPixels(float blurRadiusInPixels);
 
 protected:
     /** A multiplier for the background averaging blur radius in pixels,
