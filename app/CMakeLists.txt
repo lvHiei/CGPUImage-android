@@ -157,6 +157,8 @@ add_library( # Sets the name of the library.
              src/main/cpp/GPUImage/GPUImageSoftEleganceFilter.cpp
              src/main/cpp/GPUImage/GPUImagePureTiltShiftFilter.cpp
              src/main/cpp/GPUImage/GPUImageTiltShiftFilter.cpp
+             src/main/cpp/GPUImage/GPUImagePureUnsharpMaskFilter.cpp
+             src/main/cpp/GPUImage/GPUImageUnsharpMaskFilter.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a

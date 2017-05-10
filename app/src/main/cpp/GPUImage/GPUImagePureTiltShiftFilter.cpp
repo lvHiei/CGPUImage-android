@@ -72,6 +72,10 @@ GPUImagePureTiltShiftFilter::GPUImagePureTiltShiftFilter()
     m_fTopFocusLevel = 0.4f;
     m_fBottomFocusLevel = 0.6f;
     m_fFocusFallOffRate = 0.2f;
+
+    m_iTopFocusLevelUniformLocation = -1;
+    m_iBottomFocusLevelUniformLocation = -1;
+    m_iFocusFallOffRateUniformLocation = -1;
 }
 
 GPUImagePureTiltShiftFilter::~GPUImagePureTiltShiftFilter()
