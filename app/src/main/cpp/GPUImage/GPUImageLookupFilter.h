@@ -37,10 +37,16 @@
 class GPUImageLookupFilter : public GPUImageImageFilter{
 public:
     GPUImageLookupFilter();
+    GPUImageLookupFilter(const char* filename);
     virtual ~GPUImageLookupFilter();
 
     void setIntensity(int percent);
     void setIntensity(float intensity);
+
+protected:
+    virtual bool loadImage();
+    virtual bool release();
+
 
 protected:
     virtual bool createProgramExtra();
@@ -52,6 +58,7 @@ protected:
     // Opacity/intensity of lookup filter ranges from 0.0 to 1.0, with 1.0 as the normal setting
     GLint m_iIntensityLocation;
 
+    char* m_pFilename;
 };
 
 

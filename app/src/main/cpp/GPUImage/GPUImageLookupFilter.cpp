@@ -6,6 +6,7 @@
  */
 
 #include "GPUImageLookupFilter.h"
+#include "../util/FileUtil.h"
 
 
 #ifdef __GLSL_SUPPORT_HIGHP__
@@ -64,7 +65,7 @@ extern const char _lookUp_fragment_shader[]=
 "uniform sampler2D inputImageTexture2;\n"
 "varying vec2 textureCoordinate2;\n"
 
-"uniform float lookupIntensity;\n"
+"uniform float intensity;\n"
 
 "void main()\n"
 "{\n"
@@ -108,6 +109,18 @@ GPUImageLookupFilter::GPUImageLookupFilter() :
     GPUImageImageFilter(_lookUp_fragment_shader)
 {
     m_fIntensity = 1.0f;
+
+    m_pFilename = NULL;
+}
+
+
+GPUImageLookupFilter::GPUImageLookupFilter(const char *filename)
+    : GPUImageImageFilter(_lookUp_fragment_shader)
+{
+    m_fIntensity = 1.0f;
+
+    m_pFilename = (char *) malloc(strlen(filename) + 1);
+    strcpy(m_pFilename, filename);
 }
 
 
@@ -120,7 +133,7 @@ bool GPUImageLookupFilter::createProgramExtra()
 {
     GPUImageImageFilter::createProgramExtra();
 
-    m_iIntensityLocation = glGetUniformLocation(m_uProgram, "lookupIntensity");
+    m_iIntensityLocation = glGetUniformLocation(m_uProgram, "intensity");
 
     return true;
 }
@@ -151,5 +164,40 @@ void GPUImageLookupFilter::setIntensity(int percent)
 void GPUImageLookupFilter::setIntensity(float intensity)
 {
     m_fIntensity = intensity;
+}
+
+
+bool GPUImageLookupFilter::loadImage()
+{
+    if(!m_pFilename){
+        return GPUImageImageFilter::loadImage();
+    }
+
+    const char* filename = m_pFilename;
+
+    m_uPicWidth = 512;
+    m_uPicHeight = 512;
+    uint32_t fileLen = FileUtil::getFileSize(filename);
+    if(fileLen > 0){
+        m_pPicDataRGBA = (uint8_t *) malloc(fileLen * sizeof(uint8_t));
+        if(!m_pPicDataRGBA){
+            return false;
+        }
+
+        FileUtil::loadFile(filename, m_pPicDataRGBA, fileLen);
+    }
+
+    return true;
+}
+
+
+bool GPUImageLookupFilter::release()
+{
+    if(m_pFilename){
+        free(m_pFilename);
+        m_pFilename = NULL;
+    }
+
+    return GPUImageImageFilter::release();
 }
 
