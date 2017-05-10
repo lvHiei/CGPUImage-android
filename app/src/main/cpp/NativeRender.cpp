@@ -125,6 +125,7 @@
 #include "GPUImage/GPUImageiOSBlurFilter.h"
 #include "GPUImage/GPUImageSmoothToonFilter.h"
 #include "GPUImage/GPUImageSoftEleganceFilter.h"
+#include "GPUImage/GPUImageTiltShiftFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -309,7 +310,8 @@ void NativeRender::intenalCreateFilter(int filterType)
 //    m_pFilter = new GPUImageHalftoneFilter();
 //    m_pFilter = new GPUImageiOSBlurFilter();
 //    m_pFilter = new GPUImageSmoothToonFilter();
-    m_pFilter = new GPUImageSoftEleganceFilter();
+//    m_pFilter = new GPUImageSoftEleganceFilter();
+    m_pFilter = new GPUImageTiltShiftFilter();
 }
 
 bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
@@ -349,6 +351,17 @@ bool NativeRender::setPercent(int percent)
     GPUImageCropFilter* filter = dynamic_cast<GPUImageCropFilter*>(m_pFilter);
     if(NULL != filter){
         filter->setCropRegion(GLRect(0.0, 0.0, 1.0, 1.0*percent/100));
+    }
+
+    float max = 0.8;
+    float min = 0.2;
+
+    float current = 0.2 + (0.8-0.2)*percent/100;
+
+    GPUImageTiltShiftFilter* filter1 = dynamic_cast<GPUImageTiltShiftFilter*>(m_pFilter);
+    if(NULL != filter1){
+        filter1->setTopFocusLevel(current + 0.1);
+        filter1->setBottomFocusLevel(current - 0.1);
     }
 
     return true;

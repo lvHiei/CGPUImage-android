@@ -31,3 +31,5 @@ the code is incorrect.
 
 9.GPUImageACVFile not support url, only support data array and local file.
 It is not tested.
+
+10.GPUImageTiltShiftFilter the effect is incorrect.
