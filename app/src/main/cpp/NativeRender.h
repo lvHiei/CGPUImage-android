@@ -33,6 +33,11 @@ private:
     GPUImageFilter* m_pFilter;
 
     bool m_bFrontCamera;
+
+    float m_fMaxValue;
+    float m_fMinValue;
+
+    int m_iFilterType;
 };
 
 

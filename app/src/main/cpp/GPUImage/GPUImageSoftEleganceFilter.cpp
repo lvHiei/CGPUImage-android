@@ -88,3 +88,14 @@ bool GPUImageSoftEleganceFilter::createProgram()
 }
 
 
+void GPUImageSoftEleganceFilter::setLookUpIntensity(float intensity)
+{
+    if(m_pFirstLookUpFilter){
+        m_pFirstLookUpFilter->setIntensity(intensity);
+    }
+
+    if(m_pSecondLookUpFilter){
+        m_pSecondLookUpFilter->setIntensity(intensity);
+    }
+}
+

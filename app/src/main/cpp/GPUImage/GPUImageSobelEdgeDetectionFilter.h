@@ -19,6 +19,7 @@ public:
 
     void setTexelWidth(float texelWidth);
     void setTexelHeight(float texelHeight);
+    void setEdgeStrength(float edgeStrength);
 
 protected:
     virtual bool secondCreateProgramExtra();

@@ -22,6 +22,7 @@ public:
 
     virtual bool release();
 
+    void setIntensity(float intensity);
 
 protected:
     GPUImageGaussianBlurFilter* m_pBlurFilter;

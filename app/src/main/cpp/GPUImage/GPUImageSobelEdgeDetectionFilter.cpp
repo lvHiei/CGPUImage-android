@@ -170,6 +170,13 @@ void GPUImageSobelEdgeDetectionFilter::setTexelHeight(float texelHeight)
     m_fTexelHeight = texelHeight;
 }
 
+
+void GPUImageSobelEdgeDetectionFilter::setEdgeStrength(float edgeStrength)
+{
+    m_fEdgeStrength = edgeStrength;
+}
+
+
 void GPUImageSobelEdgeDetectionFilter::updateTexelWidthHeight()
 {
     if(0 == m_iTextureWidth){

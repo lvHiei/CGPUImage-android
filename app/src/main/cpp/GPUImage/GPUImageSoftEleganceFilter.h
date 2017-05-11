@@ -32,6 +32,8 @@ public:
 
     virtual bool createProgram();
 
+    void setLookUpIntensity(float intensity);
+
 protected:
     GPUImageLookupFilter* m_pFirstLookUpFilter;
     GPUImageGaussianBlurFilter* m_pGaussianBlurFilter;

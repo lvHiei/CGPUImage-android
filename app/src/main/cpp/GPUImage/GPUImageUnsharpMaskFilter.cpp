@@ -62,3 +62,11 @@ bool GPUImageUnsharpMaskFilter::release()
     return GPUImageFilterGroup::release();
 }
 
+
+void GPUImageUnsharpMaskFilter::setIntensity(float intensity)
+{
+    if(m_pUnsharpFilter){
+        m_pUnsharpFilter->setIntensity(intensity);
+    }
+}
+
