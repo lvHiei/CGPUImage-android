@@ -90,7 +90,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         copyAssets();
 
+        Bundle bundle = getIntent().getExtras();
+        int filterId = bundle.getInt("filterid");
         mRender = new CGPUImageRender();
+        mRender.setFilterId(filterId);
 
         mSurfaceView = (GLSurfaceView) findViewById(R.id.cgpuimage_surface_id);
         mSurfaceView.setEGLContextClientVersion(2);
@@ -112,6 +115,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onPause();
 
         closeCamera();
+        stopRender();
     }
 
     private boolean openCamera(int id){
@@ -149,6 +153,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
             mCamera.stopPreview();
             mCamera.release();
             mCamera = null;
+        }
+    }
+
+    private void stopRender(){
+        if(null != mRender){
+            mRender.stopRender();
         }
     }
 

@@ -67,3 +67,16 @@ Java_com_lvhiei_cgpuimage_CGPUImageRender_nativeSetFilterPercent(
 
     g_pRender->setPercent(percent);
 }
+
+
+extern "C"
+void
+Java_com_lvhiei_cgpuimage_CGPUImageRender_nativeStopRender(
+        JNIEnv *env, jobject) {
+
+    if(NULL == g_pRender){
+        return ;
+    }
+
+    g_pRender->stop();
+}

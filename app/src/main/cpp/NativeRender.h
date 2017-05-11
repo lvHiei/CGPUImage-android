@@ -25,6 +25,7 @@ public:
 
     bool setPercent(int percent);
 
+    void stop();
 private:
     void intenalCreateFilter(int filterType);
 
