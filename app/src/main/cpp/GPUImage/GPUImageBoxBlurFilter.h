@@ -16,12 +16,13 @@
 class GPUImageBoxBlurFilter : public GPUImageGaussianBlurFilter{
 public:
     GPUImageBoxBlurFilter();
+    GPUImageBoxBlurFilter(float blurRadiusInPixels);
     virtual ~GPUImageBoxBlurFilter();
 
 protected:
     virtual void genVertexShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
     virtual void genFragmentShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
-
+    virtual void recreateFilter();
 };
 
 

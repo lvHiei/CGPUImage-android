@@ -38,6 +38,10 @@ private:
     float m_fMinValue;
 
     int m_iFilterType;
+
+private:
+    bool m_bWantStopRender;
+    bool m_bWantChangeFilter;
 };
 
 

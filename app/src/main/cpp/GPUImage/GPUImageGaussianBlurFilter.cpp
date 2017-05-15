@@ -5,7 +5,6 @@
  * My Email is majun_1523@163.com.
  */
 
-#include <math.h>
 
 #include "GPUImageGaussianBlurFilter.h"
 
@@ -69,8 +68,14 @@ void GPUImageGaussianBlurFilter::setTexelSpacingMultiplier(float mutiplier)
 
 void GPUImageGaussianBlurFilter::setBlurRadiusInPixels(float blurRadiusInPixels)
 {
-    // todo not implement
+    if(m_fBlurRadiusInPexels == blurRadiusInPixels){
+        return;
+    }
+
+    m_fBlurRadiusInPexels = blurRadiusInPixels;
+    m_bWantChangeBlurRadius = true;
 }
+
 
 
 void GPUImageGaussianBlurFilter::setBlurRadiusAsFractionOfImageWidth(
@@ -520,5 +525,44 @@ void GPUImageGaussianBlurFilter::resetSecondFragmentShader(const char *shader)
     strcpy(m_pSecondFragShader, shader);
 }
 
+
+bool GPUImageGaussianBlurFilter::draw(GLuint textureId, int viewWidth, int viewHeight,
+                                      GLuint frameBufferId)
+{
+    if(m_bWantChangeBlurRadius){
+        m_bWantChangeBlurRadius = false;
+        changeBlurRadius();
+    }
+
+    return GPUImageTwoPassFilter::draw(textureId, viewWidth, viewHeight, frameBufferId);
+}
+
+
+void GPUImageGaussianBlurFilter::changeBlurRadius()
+{
+    // todo not implement
+    int t_w = m_iTextureWidth;
+    int t_h = m_iTextureHeight;
+    Rotation rotation = m_eRotation;
+    float vertex_coord[8];
+    float textureCoord[8];
+    memcpy(vertex_coord, m_pVertexCoordinate, VERTEX_COORDINATE_SIZE* sizeof(float));
+    memcpy(textureCoord, m_pTextureCoordinate, TEXTURE_COORDINATE_SIZE* sizeof(float));
+
+    this->recreateFilter();
+    this->setTextureSize(t_w, t_h);
+    this->setTextureRotation(rotation);
+    this->setVertexCoordinate(vertex_coord);
+    memcpy(m_pTextureCoordinate, textureCoord, TEXTURE_COORDINATE_SIZE* sizeof(float));
+
+    this->createProgram();
+}
+
+
+void GPUImageGaussianBlurFilter::recreateFilter()
+{
+    this->~GPUImageGaussianBlurFilter();
+    new(this)GPUImageGaussianBlurFilter(m_fBlurRadiusInPexels);
+}
 
 

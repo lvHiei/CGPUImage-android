@@ -8,7 +8,6 @@
 #include "GPUImageTwoPassFilter.h"
 #include "../util/TextureRotateUtil.h"
 
-
 GPUImageTwoPassFilter::GPUImageTwoPassFilter(const char *firstVertex, const char *fisrtFragment,
                                              const char *secondVertex, const char *secondFragment)
 {
@@ -217,13 +216,13 @@ bool GPUImageTwoPassFilter::release()
         m_pSecondFragShader = NULL;
     }
 
-    if(0 != m_uFrameBufferId && glIsFramebuffer(m_uFrameBufferId))
+    if(0 != m_uFrameBufferId)
     {
         glDeleteFramebuffers(1, &m_uFrameBufferId);
         m_uFrameBufferId = 0;
     }
 
-    if(0 != m_uFrameTextureId && glIsTexture(m_uFrameTextureId))
+    if(0 != m_uFrameTextureId)
     {
         glDeleteTextures(1, &m_uFrameTextureId);
         m_uFrameTextureId = 0;
@@ -239,17 +238,22 @@ bool GPUImageTwoPassFilter::release()
         m_uFragmentShader = 0;
     }
 
-    if(m_uSecondFragmentShader != 0){
-        glDeleteShader(m_uSecondFragmentShader);
-        m_uSecondFragmentShader = 0;
-    }
-
     if(m_uSecondVertexShader != 0){
         glDeleteShader(m_uSecondVertexShader);
         m_uSecondVertexShader = 0;
     }
 
-    return true;
+    if(m_uSecondFragmentShader != 0){
+        glDeleteShader(m_uSecondFragmentShader);
+        m_uSecondFragmentShader = 0;
+    }
+
+    if(m_uSecondProgram != 0){
+        glDeleteProgram(m_uSecondProgram);
+        m_uSecondProgram = 0;
+    }
+
+    return checkGLError("GPUImageTwoPassFilter::release");
 }
 
 bool GPUImageTwoPassFilter::firstCreateProgramExtra()

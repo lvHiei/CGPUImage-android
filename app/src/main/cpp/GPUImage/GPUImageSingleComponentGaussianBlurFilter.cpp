@@ -15,6 +15,24 @@ GPUImageSingleComponentGaussianBlurFilter::GPUImageSingleComponentGaussianBlurFi
     initWithBlurSigma(4, 2.0);
 }
 
+GPUImageSingleComponentGaussianBlurFilter::GPUImageSingleComponentGaussianBlurFilter(
+        float blurRadiusInPixels)
+    : GPUImageGaussianBlurFilter(blurRadiusInPixels)
+{
+    m_fBlurRadiusInPexels = round(blurRadiusInPixels);
+
+    int calculatedSampleRadius = 0;
+    if(m_fBlurRadiusInPexels >= 1.0f){
+        // Calculate the number of pixels to sample from by setting a bottom limit for the contribution of the outermost pixel
+        float minimumWeightToFindEdgeOfSamplingArea = 1.0/256.0;
+        calculatedSampleRadius = floor(sqrt(-2.0 * pow(m_fBlurRadiusInPexels, 2.0) * log(minimumWeightToFindEdgeOfSamplingArea * sqrt(2.0 * M_PI * pow(m_fBlurRadiusInPexels, 2.0))) ));
+        calculatedSampleRadius += calculatedSampleRadius % 2; // There's nothing to gain from handling odd radius sizes, due to the optimizations I use
+    }
+
+    initWithBlurSigma(calculatedSampleRadius, m_fBlurRadiusInPexels);
+}
+
+
 GPUImageSingleComponentGaussianBlurFilter::~GPUImageSingleComponentGaussianBlurFilter()
 {
 
@@ -220,5 +238,12 @@ void GPUImageSingleComponentGaussianBlurFilter::genFragmentShaderForOptimizedBlu
 
     resetFirstFragmentShader(tempShader);
     resetSecondFragmentShader(tempShader);
+}
+
+
+void GPUImageSingleComponentGaussianBlurFilter::recreateFilter()
+{
+    this->~GPUImageSingleComponentGaussianBlurFilter();
+    new(this)GPUImageSingleComponentGaussianBlurFilter(m_fBlurRadiusInPexels);
 }
 

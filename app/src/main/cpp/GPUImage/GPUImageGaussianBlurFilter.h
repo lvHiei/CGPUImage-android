@@ -8,7 +8,8 @@
 #ifndef CGPUIMAGE_ANDROID_GPUIMAGEGAUSSIANBLURFILTER_H
 #define CGPUIMAGE_ANDROID_GPUIMAGEGAUSSIANBLURFILTER_H
 
-
+#include <math.h>
+#include <new>
 #include "GPUImageTwoPassTextureSamplingFilter.h"
 
 class GPUImageGaussianBlurFilter : public GPUImageTwoPassTextureSamplingFilter{
@@ -22,6 +23,9 @@ public:
     void setBlurRadiusInPixels(float blurRadiusInPixels);
     void setBlurRadiusAsFractionOfImageWidth(float blurRadiusAsFractionOfImageWidth);
     void setBlurRadiusAsFractionOfImageHeight(float blurRadiusAsFractionOfImageHeight);
+
+    virtual bool draw(GLuint textureId, int viewWidth, int viewHeight, GLuint frameBufferId = 0);
+
 
 protected:
     virtual void genVertexShaderForStandardBlurOfRadius(int blurRadius, float sigma);
@@ -37,6 +41,10 @@ protected:
     void resetFirstFragmentShader(const char* shader);
     void resetSecondVertexShader(const char* shader);
     void resetSecondFragmentShader(const char* shader);
+
+    void changeBlurRadius();
+
+    virtual void recreateFilter();
 
 public:
     virtual void setTextureSize(int width, int height);
@@ -64,6 +72,9 @@ protected:
     /// The number of times to sequentially blur the incoming image.
     //  The more passes, the slower the filter.
     GLint m_iBlurPasses;
+
+protected:
+    bool m_bWantChangeBlurRadius;
 };
 
 

@@ -208,7 +208,19 @@ extern const char _bilateral_fragment_shader[]=
 GPUImageBilateralFilter::GPUImageBilateralFilter()
     : GPUImageGaussianBlurFilter()
 {
+    initFilter();
+}
 
+
+GPUImageBilateralFilter::GPUImageBilateralFilter(float blurRadiusInPixels)
+    : GPUImageGaussianBlurFilter(blurRadiusInPixels)
+{
+    initFilter();
+}
+
+
+void GPUImageBilateralFilter::initFilter()
+{
     m_fTexelSpacingMutiplier = 4.0f;
 
     m_fDistanceNormalizationFactor = 8.0f;
@@ -218,6 +230,7 @@ GPUImageBilateralFilter::GPUImageBilateralFilter()
 
     resetShader(_bilateral_vertex_shader, _bilateral_fragment_shader, _bilateral_vertex_shader, _bilateral_fragment_shader);
 }
+
 
 GPUImageBilateralFilter::~GPUImageBilateralFilter()
 {
@@ -251,5 +264,12 @@ bool GPUImageBilateralFilter::secondBeforeDraw()
 {
     glUniform1f(m_iSecondDistanceNormalizationFactorUniformLocation, m_fDistanceNormalizationFactor);
     return GPUImageTwoPassTextureSamplingFilter::secondBeforeDraw();
+}
+
+
+void GPUImageBilateralFilter::recreateFilter()
+{
+    this->~GPUImageBilateralFilter();
+    new(this)GPUImageBilateralFilter(m_fBlurRadiusInPexels);
 }
 

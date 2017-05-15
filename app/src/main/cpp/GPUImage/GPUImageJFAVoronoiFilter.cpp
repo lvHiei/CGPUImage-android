@@ -417,13 +417,13 @@ bool GPUImageJFAVoronoiFilter::createProgramExtra()
 bool GPUImageJFAVoronoiFilter::release()
 {
 
-    if(0 != m_uFrameBufferId && glIsFramebuffer(m_uFrameBufferId))
+    if(0 != m_uFrameBufferId)
     {
         glDeleteFramebuffers(1, &m_uFrameBufferId);
         m_uFrameBufferId = 0;
     }
 
-    if(0 != m_uFrameBufferTextureId && glIsTexture(m_uFrameBufferTextureId))
+    if(0 != m_uFrameBufferTextureId)
     {
         glDeleteTextures(1, &m_uFrameBufferTextureId);
         m_uFrameBufferTextureId = 0;

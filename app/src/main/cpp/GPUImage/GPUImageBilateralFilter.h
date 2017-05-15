@@ -14,6 +14,7 @@
 class GPUImageBilateralFilter : public GPUImageGaussianBlurFilter{
 public:
     GPUImageBilateralFilter();
+    GPUImageBilateralFilter(float blurRadiusInPixels);
     virtual ~GPUImageBilateralFilter();
 
 public:
@@ -24,6 +25,11 @@ protected:
     virtual bool secondCreateProgramExtra();
     virtual bool firstBeforeDraw();
     virtual bool secondBeforeDraw();
+
+    virtual void recreateFilter();
+
+protected:
+    void initFilter();
 
 protected:
     GLfloat m_fDistanceNormalizationFactor;

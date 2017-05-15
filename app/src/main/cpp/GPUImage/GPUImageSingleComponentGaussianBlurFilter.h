@@ -15,12 +15,13 @@
 class GPUImageSingleComponentGaussianBlurFilter : public GPUImageGaussianBlurFilter{
 public:
     GPUImageSingleComponentGaussianBlurFilter();
+    GPUImageSingleComponentGaussianBlurFilter(float blurRadiusInPixels);
     virtual ~GPUImageSingleComponentGaussianBlurFilter();
 
 protected:
     virtual void genVertexShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
     virtual void genFragmentShaderForOptimizedBlurOfRadius(int blurRadius, float sigma);
-
+    virtual void recreateFilter();
 };
 
 

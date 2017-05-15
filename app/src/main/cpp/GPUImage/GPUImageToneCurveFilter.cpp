@@ -257,7 +257,7 @@ void GPUImageToneCurveFilter::initACVCurve(uint8_t* data, uint32_t length)
 
 bool GPUImageToneCurveFilter::release()
 {
-    if(0 != m_uToneCurveTextureId && glIsTexture(m_uToneCurveTextureId)){
+    if(0 != m_uToneCurveTextureId){
         glDeleteTextures(1, &m_uToneCurveTextureId);
         m_uToneCurveTextureId = 0;
     }
@@ -279,7 +279,7 @@ bool GPUImageToneCurveFilter::createProgramExtra()
 {
     m_iToneCurveTextureUnifomLocation = glGetUniformLocation(m_uProgram, "toneCurveTexture");
 
-    if(0 == m_uToneCurveTextureId || !glIsTexture(m_uToneCurveTextureId)){
+    if(0 == m_uToneCurveTextureId){
         glActiveTexture(GL_TEXTURE2);
         glGenTextures(1, &m_uToneCurveTextureId);
         glBindTexture(GL_TEXTURE_2D, m_uToneCurveTextureId);

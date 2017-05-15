@@ -306,17 +306,15 @@ bool GPUImageFilter::release()
         m_pTextureCoordinate = NULL;
     }
 
-    if(m_uTextureId != 0){
-        glDeleteTextures(1, &m_uTextureId);
-        m_uTextureId = 0;
-    }
 
     if(m_uVertexShader != 0){
+        glDetachShader(m_uProgram, m_uVertexShader);
         glDeleteShader(m_uVertexShader);
         m_uVertexShader = 0;
     }
 
     if(m_uFragmentShader != 0){
+        glDetachShader(m_uProgram, m_uFragmentShader);
         glDeleteShader(m_uFragmentShader);
         m_uFragmentShader = 0;
     }
@@ -324,6 +322,11 @@ bool GPUImageFilter::release()
     if(m_uProgram != 0){
         glDeleteProgram(m_uProgram);
         m_uProgram = 0;
+    }
+
+    if(m_uTextureId != 0){
+        glDeleteTextures(1, &m_uTextureId);
+        m_uTextureId = 0;
     }
 
     if(NULL != m_pVertexShader){

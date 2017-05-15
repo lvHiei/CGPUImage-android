@@ -157,6 +157,9 @@ NativeRender::NativeRender()
     m_pFilter = NULL;
 
     m_bFrontCamera = true;
+
+    m_bWantStopRender = false;
+    m_bWantChangeFilter = false;
 }
 
 NativeRender::~NativeRender()
@@ -174,6 +177,9 @@ bool NativeRender::createFilter(int filterType)
     if(NULL != m_pFilter){
         delete m_pFilter;
     }
+
+    m_bWantChangeFilter = false;
+    m_bWantStopRender = false;
 
     m_fMaxValue = 1.0f;
     m_fMinValue = 0.0f;
@@ -732,6 +738,22 @@ bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
     if(!m_pFilter){
         return false;
     }
+
+    if(m_bWantStopRender){
+        delete m_pFilter;
+        m_pFilter = NULL;
+        return true;
+    }
+
+    if(m_bWantChangeFilter){
+        if(m_pFilter){
+            delete m_pFilter;
+            m_pFilter = NULL;
+        }
+
+        intenalCreateFilter(m_iFilterType);
+    }
+
 
 //    LOGI("NativeRender::draw...");
     return m_pFilter->draw(textureId, viewWidth, viewHeight);
