@@ -21,8 +21,7 @@ The reason is float precision, with hightp float the effect is correct.
 5.GPUImageLanczosResamplingFilter the originImageSize is not used and
 don't know the function of this property.
 
-6.GPUImageGaussianBlurFilter bypasses is not used, the function setBlurRadiusInPixels
-is not implements
+6.GPUImageGaussianBlurFilter bypasses is not used.
 
 7.GPUImageVoronoiConsumerFilter the same with GPUImageMosaicFilter
 
