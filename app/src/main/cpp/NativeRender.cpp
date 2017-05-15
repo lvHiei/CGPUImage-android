@@ -740,12 +740,14 @@ bool NativeRender::draw(int textureId, int viewWidth, int viewHeight)
     }
 
     if(m_bWantStopRender){
+        m_bWantStopRender = false;
         delete m_pFilter;
         m_pFilter = NULL;
         return true;
     }
 
     if(m_bWantChangeFilter){
+        m_bWantChangeFilter = false;
         if(m_pFilter){
             delete m_pFilter;
             m_pFilter = NULL;
