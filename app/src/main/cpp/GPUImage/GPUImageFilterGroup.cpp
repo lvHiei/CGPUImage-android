@@ -109,11 +109,11 @@ bool GPUImageFilterGroup::draw(GLuint textureId, int viewWidth, int viewHeight, 
 
 bool GPUImageFilterGroup::release()
 {
-    for(int i = 0; i < m_uFilterCnt; ++i){
-        GPUImageFilter* filter = m_vFilters[i];
-
-        filter->release();
-    }
+//    for(int i = 0; i < m_uFilterCnt; ++i){
+//        GPUImageFilter* filter = m_vFilters[i];
+//
+//        filter->release();
+//    }
 
     clear();
     deleteFrameBuffer();

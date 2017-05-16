@@ -1,8 +1,11 @@
 package com.lvhiei.cgpuimage;
 
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+
+import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -326,22 +329,51 @@ public class CGPUImageRender implements GLSurfaceView.Renderer {
     private int mFrameWidth;
     private int mFrameHeight;
 
-    private int mTextureID;
-    private SurfaceTexture mSurfaceTexture;
-
     private int mFilterId;
 
 
+    private Camera mCamera = null;
+    private int mTextureId = OpenGLUtils.NO_TEXTURE;
+
+    private SurfaceTexture mSurfaceTexture;
+    private int mCameraId = 1;
+    private boolean mbCameraSwithed = false;
+    private GLSurfaceView mSurfaceView;
+
+    private SurfaceTexture.OnFrameAvailableListener mOnFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
+        @Override
+        public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+            if(mbCameraSwithed){
+                mbCameraSwithed = false;
+                nativeSetFrontCamera(mCameraId == 1);
+            }
+
+            if(null != mSurfaceView){
+                mSurfaceView.requestRender();
+            }
+        }
+    };
     TexturePreProcessRender mCameraRender = new TexturePreProcessRender();
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        logger.d("onSurfaceCreated");
+        logger.i("onSurfaceCreated");
+
+        while (mCamera == null){
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        setUpCamera();
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        logger.d(String.format("onSurfaceChanged w:%d,h:%d,filter:%d", width, height, mFilterId));
+        logger.i(String.format("onSurfaceChanged w:%d,h:%d,filter:%d", width, height, mFilterId));
+
 
         mViewWidth = width;
         mViewHeight = height;
@@ -354,35 +386,52 @@ public class CGPUImageRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-//        logger.d(String.format("onDrawFrame"));
+        logger.i(String.format("onDrawFrame"));
 
         int textureId = 0;
-        textureId = mCameraRender.onDrawToTexture(mTextureID);
+        textureId = mCameraRender.onDrawToTexture(mTextureId);
 
-//        logger.d("onDrawFrame tid " + textureId + ",mid " + mTextureID);
+//        logger.d("onDrawFrame tid " + textureId + ",mid " + mTextureId);
         if(null != mSurfaceTexture){
             nativeDraw(textureId, mViewWidth, mViewHeight);
             mSurfaceTexture.updateTexImage();
         }
 
 //        if(null != mSurfaceTexture){
-//            mCameraRender.onDrawFrame(mTextureID);
+//            mCameraRender.onDrawFrame(mTextureId);
 //
 //            mSurfaceTexture.updateTexImage();
 //        }
     }
 
-
-    public void stopRender(){
-        nativeStopRender();
+    public void onResume(){
+        openCamera(mCameraId);
+        mSurfaceView.onResume();
+        mSurfaceView.forceLayout();
+        mSurfaceView.requestRender();
     }
 
-    public void setSurfaceTexture(SurfaceTexture surfaceTexture){
-        mSurfaceTexture = surfaceTexture;
+
+    public void onPause(){
+        closeCamera();
+        mSurfaceView.queueEvent(new Runnable() {
+            @Override
+            public void run() {
+                nativeStopRender();
+                mCameraRender.destroyFramebuffers();
+                mCameraRender.destroy();
+                OpenGLUtils.deleteTexture(mTextureId);
+                mTextureId = OpenGLUtils.NO_TEXTURE;
+                logger.i("deleteTextured.....");
+            }
+        });
+        mSurfaceView.onPause();
+        mSurfaceTexture = null;
     }
 
-    public void setTextureId(int textureId){
-        mTextureID = textureId;
+    public void onDestroy(){
+
+        mSurfaceView = null;
     }
 
     public void setFrameSize(int width, int height){
@@ -400,8 +449,122 @@ public class CGPUImageRender implements GLSurfaceView.Renderer {
         nativeSetFilterPercent(percent);
     }
 
+    public void setSurfaceView(GLSurfaceView surfaceView){
+        mSurfaceView = surfaceView;
+    }
+
+    private boolean openCamera(int id){
+        try {
+            closeCamera();
+            mCamera = Camera.open(id);
+            if(null == mCamera){
+                logger.e("opencamera failed id " + id);
+                return false;
+            }
+
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(getCameraPreviewSize().width, getCameraPreviewSize().height);
+            int[] fpsrange = getCameraFpsRange();
+            parameters.setPreviewFpsRange(fpsrange[0], fpsrange[1]);
+            mCamera.setParameters(parameters);
+        }catch (Exception e){
+            logger.e("opencamera get some error");
+            e.printStackTrace();
+            try {
+                if(null != mCamera){
+                    mCamera.release();
+                }
+                return false;
+            }catch (Throwable throwable){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    private void closeCamera(){
+        if(mCamera != null){
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }
+    }
+
+    public void switchCamera(){
+        mCameraId = mCameraId == 0 ? 1 : 0;
+        openCamera(mCameraId);
+        setUpCamera();
+        mbCameraSwithed = true;
+    }
+
+    protected void setUpCamera(){
+
+        if(mCamera == null){
+            return;
+        }
+
+        if(OpenGLUtils.NO_TEXTURE == mTextureId){
+            mTextureId = OpenGLUtils.getExternalOESTextureID();
+        }
+
+        if(null == mSurfaceTexture){
+            mSurfaceTexture = new SurfaceTexture(mTextureId);
+            mSurfaceTexture.setOnFrameAvailableListener(mOnFrameAvailableListener);
+        }
+
+        this.setFrameSize(mCamera.getParameters().getPreviewSize().width, mCamera.getParameters().getPreviewSize().height);
+
+        try{
+            mCamera.setPreviewTexture(mSurfaceTexture);
+            mCamera.startPreview();
+        }catch (Throwable t){
+
+        }
+    }
+
+    private Camera.Size getCameraPreviewSize(){
+        if(null == mCamera){
+            throw new RuntimeException("camera is null!");
+        }
+
+        List<Camera.Size> supportedsize = mCamera.getParameters().getSupportedPreviewSizes();
+
+        for(Camera.Size size : supportedsize){
+            if(size.width == 1280 && size.height == 720){
+                return size;
+            }
+        }
+
+        for(Camera.Size size : supportedsize){
+            if(size.width == 640 && size.height == 480){
+                return size;
+            }
+        }
+
+        throw new RuntimeException("camerasize not support!");
+    }
+
+    private int[] getCameraFpsRange(){
+        if(null == mCamera){
+            throw new RuntimeException("camera is null!");
+        }
+
+        List<int []> supportFpsRange = mCamera.getParameters().getSupportedPreviewFpsRange();
+
+        for(int [] ragne : supportFpsRange){
+            if(ragne[1] >= 25){
+                return ragne;
+            }
+        }
+
+        return supportFpsRange.get(0);
+    }
+
     private native boolean nativeCreateFilter(int filtertype);
     private native boolean nativeDraw(int textureId, int viewWidth, int viewHeight);
     private native boolean nativeSetFilterPercent(int percent);
     private native boolean nativeStopRender();
+    private native void nativeSetFrontCamera(boolean isfront);
 }

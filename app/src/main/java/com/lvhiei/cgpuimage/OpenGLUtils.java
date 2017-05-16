@@ -230,6 +230,12 @@ public class OpenGLUtils {
 		return texture[0];
 	}
 
+	public static void deleteTexture(int texture){
+		int[] textures = new int[1];
+		textures[0] = texture;
+		GLES20.glDeleteTextures(1, textures, 0);
+	}
+
 	public static int genFrameBufferTextureID(int width, int height){
 		int[] texture = new int[1];
 

@@ -45,7 +45,7 @@ Java_com_lvhiei_cgpuimage_CGPUImageRender_nativeDraw(
 
 extern "C"
 void
-Java_com_lvhiei_cgpuimage_MainActivity_nativeSetFrontCamera(
+Java_com_lvhiei_cgpuimage_CGPUImageRender_nativeSetFrontCamera(
         JNIEnv *env, jobject, jboolean isfront) {
 
     if(NULL == g_pRender){
