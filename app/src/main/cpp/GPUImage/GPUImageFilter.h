@@ -49,10 +49,6 @@ public:
     bool isRotationSwapWidthAndHeight();
 
 protected:
-    virtual bool createVertexShader(char* vertex, int& length);
-    virtual bool createFragmentShader(char* fragment, int& length);
-
-protected:
     bool beforeDraw();
 
     bool onDraw();
@@ -68,8 +64,6 @@ protected:
 
 protected:
     GLuint m_uProgram;
-    GLuint m_uVertexShader;
-    GLuint m_uFragmentShader;
 
     GLuint m_uPositionLocation;
     GLuint m_uTextureCoordLocation;

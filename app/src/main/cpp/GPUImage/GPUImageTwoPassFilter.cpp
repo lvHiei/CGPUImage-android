@@ -7,15 +7,13 @@
 
 #include "GPUImageTwoPassFilter.h"
 #include "../util/TextureRotateUtil.h"
+#include "../util/Shader.h"
 
 GPUImageTwoPassFilter::GPUImageTwoPassFilter(const char *firstVertex, const char *fisrtFragment,
                                              const char *secondVertex, const char *secondFragment)
 {
 
     m_uSecondProgram = 0;
-    m_uSecondFragmentShader = 0;
-    m_uSecondVertexShader = 0;
-
 
     m_uFrameBufferId = 0;
     m_uFrameTextureId = 0;
@@ -49,49 +47,13 @@ bool GPUImageTwoPassFilter::createProgram()
 
     // create first program
     //编译顶点着色器
-    const char*vertex_shader = m_pVertexShader;
-    const char*fragment_shader = m_pFragmnetShader;
-
-    m_uVertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(m_uVertexShader, 1, &vertex_shader, NULL);
-    glCompileShader(m_uVertexShader);
-    GLint compile_status = -20;
-    glGetShaderiv( m_uVertexShader, GL_COMPILE_STATUS,  &compile_status);
-    if(GL_TRUE != compile_status )
-    {
-        GLsizei length = 0;
-        GLchar infoLog[1024];
-        glGetShaderInfoLog(m_uVertexShader,
-                           1024,
-                           &length,
-                           infoLog);
-        LOGE("GPUImageTwoPassFilter : compile vertexShader failed : error msg = %s", infoLog);
-
+    Shader shader;
+    if(!shader.createProgram(m_pVertexShader, m_pFragmnetShader)){
+        LOGE("create program failed, errmsg:%s,func:%s", shader.getErrMsg(), __FUNCTION__);
         return false;
     }
 
-    // 编译片元着色器
-    m_uFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(m_uFragmentShader,1,&fragment_shader,NULL);
-    glCompileShader(m_uFragmentShader);
-    glGetShaderiv( m_uFragmentShader, GL_COMPILE_STATUS,  &compile_status);
-    if(GL_TRUE != compile_status )
-    {
-        GLsizei length = 0;
-        GLchar infoLog[1024];
-        glGetShaderInfoLog(m_uFragmentShader,
-                           1024,
-                           &length,
-                           infoLog);
-        LOGE("GPUImageTwoPassFilter : compile fragmentShader failed : error msg = %s", infoLog);
-        return false;
-    }
-
-    // 创建应用程序，链接着色器
-    m_uProgram = glCreateProgram();
-    glAttachShader(m_uProgram, m_uVertexShader);
-    glAttachShader(m_uProgram, m_uFragmentShader);
-    glLinkProgram(m_uProgram);
+    m_uProgram = shader.getProgram();
 
     m_uPositionLocation = glGetAttribLocation(m_uProgram, "position");
     m_uTextureCoordLocation = glGetAttribLocation(m_uProgram, "inputTextureCoordinate");
@@ -101,49 +63,12 @@ bool GPUImageTwoPassFilter::createProgram()
 
     // create second program
     //编译顶点着色器
-    vertex_shader = m_pSecondVertexShader;
-    fragment_shader = m_pSecondFragShader;
-
-    m_uSecondVertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(m_uSecondVertexShader, 1, &vertex_shader, NULL);
-    glCompileShader(m_uSecondVertexShader);
-    compile_status = -20;
-    glGetShaderiv( m_uSecondVertexShader, GL_COMPILE_STATUS,  &compile_status);
-    if(GL_TRUE != compile_status )
-    {
-        GLsizei length = 0;
-        GLchar infoLog[1024];
-        glGetShaderInfoLog(m_uSecondVertexShader,
-                           1024,
-                           &length,
-                           infoLog);
-        LOGE("GPUImageTwoPassFilter : compile vertexShader failed : error msg = %s", infoLog);
-
+    if(!shader.createProgram(m_pSecondVertexShader, m_pSecondFragShader)){
+        LOGE("create second program failed, errmsg:%s,func:%s", shader.getErrMsg(), __FUNCTION__);
         return false;
     }
 
-    // 编译片元着色器
-    m_uSecondFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(m_uSecondFragmentShader,1,&fragment_shader,NULL);
-    glCompileShader(m_uSecondFragmentShader);
-    glGetShaderiv( m_uSecondFragmentShader, GL_COMPILE_STATUS,  &compile_status);
-    if(GL_TRUE != compile_status )
-    {
-        GLsizei length = 0;
-        GLchar infoLog[1024];
-        glGetShaderInfoLog(m_uSecondFragmentShader,
-                           1024,
-                           &length,
-                           infoLog);
-        LOGE("GPUImageTwoPassFilter : compile fragmentShader failed : error msg = %s", infoLog);
-        return false;
-    }
-
-    // 创建应用程序，链接着色器
-    m_uSecondProgram = glCreateProgram();
-    glAttachShader(m_uSecondProgram, m_uSecondVertexShader);
-    glAttachShader(m_uSecondProgram, m_uSecondFragmentShader);
-    glLinkProgram(m_uSecondProgram);
+    m_uSecondProgram = shader.getProgram();
 
     m_iSecondPositionAttrLocation = glGetAttribLocation(m_uSecondProgram, "position");
     m_iSecondTextureCoordAttrLocation = glGetAttribLocation(m_uSecondProgram, "inputTextureCoordinate");
@@ -226,26 +151,6 @@ bool GPUImageTwoPassFilter::release()
     {
         glDeleteTextures(1, &m_uFrameTextureId);
         m_uFrameTextureId = 0;
-    }
-
-    if(m_uVertexShader != 0){
-        glDeleteShader(m_uVertexShader);
-        m_uVertexShader = 0;
-    }
-
-    if(m_uFragmentShader != 0){
-        glDeleteShader(m_uFragmentShader);
-        m_uFragmentShader = 0;
-    }
-
-    if(m_uSecondVertexShader != 0){
-        glDeleteShader(m_uSecondVertexShader);
-        m_uSecondVertexShader = 0;
-    }
-
-    if(m_uSecondFragmentShader != 0){
-        glDeleteShader(m_uSecondFragmentShader);
-        m_uSecondFragmentShader = 0;
     }
 
     if(m_uSecondProgram != 0){

@@ -48,8 +48,6 @@ protected:
 
 protected:
     GLuint m_uSecondProgram;
-    GLuint m_uSecondVertexShader;
-    GLuint m_uSecondFragmentShader;
 
     char* m_pSecondVertexShader;
     char* m_pSecondFragShader;

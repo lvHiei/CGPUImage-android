@@ -25,6 +25,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/NativeRender.cpp
              src/main/cpp/util/TextureRotateUtil.cpp
              src/main/cpp/util/FileUtil.cpp
+             src/main/cpp/util/Shader.cpp
              src/main/cpp/GPUImage/GPUImageFilter.cpp
              src/main/cpp/GPUImage/GPUImageGreyscaleFilter.cpp
              src/main/cpp/GPUImage/GPUImageContrastFilter.cpp
