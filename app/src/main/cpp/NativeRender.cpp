@@ -127,6 +127,7 @@
 #include "GPUImage/GPUImageSoftEleganceFilter.h"
 #include "GPUImage/GPUImageTiltShiftFilter.h"
 #include "GPUImage/GPUImageUnsharpMaskFilter.h"
+#include "GPUImage/GPUImageTransformFilter.h"
 
 
 //顶点坐标（前四个点）与纹理坐标（后四个点）
@@ -687,6 +688,11 @@ void NativeRender::intenalCreateFilter(int filterType)
             break;
         case FILTER_TOON:
             m_pFilter = new GPUImageToonFilter();
+            break;
+        case FILTER_TRANSFORM:
+            m_pFilter = new GPUImageTransformFilter();
+            m_fMaxValue = 1.0f;
+            m_fMinValue = 0.0f;
             break;
 
         case FILTER_UNSHARP_MASK:
@@ -1414,6 +1420,14 @@ bool NativeRender::setPercent(int percent)
         }
             break;
         case FILTER_TOON:
+            break;
+        case FILTER_TRANSFORM:
+        {
+            GPUImageTransformFilter* filter = dynamic_cast<GPUImageTransformFilter*>(m_pFilter);
+            if(filter){
+                filter->setScale(curValue);
+            }
+        }
             break;
 
         case FILTER_UNSHARP_MASK:

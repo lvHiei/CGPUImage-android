@@ -197,6 +197,7 @@ public class ListFilterActivity extends Activity {
         data.add("tilt shift");
         data.add("tone curve");
         data.add("toon");
+        data.add("transform");
 
         data.add("unsharp mask");
 

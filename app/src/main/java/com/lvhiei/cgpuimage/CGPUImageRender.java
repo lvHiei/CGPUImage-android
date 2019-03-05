@@ -150,6 +150,7 @@ public class CGPUImageRender implements GLSurfaceView.Renderer {
         public static int FILTER_TILT_SHIFT = 0;
         public static int FILTER_TONE_CURVE = 0;
         public static int FILTER_TOON = 0;
+        public static int FILTER_TRANSFORM = 0;
 
         public static int FILTER_UNSHARP_MASK = 0;
 
@@ -299,6 +300,7 @@ public class CGPUImageRender implements GLSurfaceView.Renderer {
             FILTER_TILT_SHIFT = i++;
             FILTER_TONE_CURVE = i++;
             FILTER_TOON = i++;
+            FILTER_TRANSFORM = i++;
 
             FILTER_UNSHARP_MASK = i++;
 

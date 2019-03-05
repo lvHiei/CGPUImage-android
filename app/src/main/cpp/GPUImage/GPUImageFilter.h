@@ -19,6 +19,8 @@
 #include "../util/const.h"
 
 
+#define SHADER_STR(STR)         #STR
+
 class GPUImageFilter {
 public:
     GPUImageFilter();
