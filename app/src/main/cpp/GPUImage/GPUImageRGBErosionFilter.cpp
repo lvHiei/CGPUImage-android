@@ -17,7 +17,7 @@ extern const char _dilationRadiusFour_vertex_shader[];
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusOne_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusOne_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -40,7 +40,7 @@ extern const char _rgbErosionRadiusOne_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusTwo_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusTwo_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -69,7 +69,7 @@ extern const char _rgbErosionRadiusTwo_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusThree_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusThree_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -104,7 +104,7 @@ extern const char _rgbErosionRadiusThree_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusFour_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusFour_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -148,7 +148,7 @@ extern const char _rgbErosionRadiusFour_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusOne_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusOne_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;
@@ -170,7 +170,7 @@ extern const char _rgbErosionRadiusOne_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusTwo_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusTwo_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;
@@ -198,7 +198,7 @@ extern const char _rgbErosionRadiusTwo_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusThree_fragment_shader[]=
+extern const char _rgbErosionRadiusThree_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;
@@ -232,7 +232,7 @@ extern const char _rgbErosionRadiusThree_fragment_shader[]=
 
 
 // 片元着色器
-extern const char _rgbErosionRadiusFour_fragment_shader[]=SHADER_STR(
+extern const char _rgbErosionRadiusFour_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;

@@ -9,7 +9,7 @@
 
 
 // 顶点着色器
-extern const char _twoInputNearbyTexelSamplling_vertex_shader[]=SHADER_STR(
+extern const char _twoInputNearbyTexelSamplling_vertex_shader[] = SHADER_STR(
 // precision mediump float;
     attribute vec4 position;
     attribute vec4 inputTextureCoordinate;

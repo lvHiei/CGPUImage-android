@@ -12,7 +12,7 @@
 
 
 // 片元着色器
-extern const char _luminanceThreshold_fragment_shader[]=SHADER_STR(
+extern const char _luminanceThreshold_fragment_shader[] = SHADER_STR(
     varying highp vec2 textureCoordinate;
 
     uniform sampler2D inputImageTexture;
@@ -35,7 +35,7 @@ extern const char _luminanceThreshold_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _luminanceThreshold_fragment_shader[]=SHADER_STR(
+extern const char _luminanceThreshold_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 textureCoordinate;
 

@@ -9,7 +9,7 @@
 
 
 // 顶点着色器
-extern const char _lanczosResapling_vertex_shader[]=SHADER_STR(
+extern const char _lanczosResapling_vertex_shader[] = SHADER_STR(
 // precision mediump float;
     attribute vec4 position;
     attribute vec2 inputTextureCoordinate;
@@ -52,7 +52,7 @@ extern const char _lanczosResapling_vertex_shader[]=SHADER_STR(
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _lanczosResapling_fragment_shader[]=SHADER_STR(
+extern const char _lanczosResapling_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     uniform sampler2D inputImageTexture;
@@ -93,7 +93,7 @@ extern const char _lanczosResapling_fragment_shader[]=SHADER_STR(
 #else
 
 // 片元着色器
-extern const char _lanczosResapling_fragment_shader[]=SHADER_STR(
+extern const char _lanczosResapling_fragment_shader[] = SHADER_STR(
  precision mediump float;
  uniform sampler2D inputImageTexture;
 

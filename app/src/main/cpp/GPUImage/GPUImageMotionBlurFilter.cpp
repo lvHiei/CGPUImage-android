@@ -10,7 +10,7 @@
 
 
 // 顶点着色器
-extern const char _motionBlur_vertex_shader[]=SHADER_STR(
+extern const char _motionBlur_vertex_shader[] = SHADER_STR(
 // precision mediump float;
     attribute vec4 position;
     attribute vec4 inputTextureCoordinate;
@@ -46,7 +46,7 @@ extern const char _motionBlur_vertex_shader[]=SHADER_STR(
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-const char _motionBlur_fragment_shader[]=SHADER_STR(
+const char _motionBlur_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     uniform sampler2D inputImageTexture;
@@ -91,7 +91,7 @@ const char _motionBlur_fragment_shader[]=SHADER_STR(
 #else
 
 // 片元着色器
-const char _motionBlur_fragment_shader[]=SHADER_STR(
+const char _motionBlur_fragment_shader[] = SHADER_STR(
  precision mediump float;
  uniform sampler2D inputImageTexture;
 

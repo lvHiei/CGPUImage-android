@@ -17,7 +17,7 @@ extern const char _dilationRadiusFour_vertex_shader[];
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _rgbDilationRadiusOne_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusOne_fragment_shader[] = SHADER_STR(
 precision highp float;
 
 varying vec2 centerTextureCoordinate;
@@ -40,7 +40,7 @@ void main()
 
 
 // 片元着色器
-extern const char _rgbDilationRadiusTwo_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusTwo_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -69,7 +69,7 @@ extern const char _rgbDilationRadiusTwo_fragment_shader[]=SHADER_STR(
 );
 
 // 片元着色器
-extern const char _rgbDilationRadiusThree_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusThree_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -104,7 +104,7 @@ extern const char _rgbDilationRadiusThree_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbDilationRadiusFour_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusFour_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 centerTextureCoordinate;
@@ -147,7 +147,7 @@ extern const char _rgbDilationRadiusFour_fragment_shader[]=SHADER_STR(
 #else
 
 // 片元着色器
-extern const char _rgbDilationRadiusOne_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusOne_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;
@@ -169,7 +169,7 @@ extern const char _rgbDilationRadiusOne_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbDilationRadiusTwo_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusTwo_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;
@@ -197,7 +197,7 @@ extern const char _rgbDilationRadiusTwo_fragment_shader[]=SHADER_STR(
 );
 
 // 片元着色器
-extern const char _rgbDilationRadiusThree_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusThree_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 centerTextureCoordinate;
  varying vec2 oneStepPositiveTextureCoordinate;
@@ -231,7 +231,7 @@ extern const char _rgbDilationRadiusThree_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _rgbDilationRadiusFour_fragment_shader[]=SHADER_STR(
+extern const char _rgbDilationRadiusFour_fragment_shader[] = SHADER_STR(
  precision mediump float;
   varying vec2 centerTextureCoordinate;
   varying vec2 oneStepPositiveTextureCoordinate;

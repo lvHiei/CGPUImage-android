@@ -12,7 +12,7 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _greyScale_fragment_shader[]=SHADER_STR(
+extern const char _greyScale_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying vec2 textureCoordinate;
@@ -33,7 +33,7 @@ extern const char _greyScale_fragment_shader[]=SHADER_STR(
 #else
 
 // 片元着色器
-extern const char _greyScale_fragment_shader[]=SHADER_STR(
+extern const char _greyScale_fragment_shader[] = SHADER_STR(
     precision mediump float;
     uniform sampler2D inputImageTexture;
     varying vec2 textureCoordinate;

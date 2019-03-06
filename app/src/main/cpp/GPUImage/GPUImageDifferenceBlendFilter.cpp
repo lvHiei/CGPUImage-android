@@ -12,7 +12,7 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _differenceBlend_fragment_shader[]=SHADER_STR(
+extern const char _differenceBlend_fragment_shader[] = SHADER_STR(
     varying highp vec2 textureCoordinate;
     varying highp vec2 textureCoordinate2;
 
@@ -31,7 +31,7 @@ extern const char _differenceBlend_fragment_shader[]=SHADER_STR(
 #else
 
 // 片元着色器
-extern const char _differenceBlend_fragment_shader[]=SHADER_STR(
+extern const char _differenceBlend_fragment_shader[] = SHADER_STR(
     precision mediump float;
     varying vec2 textureCoordinate;
     varying vec2 textureCoordinate2;

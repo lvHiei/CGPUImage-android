@@ -13,7 +13,7 @@
 
 
 // 片元着色器
-extern const char _hueBlend_fragment_shader[]=SHADER_STR(
+extern const char _hueBlend_fragment_shader[] = SHADER_STR(
     varying highp vec2 textureCoordinate;
     varying highp vec2 textureCoordinate2;
 
@@ -112,7 +112,7 @@ extern const char _hueBlend_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _hueBlend_fragment_shader[]=SHADER_STR(
+extern const char _hueBlend_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 textureCoordinate;
  varying vec2 textureCoordinate2;

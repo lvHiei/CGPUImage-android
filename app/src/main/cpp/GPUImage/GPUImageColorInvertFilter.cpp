@@ -10,7 +10,7 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _colorInvert_fragment_shader[]=SHADER_STR(
+extern const char _colorInvert_fragment_shader[] = SHADER_STR(
     varying highp vec2 textureCoordinate;
 
     uniform sampler2D inputImageTexture;

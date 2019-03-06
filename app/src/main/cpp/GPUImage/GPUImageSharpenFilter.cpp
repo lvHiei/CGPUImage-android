@@ -9,7 +9,7 @@
 
 
 // 顶点着色器
-extern const char _sharpen_vertex_shader[]=SHADER_STR(
+extern const char _sharpen_vertex_shader[] = SHADER_STR(
 // precision mediump float;
     attribute vec4 position;
     attribute vec4 inputTextureCoordinate;
@@ -49,7 +49,7 @@ extern const char _sharpen_vertex_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _sharpen_fragment_shader[]=SHADER_STR(
+extern const char _sharpen_fragment_shader[] = SHADER_STR(
     precision highp float;
 
     varying highp vec2 textureCoordinate;
@@ -79,7 +79,7 @@ extern const char _sharpen_fragment_shader[]=SHADER_STR(
 
 
 // 片元着色器
-extern const char _sharpen_fragment_shader[]=SHADER_STR(
+extern const char _sharpen_fragment_shader[] = SHADER_STR(
  precision mediump float;
  varying vec2 textureCoordinate;
  varying vec2 leftTextureCoordinate;

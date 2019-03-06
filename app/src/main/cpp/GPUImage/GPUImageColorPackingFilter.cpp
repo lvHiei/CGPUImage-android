@@ -65,7 +65,7 @@ extern const char _colorPacking_fragment_shader[] = SHADER_STR(
 #else
 
 // 片元着色器
-extern const char _colorPacking_fragment_shader[]=SHADER_STR(
+extern const char _colorPacking_fragment_shader[] = SHADER_STR(
     precision mediump float;
     uniform sampler2D inputImageTexture;
 
