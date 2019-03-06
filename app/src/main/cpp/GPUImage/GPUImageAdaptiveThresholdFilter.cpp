@@ -13,42 +13,42 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _adaptiveThreshold_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp float blurredInput = texture2D(inputImageTexture, textureCoordinate).r;\n"
-"    highp float localLuminance = texture2D(inputImageTexture2, textureCoordinate2).r;\n"
-"    highp float thresholdResult = step(blurredInput - 0.05, localLuminance);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(thresholdResult), 1.0);\n"
-"}"
-;
+extern const char _adaptiveThreshold_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        highp float blurredInput = texture2D(inputImageTexture, textureCoordinate).r;
+        highp float localLuminance = texture2D(inputImageTexture2, textureCoordinate2).r;
+        highp float thresholdResult = step(blurredInput - 0.05, localLuminance);
+
+        gl_FragColor = vec4(vec3(thresholdResult), 1.0);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _adaptiveThreshold_fragment_shader[]=
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float blurredInput = texture2D(inputImageTexture, textureCoordinate).r;\n"
-"    float localLuminance = texture2D(inputImageTexture2, textureCoordinate2).r;\n"
-"    float thresholdResult = step(blurredInput - 0.05, localLuminance);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(thresholdResult), 1.0);\n"
-"}"
-;
+extern const char _adaptiveThreshold_fragment_shader[]=SHADER_STR(
+    varying vec2 textureCoordinate;
+    varying vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        float blurredInput = texture2D(inputImageTexture, textureCoordinate).r;
+        float localLuminance = texture2D(inputImageTexture2, textureCoordinate2).r;
+        float thresholdResult = step(blurredInput - 0.05, localLuminance);
+
+        gl_FragColor = vec4(vec3(thresholdResult), 1.0);
+    }
+);
 
 #endif
 

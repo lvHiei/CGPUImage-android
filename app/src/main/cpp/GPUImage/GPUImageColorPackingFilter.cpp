@@ -8,85 +8,86 @@
 #include "GPUImageColorPackingFilter.h"
 
 // 顶点着色器
-extern const char _colorPacking_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"\n"
-"uniform float texelWidth;\n"
-"uniform float texelHeight;\n"
-"\n"
-"varying vec2 upperLeftInputTextureCoordinate;\n"
-"varying vec2 upperRightInputTextureCoordinate;\n"
-"varying vec2 lowerLeftInputTextureCoordinate;\n"
-"varying vec2 lowerRightInputTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    upperLeftInputTextureCoordinate = inputTextureCoordinate.xy + vec2(-texelWidth, -texelHeight);\n"
-"    upperRightInputTextureCoordinate = inputTextureCoordinate.xy + vec2(texelWidth, -texelHeight);\n"
-"    lowerLeftInputTextureCoordinate = inputTextureCoordinate.xy + vec2(-texelWidth, texelHeight);\n"
-"    lowerRightInputTextureCoordinate = inputTextureCoordinate.xy + vec2(texelWidth, texelHeight);\n"
-"}"
-;
+extern const char _colorPacking_vertex_shader[] = SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+
+    uniform float texelWidth;
+    uniform float texelHeight;
+
+    varying vec2 upperLeftInputTextureCoordinate;
+    varying vec2 upperRightInputTextureCoordinate;
+    varying vec2 lowerLeftInputTextureCoordinate;
+    varying vec2 lowerRightInputTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        upperLeftInputTextureCoordinate = inputTextureCoordinate.xy + vec2(-texelWidth, -texelHeight);
+        upperRightInputTextureCoordinate = inputTextureCoordinate.xy + vec2(texelWidth, -texelHeight);
+        lowerLeftInputTextureCoordinate = inputTextureCoordinate.xy + vec2(-texelWidth, texelHeight);
+        lowerRightInputTextureCoordinate = inputTextureCoordinate.xy + vec2(texelWidth, texelHeight);
+    }
+);
 
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _colorPacking_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform mediump mat3 convolutionMatrix;\n"
-"\n"
-"varying highp vec2 outputTextureCoordinate;\n"
-"\n"
-"varying highp vec2 upperLeftInputTextureCoordinate;\n"
-"varying highp vec2 upperRightInputTextureCoordinate;\n"
-"varying highp vec2 lowerLeftInputTextureCoordinate;\n"
-"varying highp vec2 lowerRightInputTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float upperLeftIntensity = texture2D(inputImageTexture, upperLeftInputTextureCoordinate).r;\n"
-"    float upperRightIntensity = texture2D(inputImageTexture, upperRightInputTextureCoordinate).r;\n"
-"    float lowerLeftIntensity = texture2D(inputImageTexture, lowerLeftInputTextureCoordinate).r;\n"
-"    float lowerRightIntensity = texture2D(inputImageTexture, lowerRightInputTextureCoordinate).r;\n"
-"\n"
-"    gl_FragColor = vec4(upperLeftIntensity, upperRightIntensity, lowerLeftIntensity, lowerRightIntensity);\n"
-"}"
-;
+extern const char _colorPacking_fragment_shader[] = SHADER_STR(
+    precision lowp float;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform mediump mat3 convolutionMatrix;
+
+    varying highp vec2 outputTextureCoordinate;
+
+    varying highp vec2 upperLeftInputTextureCoordinate;
+    varying highp vec2 upperRightInputTextureCoordinate;
+    varying highp vec2 lowerLeftInputTextureCoordinate;
+    varying highp vec2 lowerRightInputTextureCoordinate;
+
+    void main()
+    {
+        float upperLeftIntensity = texture2D(inputImageTexture, upperLeftInputTextureCoordinate).r;
+        float upperRightIntensity = texture2D(inputImageTexture, upperRightInputTextureCoordinate).r;
+        float lowerLeftIntensity = texture2D(inputImageTexture, lowerLeftInputTextureCoordinate).r;
+        float lowerRightIntensity = texture2D(inputImageTexture, lowerRightInputTextureCoordinate).r;
+
+        gl_FragColor = vec4(upperLeftIntensity, upperRightIntensity, lowerLeftIntensity, lowerRightIntensity);
+    }
+);
+
 
 #else
 
 // 片元着色器
-extern const char _colorPacking_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform mat3 convolutionMatrix;\n"
-"\n"
-"varying vec2 outputTextureCoordinate;\n"
-"\n"
-"varying vec2 upperLeftInputTextureCoordinate;\n"
-"varying vec2 upperRightInputTextureCoordinate;\n"
-"varying vec2 lowerLeftInputTextureCoordinate;\n"
-"varying vec2 lowerRightInputTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float upperLeftIntensity = texture2D(inputImageTexture, upperLeftInputTextureCoordinate).r;\n"
-"    float upperRightIntensity = texture2D(inputImageTexture, upperRightInputTextureCoordinate).r;\n"
-"    float lowerLeftIntensity = texture2D(inputImageTexture, lowerLeftInputTextureCoordinate).r;\n"
-"    float lowerRightIntensity = texture2D(inputImageTexture, lowerRightInputTextureCoordinate).r;\n"
-"\n"
-"    gl_FragColor = vec4(upperLeftIntensity, upperRightIntensity, lowerLeftIntensity, lowerRightIntensity);\n"
-"}"
-;
+extern const char _colorPacking_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    uniform sampler2D inputImageTexture;
+
+    uniform mat3 convolutionMatrix;
+
+    varying vec2 outputTextureCoordinate;
+
+    varying vec2 upperLeftInputTextureCoordinate;
+    varying vec2 upperRightInputTextureCoordinate;
+    varying vec2 lowerLeftInputTextureCoordinate;
+    varying vec2 lowerRightInputTextureCoordinate;
+
+    void main()
+    {
+     float upperLeftIntensity = texture2D(inputImageTexture, upperLeftInputTextureCoordinate).r;
+     float upperRightIntensity = texture2D(inputImageTexture, upperRightInputTextureCoordinate).r;
+     float lowerLeftIntensity = texture2D(inputImageTexture, lowerLeftInputTextureCoordinate).r;
+     float lowerRightIntensity = texture2D(inputImageTexture, lowerRightInputTextureCoordinate).r;
+
+     gl_FragColor = vec4(upperLeftIntensity, upperRightIntensity, lowerLeftIntensity, lowerRightIntensity);
+    }
+);
 
 
 #endif

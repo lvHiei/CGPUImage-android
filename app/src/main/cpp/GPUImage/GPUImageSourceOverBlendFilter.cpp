@@ -12,45 +12,45 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _sourceOverBlend_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-//"    这里应该是写错了， 我想...\n"
-//"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate);\n"
-"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    gl_FragColor = mix(textureColor, textureColor2, textureColor2.a);\n"
-"}"
-;
+extern const char _sourceOverBlend_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+//     这里应该是写错了， 我想...
+//     vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate);
+        vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);
+
+        gl_FragColor = mix(textureColor, textureColor2, textureColor2.a);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _sourceOverBlend_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-//"    这里应该是写错了， 我想...\n"
-//"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate);\n"
-"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    gl_FragColor = mix(textureColor, textureColor2, textureColor2.a);\n"
-"}"
-;
+extern const char _sourceOverBlend_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 textureCoordinate2;
+
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+
+ void main()
+ {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+//     这里应该是写错了， 我想...
+//     vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate);
+     vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);
+
+     gl_FragColor = mix(textureColor, textureColor2, textureColor2.a);
+ }
+);
 
 #endif
 

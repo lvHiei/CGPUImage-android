@@ -11,74 +11,74 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _pinchDistortion_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp float aspectRatio;\n"
-"uniform highp vec2 center;\n"
-"uniform highp float radius;\n"
-"uniform highp float scale;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp float dist = distance(center, textureCoordinateToUse);\n"
-"    textureCoordinateToUse = textureCoordinate;\n"
-"\n"
-"    if (dist < radius)\n"
-"    {\n"
-"        textureCoordinateToUse -= center;\n"
-"        highp float percent = 1.0 + ((0.5 - dist) / 0.5) * scale;\n"
-"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-"        textureCoordinateToUse += center;\n"
-"\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate );\n"
-"    }\n"
-"}"
-;
+extern const char _pinchDistortion_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp float aspectRatio;
+    uniform highp vec2 center;
+    uniform highp float radius;
+    uniform highp float scale;
+
+    void main()
+    {
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp float dist = distance(center, textureCoordinateToUse);
+        textureCoordinateToUse = textureCoordinate;
+
+        if (dist < radius)
+        {
+            textureCoordinateToUse -= center;
+            highp float percent = 1.0 + ((0.5 - dist) / 0.5) * scale;
+            textureCoordinateToUse = textureCoordinateToUse * percent;
+            textureCoordinateToUse += center;
+
+            gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );
+        }
+        else
+        {
+            gl_FragColor = texture2D(inputImageTexture, textureCoordinate );
+        }
+    }
+);
 
 
 #else
 
 // 片元着色器
-extern const char _pinchDistortion_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float aspectRatio;\n"
-"uniform vec2 center;\n"
-"uniform float radius;\n"
-"uniform float scale;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    float dist = distance(center, textureCoordinateToUse);\n"
-"    textureCoordinateToUse = textureCoordinate;\n"
-"\n"
-"    if (dist < radius)\n"
-"    {\n"
-"        textureCoordinateToUse -= center;\n"
-"        float percent = 1.0 + ((0.5 - dist) / 0.5) * scale;\n"
-"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-"        textureCoordinateToUse += center;\n"
-"\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate );\n"
-"    }\n"
-"}"
-;
+extern const char _pinchDistortion_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform float aspectRatio;
+ uniform vec2 center;
+ uniform float radius;
+ uniform float scale;
+
+ void main()
+ {
+     vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     float dist = distance(center, textureCoordinateToUse);
+     textureCoordinateToUse = textureCoordinate;
+
+     if (dist < radius)
+     {
+         textureCoordinateToUse -= center;
+         float percent = 1.0 + ((0.5 - dist) / 0.5) * scale;
+         textureCoordinateToUse = textureCoordinateToUse * percent;
+         textureCoordinateToUse += center;
+
+         gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );
+     }
+     else
+     {
+         gl_FragColor = texture2D(inputImageTexture, textureCoordinate );
+     }
+ }
+);
 
 
 #endif

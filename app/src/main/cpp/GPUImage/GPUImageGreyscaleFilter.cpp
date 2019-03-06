@@ -12,40 +12,40 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _greyScale_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float luminance = dot(textureColor.rgb, W);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(luminance), textureColor.a);\n"
-"}"
-;
+extern const char _greyScale_fragment_shader[]=SHADER_STR(
+    precision highp float;
+
+    varying vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        float luminance = dot(textureColor.rgb, W);
+
+        gl_FragColor = vec4(vec3(luminance), textureColor.a);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _greyScale_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"varying vec2 textureCoordinate;\n"
+extern const char _greyScale_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    uniform sampler2D inputImageTexture;
+    varying vec2 textureCoordinate;
 
-"void main()\n"
-"{\n"
-"	vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n "
-"   float grey;\n"
-"   grey = dot(textureColor.rgb, vec3(0.299, 0.587, 0.114));\n"
-"   gl_FragColor = vec4(grey, grey, grey, 1.0);\n"
-"}\n"
-;
+    void main()
+    {
+    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    float grey;
+    grey = dot(textureColor.rgb, vec3(0.299, 0.587, 0.114));
+    gl_FragColor = vec4(grey, grey, grey, 1.0);
+    }
+);
 
 #endif
 

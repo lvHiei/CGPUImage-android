@@ -11,93 +11,93 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _glassSphere_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp vec2 center;\n"
-"uniform highp float radius;\n"
-"uniform highp float aspectRatio;\n"
-"uniform highp float refractiveIndex;\n"
-"// uniform vec3 lightPosition;\n"
-"const highp vec3 lightPosition = vec3(-0.5, 0.5, 1.0);\n"
-"const highp vec3 ambientLightPosition = vec3(0.0, 0.0, 1.0);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp float distanceFromCenter = distance(center, textureCoordinateToUse);\n"
-"    lowp float checkForPresenceWithinSphere = step(distanceFromCenter, radius);\n"
-"\n"
-"    distanceFromCenter = distanceFromCenter / radius;\n"
-"\n"
-"    highp float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);\n"
-"    highp vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));\n"
-"\n"
-"    highp vec3 refractedVector = 2.0 * refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);\n"
-"    refractedVector.xy = -refractedVector.xy;\n"
-"\n"
-"    highp vec3 finalSphereColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5).rgb;\n"
-"\n"
-"    // Grazing angle lighting\n"
-"    highp float lightingIntensity = 2.5 * (1.0 - pow(clamp(dot(ambientLightPosition, sphereNormal), 0.0, 1.0), 0.25));\n"
-"    finalSphereColor += lightingIntensity;\n"
-"\n"
-"    // Specular lighting\n"
-"    lightingIntensity  = clamp(dot(normalize(lightPosition), sphereNormal), 0.0, 1.0);\n"
-"    lightingIntensity  = pow(lightingIntensity, 15.0);\n"
-"    finalSphereColor += vec3(0.8, 0.8, 0.8) * lightingIntensity;\n"
-"\n"
-"    gl_FragColor = vec4(finalSphereColor, 1.0) * checkForPresenceWithinSphere;\n"
-"}"
-;
+extern const char _glassSphere_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp vec2 center;
+    uniform highp float radius;
+    uniform highp float aspectRatio;
+    uniform highp float refractiveIndex;
+    // uniform vec3 lightPosition;
+    const highp vec3 lightPosition = vec3(-0.5, 0.5, 1.0);
+    const highp vec3 ambientLightPosition = vec3(0.0, 0.0, 1.0);
+
+    void main()
+    {
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp float distanceFromCenter = distance(center, textureCoordinateToUse);
+        lowp float checkForPresenceWithinSphere = step(distanceFromCenter, radius);
+
+        distanceFromCenter = distanceFromCenter / radius;
+
+        highp float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+        highp vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));
+
+        highp vec3 refractedVector = 2.0 * refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);
+        refractedVector.xy = -refractedVector.xy;
+
+        highp vec3 finalSphereColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5).rgb;
+
+        // Grazing angle lighting
+        highp float lightingIntensity = 2.5 * (1.0 - pow(clamp(dot(ambientLightPosition, sphereNormal), 0.0, 1.0), 0.25));
+        finalSphereColor += lightingIntensity;
+
+        // Specular lighting
+        lightingIntensity  = clamp(dot(normalize(lightPosition), sphereNormal), 0.0, 1.0);
+        lightingIntensity  = pow(lightingIntensity, 15.0);
+        finalSphereColor += vec3(0.8, 0.8, 0.8) * lightingIntensity;
+
+        gl_FragColor = vec4(finalSphereColor, 1.0) * checkForPresenceWithinSphere;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _glassSphere_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform vec2 center;\n"
-"uniform float radius;\n"
-"uniform float aspectRatio;\n"
-"uniform float refractiveIndex;\n"
-"// uniform vec3 lightPosition;\n"
-"const vec3 lightPosition = vec3(-0.5, 0.5, 1.0);\n"
-"const vec3 ambientLightPosition = vec3(0.0, 0.0, 1.0);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    float distanceFromCenter = distance(center, textureCoordinateToUse);\n"
-"    float checkForPresenceWithinSphere = step(distanceFromCenter, radius);\n"
-"\n"
-"    distanceFromCenter = distanceFromCenter / radius;\n"
-"\n"
-"    float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);\n"
-"    vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));\n"
-"\n"
-"    vec3 refractedVector = 2.0 * refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);\n"
-"    refractedVector.xy = -refractedVector.xy;\n"
-"\n"
-"    vec3 finalSphereColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5).rgb;\n"
-"\n"
-"    // Grazing angle lighting\n"
-"    float lightingIntensity = 2.5 * (1.0 - pow(clamp(dot(ambientLightPosition, sphereNormal), 0.0, 1.0), 0.25));\n"
-"    finalSphereColor += lightingIntensity;\n"
-"\n"
-"    // Specular lighting\n"
-"    lightingIntensity  = clamp(dot(normalize(lightPosition), sphereNormal), 0.0, 1.0);\n"
-"    lightingIntensity  = pow(lightingIntensity, 15.0);\n"
-"    finalSphereColor += vec3(0.8, 0.8, 0.8) * lightingIntensity;\n"
-"\n"
-"    gl_FragColor = vec4(finalSphereColor, 1.0) * checkForPresenceWithinSphere;\n"
-"}"
-;
+extern const char _glassSphere_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform vec2 center;
+    uniform float radius;
+    uniform float aspectRatio;
+    uniform float refractiveIndex;
+    // uniform vec3 lightPosition;
+    const vec3 lightPosition = vec3(-0.5, 0.5, 1.0);
+    const vec3 ambientLightPosition = vec3(0.0, 0.0, 1.0);
+
+    void main()
+    {
+     vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     float distanceFromCenter = distance(center, textureCoordinateToUse);
+     float checkForPresenceWithinSphere = step(distanceFromCenter, radius);
+
+     distanceFromCenter = distanceFromCenter / radius;
+
+     float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+     vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));
+
+     vec3 refractedVector = 2.0 * refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);
+     refractedVector.xy = -refractedVector.xy;
+
+     vec3 finalSphereColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5).rgb;
+
+     // Grazing angle lighting
+     float lightingIntensity = 2.5 * (1.0 - pow(clamp(dot(ambientLightPosition, sphereNormal), 0.0, 1.0), 0.25));
+     finalSphereColor += lightingIntensity;
+
+     // Specular lighting
+     lightingIntensity  = clamp(dot(normalize(lightPosition), sphereNormal), 0.0, 1.0);
+     lightingIntensity  = pow(lightingIntensity, 15.0);
+     finalSphereColor += vec3(0.8, 0.8, 0.8) * lightingIntensity;
+
+     gl_FragColor = vec4(finalSphereColor, 1.0) * checkForPresenceWithinSphere;
+    }
+);
 
 #endif
 

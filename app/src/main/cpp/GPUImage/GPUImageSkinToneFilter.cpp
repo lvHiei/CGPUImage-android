@@ -10,168 +10,168 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _skinTone_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"// [-1;1] <=> [pink;orange]\n"
-"uniform highp float skinToneAdjust; // will make reds more pink\n"
-"\n"
-"// Other parameters\n"
-"uniform mediump float skinHue;\n"
-"uniform mediump float skinHueThreshold;\n"
-"uniform mediump float maxHueShift;\n"
-"uniform mediump float maxSaturationShift;\n"
-"uniform int upperSkinToneColor;\n"
-"\n"
-"// RGB <-> HSV conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl\n"
-"highp vec3 rgb2hsv(highp vec3 c)\n"
-"{\n"
-"highp vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n"
-"highp vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n"
-"highp vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n"
-"\n"
-"highp float d = q.x - min(q.w, q.y);\n"
-"highp float e = 1.0e-10;\n"
-"return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n"
-"}\n"
-"\n"
-"// HSV <-> RGB conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl\n"
-"highp vec3 hsv2rgb(highp vec3 c)\n"
-"{\n"
-"highp vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n"
-"highp vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n"
-"return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n"
-"}\n"
-"\n"
-"// Main\n"
-"void main ()\n"
-"{\n"
-"\n"
-"    // Sample the input pixel\n"
-"    highp vec4 colorRGB = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    // Convert color to HSV, extract hue\n"
-"    highp vec3 colorHSV = rgb2hsv(colorRGB.rgb);\n"
-"    highp float hue = colorHSV.x;\n"
-"\n"
-"    // check how far from skin hue\n"
-"    highp float dist = hue - skinHue;\n"
-"    if (dist > 0.5)\n"
-"        dist -= 1.0;\n"
-"    if (dist < -0.5)\n"
-"        dist += 1.0;\n"
-"    dist = abs(dist)/0.5; // normalized to [0,1]\n"
-"\n"
-"    // Apply Gaussian like filter\n"
-"    highp float weight = exp(-dist*dist*skinHueThreshold);\n"
-"    weight = clamp(weight, 0.0, 1.0);\n"
-"\n"
-"    // Using pink/green, so only adjust hue\n"
-"    if (upperSkinToneColor == 0) {\n"
-"        colorHSV.x += skinToneAdjust * weight * maxHueShift;\n"
-"        // Using pink/orange, so adjust hue < 0 and saturation > 0\n"
-"    } else if (upperSkinToneColor == 1) {\n"
-"        // We want more orange, so increase saturation\n"
-"        if (skinToneAdjust > 0.0)\n"
-"            colorHSV.y += skinToneAdjust * weight * maxSaturationShift;\n"
-"            // we want more pinks, so decrease hue\n"
-"        else\n"
-"            colorHSV.x += skinToneAdjust * weight * maxHueShift;\n"
-"    }\n"
-"\n"
-"    // final color\n"
-"    highp vec3 finalColorRGB = hsv2rgb(colorHSV.rgb);\n"
-"\n"
-"    // display\n"
-"    gl_FragColor = vec4(finalColorRGB, 1.0);\n"
-"}"
-;
+extern const char _skinTone_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    // [-1;1] <=> [pink;orange]
+    uniform highp float skinToneAdjust; // will make reds more pink
+
+    // Other parameters
+    uniform mediump float skinHue;
+    uniform mediump float skinHueThreshold;
+    uniform mediump float maxHueShift;
+    uniform mediump float maxSaturationShift;
+    uniform int upperSkinToneColor;
+
+    // RGB <-> HSV conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+    highp vec3 rgb2hsv(highp vec3 c)
+    {
+        highp vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+        highp vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+        highp vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+        highp float d = q.x - min(q.w, q.y);
+        highp float e = 1.0e-10;
+        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+    }
+
+    // HSV <-> RGB conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+    highp vec3 hsv2rgb(highp vec3 c)
+    {
+        highp vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        highp vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+    }
+
+    // Main
+    void main ()
+    {
+
+        // Sample the input pixel
+        highp vec4 colorRGB = texture2D(inputImageTexture, textureCoordinate);
+
+        // Convert color to HSV, extract hue
+        highp vec3 colorHSV = rgb2hsv(colorRGB.rgb);
+        highp float hue = colorHSV.x;
+
+        // check how far from skin hue
+        highp float dist = hue - skinHue;
+        if (dist > 0.5)
+            dist -= 1.0;
+        if (dist < -0.5)
+            dist += 1.0;
+        dist = abs(dist)/0.5; // normalized to [0,1]
+
+        // Apply Gaussian like filter
+        highp float weight = exp(-dist*dist*skinHueThreshold);
+        weight = clamp(weight, 0.0, 1.0);
+
+        // Using pink/green, so only adjust hue
+        if (upperSkinToneColor == 0) {
+            colorHSV.x += skinToneAdjust * weight * maxHueShift;
+            // Using pink/orange, so adjust hue < 0 and saturation > 0
+        } else if (upperSkinToneColor == 1) {
+            // We want more orange, so increase saturation
+            if (skinToneAdjust > 0.0)
+                colorHSV.y += skinToneAdjust * weight * maxSaturationShift;
+                // we want more pinks, so decrease hue
+            else
+                colorHSV.x += skinToneAdjust * weight * maxHueShift;
+        }
+
+        // final color
+        highp vec3 finalColorRGB = hsv2rgb(colorHSV.rgb);
+
+        // display
+        gl_FragColor = vec4(finalColorRGB, 1.0);
+    }
+);
 
 
 #else
 
 // 片元着色器
-extern const char _skinTone_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"// [-1;1] <=> [pink;orange]\n"
-"uniform float skinToneAdjust; // will make reds more pink\n"
-"\n"
-"// Other parameters\n"
-"uniform float skinHue;\n"
-"uniform float skinHueThreshold;\n"
-"uniform float maxHueShift;\n"
-"uniform float maxSaturationShift;\n"
-"uniform int upperSkinToneColor;\n"
-"\n"
-"// RGB <-> HSV conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl\n"
-"highp vec3 rgb2hsv(highp vec3 c)\n"
-"{\n"
-"vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n"
-"vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n"
-"vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n"
-"\n"
-"float d = q.x - min(q.w, q.y);\n"
-"float e = 1.0e-10;\n"
-"return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n"
-"}\n"
-"\n"
-"// HSV <-> RGB conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl\n"
-"highp vec3 hsv2rgb(highp vec3 c)\n"
-"{\n"
-"vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n"
-"vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n"
-"return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n"
-"}\n"
-"\n"
-"// Main\n"
-"void main ()\n"
-"{\n"
-"\n"
-"    // Sample the input pixel\n"
-"    vec4 colorRGB = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    // Convert color to HSV, extract hue\n"
-"    vec3 colorHSV = rgb2hsv(colorRGB.rgb);\n"
-"    float hue = colorHSV.x;\n"
-"\n"
-"    // check how far from skin hue\n"
-"    float dist = hue - skinHue;\n"
-"    if (dist > 0.5)\n"
-"        dist -= 1.0;\n"
-"    if (dist < -0.5)\n"
-"        dist += 1.0;\n"
-"    dist = abs(dist)/0.5; // normalized to [0,1]\n"
-"\n"
-"    // Apply Gaussian like filter\n"
-"    float weight = exp(-dist*dist*skinHueThreshold);\n"
-"    weight = clamp(weight, 0.0, 1.0);\n"
-"\n"
-"    // Using pink/green, so only adjust hue\n"
-"    if (upperSkinToneColor == 0) {\n"
-"        colorHSV.x += skinToneAdjust * weight * maxHueShift;\n"
-"        // Using pink/orange, so adjust hue < 0 and saturation > 0\n"
-"    } else if (upperSkinToneColor == 1) {\n"
-"        // We want more orange, so increase saturation\n"
-"        if (skinToneAdjust > 0.0)\n"
-"            colorHSV.y += skinToneAdjust * weight * maxSaturationShift;\n"
-"            // we want more pinks, so decrease hue\n"
-"        else\n"
-"            colorHSV.x += skinToneAdjust * weight * maxHueShift;\n"
-"    }\n"
-"\n"
-"    // final color\n"
-"    vec3 finalColorRGB = hsv2rgb(colorHSV.rgb);\n"
-"\n"
-"    // display\n"
-"    gl_FragColor = vec4(finalColorRGB, 1.0);\n"
-"}"
-;
+extern const char _skinTone_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ // [-1;1] <=> [pink;orange]
+ uniform float skinToneAdjust; // will make reds more pink
+
+ // Other parameters
+ uniform float skinHue;
+ uniform float skinHueThreshold;
+ uniform float maxHueShift;
+ uniform float maxSaturationShift;
+ uniform int upperSkinToneColor;
+
+ // RGB <-> HSV conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+ highp vec3 rgb2hsv(highp vec3 c)
+ {
+ vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+ vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+ vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+ float d = q.x - min(q.w, q.y);
+ float e = 1.0e-10;
+ return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+ }
+
+ // HSV <-> RGB conversion, thanks to http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+ highp vec3 hsv2rgb(highp vec3 c)
+ {
+ vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+ vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+ return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+ }
+
+ // Main
+ void main ()
+ {
+
+     // Sample the input pixel
+     vec4 colorRGB = texture2D(inputImageTexture, textureCoordinate);
+
+     // Convert color to HSV, extract hue
+     vec3 colorHSV = rgb2hsv(colorRGB.rgb);
+     float hue = colorHSV.x;
+
+     // check how far from skin hue
+     float dist = hue - skinHue;
+     if (dist > 0.5)
+         dist -= 1.0;
+     if (dist < -0.5)
+         dist += 1.0;
+     dist = abs(dist)/0.5; // normalized to [0,1]
+
+     // Apply Gaussian like filter
+     float weight = exp(-dist*dist*skinHueThreshold);
+     weight = clamp(weight, 0.0, 1.0);
+
+     // Using pink/green, so only adjust hue
+     if (upperSkinToneColor == 0) {
+         colorHSV.x += skinToneAdjust * weight * maxHueShift;
+         // Using pink/orange, so adjust hue < 0 and saturation > 0
+     } else if (upperSkinToneColor == 1) {
+         // We want more orange, so increase saturation
+         if (skinToneAdjust > 0.0)
+             colorHSV.y += skinToneAdjust * weight * maxSaturationShift;
+             // we want more pinks, so decrease hue
+         else
+             colorHSV.x += skinToneAdjust * weight * maxHueShift;
+     }
+
+     // final color
+     vec3 finalColorRGB = hsv2rgb(colorHSV.rgb);
+
+     // display
+     gl_FragColor = vec4(finalColorRGB, 1.0);
+ }
+);
 
 
 #endif

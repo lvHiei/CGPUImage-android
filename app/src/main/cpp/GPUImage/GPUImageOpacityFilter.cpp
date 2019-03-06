@@ -11,38 +11,38 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _opacity_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform lowp float opacity;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(textureColor.rgb, textureColor.a * opacity);\n"
-"}"
-;
+extern const char _opacity_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform lowp float opacity;
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+        gl_FragColor = vec4(textureColor.rgb, textureColor.a * opacity);
+    }
+);
 
 
 #else
 
 // 片元着色器
-extern const char _opacity_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform float opacity;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(textureColor.rgb, textureColor.a * opacity);\n"
-"}"
-;
+extern const char _opacity_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+ uniform float opacity;
+
+ void main()
+ {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+     gl_FragColor = vec4(textureColor.rgb, textureColor.a * opacity);
+ }
+);
 
 
 #endif

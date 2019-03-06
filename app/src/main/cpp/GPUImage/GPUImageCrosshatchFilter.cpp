@@ -12,105 +12,105 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _crosshatch_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp float crossHatchSpacing;\n"
-"uniform highp float lineWidth;\n"
-"\n"
-"const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp float luminance = dot(texture2D(inputImageTexture, textureCoordinate).rgb, W);\n"
-"\n"
-"    lowp vec4 colorToDisplay = vec4(1.0, 1.0, 1.0, 1.0);\n"
-"    if (luminance < 1.00)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x + textureCoordinate.y, crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"    if (luminance < 0.75)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x - textureCoordinate.y, crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"    if (luminance < 0.50)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x + textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"    if (luminance < 0.3)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x - textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"\n"
-"    gl_FragColor = colorToDisplay;\n"
-"}"
-;
+extern const char _crosshatch_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp float crossHatchSpacing;
+    uniform highp float lineWidth;
+
+    const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+    void main()
+    {
+        highp float luminance = dot(texture2D(inputImageTexture, textureCoordinate).rgb, W);
+
+        lowp vec4 colorToDisplay = vec4(1.0, 1.0, 1.0, 1.0);
+        if (luminance < 1.00)
+        {
+            if (mod(textureCoordinate.x + textureCoordinate.y, crossHatchSpacing) <= lineWidth)
+            {
+                colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+            }
+        }
+        if (luminance < 0.75)
+        {
+            if (mod(textureCoordinate.x - textureCoordinate.y, crossHatchSpacing) <= lineWidth)
+            {
+                colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+            }
+        }
+        if (luminance < 0.50)
+        {
+            if (mod(textureCoordinate.x + textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)
+            {
+                colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+            }
+        }
+        if (luminance < 0.3)
+        {
+            if (mod(textureCoordinate.x - textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)
+            {
+                colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+            }
+        }
+
+        gl_FragColor = colorToDisplay;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _crosshatch_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float crossHatchSpacing;\n"
-"uniform float lineWidth;\n"
-"\n"
-"const vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float luminance = dot(texture2D(inputImageTexture, textureCoordinate).rgb, W);\n"
-"\n"
-"    vec4 colorToDisplay = vec4(1.0, 1.0, 1.0, 1.0);\n"
-"    if (luminance < 1.00)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x + textureCoordinate.y, crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"    if (luminance < 0.75)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x - textureCoordinate.y, crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"    if (luminance < 0.50)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x + textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"    if (luminance < 0.3)\n"
-"    {\n"
-"        if (mod(textureCoordinate.x - textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)\n"
-"        {\n"
-"            colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"        }\n"
-"    }\n"
-"\n"
-"    gl_FragColor = colorToDisplay;\n"
-"}"
-;
+extern const char _crosshatch_fragment_shader[]=SHANDER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform float crossHatchSpacing;
+    uniform float lineWidth;
+
+    const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+    void main()
+    {
+     float luminance = dot(texture2D(inputImageTexture, textureCoordinate).rgb, W);
+
+     vec4 colorToDisplay = vec4(1.0, 1.0, 1.0, 1.0);
+     if (luminance < 1.00)
+     {
+         if (mod(textureCoordinate.x + textureCoordinate.y, crossHatchSpacing) <= lineWidth)
+         {
+             colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+         }
+     }
+     if (luminance < 0.75)
+     {
+         if (mod(textureCoordinate.x - textureCoordinate.y, crossHatchSpacing) <= lineWidth)
+         {
+             colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+         }
+     }
+     if (luminance < 0.50)
+     {
+         if (mod(textureCoordinate.x + textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)
+         {
+             colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+         }
+     }
+     if (luminance < 0.3)
+     {
+         if (mod(textureCoordinate.x - textureCoordinate.y - (crossHatchSpacing / 2.0), crossHatchSpacing) <= lineWidth)
+         {
+             colorToDisplay = vec4(0.0, 0.0, 0.0, 1.0);
+         }
+     }
+
+     gl_FragColor = colorToDisplay;
+    }
+);
 
 #endif
 

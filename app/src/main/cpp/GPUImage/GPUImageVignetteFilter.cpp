@@ -11,45 +11,45 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _vignette_fragment_shader[]=
-"uniform sampler2D inputImageTexture;\n"
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform lowp vec2 vignetteCenter;\n"
-"uniform lowp vec3 vignetteColor;\n"
-"uniform highp float vignetteStart;\n"
-"uniform highp float vignetteEnd;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp float d = distance(textureCoordinate, vec2(vignetteCenter.x, vignetteCenter.y));\n"
-"    lowp float percent = smoothstep(vignetteStart, vignetteEnd, d);\n"
-"    gl_FragColor = vec4(mix(sourceImageColor.rgb, vignetteColor, percent), sourceImageColor.a);\n"
-"}"
-;
+extern const char _vignette_fragment_shader[]=SHADER_STR(
+    uniform sampler2D inputImageTexture;
+    varying highp vec2 textureCoordinate;
+
+    uniform lowp vec2 vignetteCenter;
+    uniform lowp vec3 vignetteColor;
+    uniform highp float vignetteStart;
+    uniform highp float vignetteEnd;
+
+    void main()
+    {
+        lowp vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp float d = distance(textureCoordinate, vec2(vignetteCenter.x, vignetteCenter.y));
+        lowp float percent = smoothstep(vignetteStart, vignetteEnd, d);
+        gl_FragColor = vec4(mix(sourceImageColor.rgb, vignetteColor, percent), sourceImageColor.a);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _vignette_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform vec2 vignetteCenter;\n"
-"uniform vec3 vignetteColor;\n"
-"uniform float vignetteStart;\n"
-"uniform float vignetteEnd;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float d = distance(textureCoordinate, vec2(vignetteCenter.x, vignetteCenter.y));\n"
-"    float percent = smoothstep(vignetteStart, vignetteEnd, d);\n"
-"    gl_FragColor = vec4(mix(sourceImageColor.rgb, vignetteColor, percent), sourceImageColor.a);\n"
-"}"
-;
+extern const char _vignette_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ uniform sampler2D inputImageTexture;
+ varying vec2 textureCoordinate;
+
+ uniform vec2 vignetteCenter;
+ uniform vec3 vignetteColor;
+ uniform float vignetteStart;
+ uniform float vignetteEnd;
+
+ void main()
+ {
+     vec4 sourceImageColor = texture2D(inputImageTexture, textureCoordinate);
+     float d = distance(textureCoordinate, vec2(vignetteCenter.x, vignetteCenter.y));
+     float percent = smoothstep(vignetteStart, vignetteEnd, d);
+     gl_FragColor = vec4(mix(sourceImageColor.rgb, vignetteColor, percent), sourceImageColor.a);
+ }
+);
 
 #endif
 

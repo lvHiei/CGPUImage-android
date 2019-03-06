@@ -10,180 +10,180 @@
 
 
 // 顶点着色器
-extern const char _JFAVoronoi_vertex_shader[]=
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"\n"
-"uniform float sampleStep;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 topLeftTextureCoordinate;\n"
-"varying vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"varying vec2 bottomLeftTextureCoordinate;\n"
-"varying vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 widthStep = vec2(sampleStep, 0.0);\n"
-"    vec2 heightStep = vec2(0.0, sampleStep);\n"
-"    vec2 widthHeightStep = vec2(sampleStep);\n"
-"    vec2 widthNegativeHeightStep = vec2(sampleStep, -sampleStep);\n"
-"\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"    leftTextureCoordinate = inputTextureCoordinate.xy - widthStep;\n"
-"    rightTextureCoordinate = inputTextureCoordinate.xy + widthStep;\n"
-"\n"
-"    topTextureCoordinate = inputTextureCoordinate.xy - heightStep;\n"
-"    topLeftTextureCoordinate = inputTextureCoordinate.xy - widthHeightStep;\n"
-"    topRightTextureCoordinate = inputTextureCoordinate.xy + widthNegativeHeightStep;\n"
-"\n"
-"    bottomTextureCoordinate = inputTextureCoordinate.xy + heightStep;\n"
-"    bottomLeftTextureCoordinate = inputTextureCoordinate.xy - widthNegativeHeightStep;\n"
-"    bottomRightTextureCoordinate = inputTextureCoordinate.xy + widthHeightStep;\n"
-"}"
-;
+extern const char _JFAVoronoi_vertex_shader[]=SHADER_STR(
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+
+    uniform float sampleStep;
+
+    varying vec2 textureCoordinate;
+    varying vec2 leftTextureCoordinate;
+    varying vec2 rightTextureCoordinate;
+
+    varying vec2 topTextureCoordinate;
+    varying vec2 topLeftTextureCoordinate;
+    varying vec2 topRightTextureCoordinate;
+
+    varying vec2 bottomTextureCoordinate;
+    varying vec2 bottomLeftTextureCoordinate;
+    varying vec2 bottomRightTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 widthStep = vec2(sampleStep, 0.0);
+        vec2 heightStep = vec2(0.0, sampleStep);
+        vec2 widthHeightStep = vec2(sampleStep);
+        vec2 widthNegativeHeightStep = vec2(sampleStep, -sampleStep);
+
+        textureCoordinate = inputTextureCoordinate.xy;
+        leftTextureCoordinate = inputTextureCoordinate.xy - widthStep;
+        rightTextureCoordinate = inputTextureCoordinate.xy + widthStep;
+
+        topTextureCoordinate = inputTextureCoordinate.xy - heightStep;
+        topLeftTextureCoordinate = inputTextureCoordinate.xy - widthHeightStep;
+        topRightTextureCoordinate = inputTextureCoordinate.xy + widthNegativeHeightStep;
+
+        bottomTextureCoordinate = inputTextureCoordinate.xy + heightStep;
+        bottomLeftTextureCoordinate = inputTextureCoordinate.xy - widthNegativeHeightStep;
+        bottomRightTextureCoordinate = inputTextureCoordinate.xy + widthHeightStep;
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _JFAVoronoi_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 topLeftTextureCoordinate;\n"
-"varying vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"varying vec2 bottomLeftTextureCoordinate;\n"
-"varying vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform vec2 size;\n"
-"//varying vec2 textureCoordinate;\n"
-"//uniform float sampleStep;\n"
-"\n"
-"vec2 getCoordFromColor(vec4 color)\n"
-"{\n"
-"    float z = color.z * 256.0;\n"
-"    float yoff = floor(z / 8.0);\n"
-"    float xoff = mod(z, 8.0);\n"
-"    float x = color.x*256.0 + xoff*256.0;\n"
-"    float y = color.y*256.0 + yoff*256.0;\n"
-"    return vec2(x,y) / size;\n"
-"}\n"
-"\n"
-"void main(void) {\n"
-"\n"
-"    vec2 sub;\n"
-"    vec4 dst;\n"
-"    vec4 local = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 sam;\n"
-"    float l;\n"
-"    float smallestDist;\n"
-"    if(local.a == 0.0){\n"
-"\n"
-"        smallestDist = dot(1.0,1.0);\n"
-"    }else{\n"
-"        sub = getCoordFromColor(local)-textureCoordinate;\n"
-"        smallestDist = dot(sub,sub);\n"
-"    }\n"
-"    dst = local;\n"
-"\n"
-"\n"
-"    sam = texture2D(inputImageTexture, topRightTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, topTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, topLeftTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, bottomRightTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, bottomTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, bottomLeftTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, leftTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, rightTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"    gl_FragColor = dst;\n"
-"}"
-;
+extern const char _JFAVoronoi_fragment_shader[]=SHADER_STR(
+    precision highp float;
+
+    varying vec2 textureCoordinate;
+    varying vec2 leftTextureCoordinate;
+    varying vec2 rightTextureCoordinate;
+
+    varying vec2 topTextureCoordinate;
+    varying vec2 topLeftTextureCoordinate;
+    varying vec2 topRightTextureCoordinate;
+
+    varying vec2 bottomTextureCoordinate;
+    varying vec2 bottomLeftTextureCoordinate;
+    varying vec2 bottomRightTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform vec2 size;
+    //varying vec2 textureCoordinate;
+    //uniform float sampleStep;
+
+    vec2 getCoordFromColor(vec4 color)
+    {
+        float z = color.z * 256.0;
+        float yoff = floor(z / 8.0);
+        float xoff = mod(z, 8.0);
+        float x = color.x*256.0 + xoff*256.0;
+        float y = color.y*256.0 + yoff*256.0;
+        return vec2(x,y) / size;
+    }
+
+    void main(void) {
+
+        vec2 sub;
+        vec4 dst;
+        vec4 local = texture2D(inputImageTexture, textureCoordinate);
+        vec4 sam;
+        float l;
+        float smallestDist;
+        if(local.a == 0.0){
+
+            smallestDist = dot(1.0,1.0);
+        }else{
+            sub = getCoordFromColor(local)-textureCoordinate;
+            smallestDist = dot(sub,sub);
+        }
+        dst = local;
+
+
+        sam = texture2D(inputImageTexture, topRightTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, topTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, topLeftTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, bottomRightTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, bottomTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, bottomLeftTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, leftTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+
+        sam = texture2D(inputImageTexture, rightTextureCoordinate);
+        if(sam.a == 1.0){
+            sub = (getCoordFromColor(sam)-textureCoordinate);
+            l = dot(sub,sub);
+            if(l < smallestDist){
+                smallestDist = l;
+                dst = sam;
+            }
+        }
+        gl_FragColor = dst;
+    }
+);
 
 
 
@@ -191,135 +191,135 @@ extern const char _JFAVoronoi_fragment_shader[]=
 #else
 
 // 片元着色器
-extern const char _JFAVoronoi_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 topLeftTextureCoordinate;\n"
-"varying vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"varying vec2 bottomLeftTextureCoordinate;\n"
-"varying vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform vec2 size;\n"
-"//varying vec2 textureCoordinate;\n"
-"//uniform float sampleStep;\n"
-"\n"
-"vec2 getCoordFromColor(vec4 color)\n"
-"{\n"
-"    float z = color.z * 256.0;\n"
-"    float yoff = floor(z / 8.0);\n"
-"    float xoff = mod(z, 8.0);\n"
-"    float x = color.x*256.0 + xoff*256.0;\n"
-"    float y = color.y*256.0 + yoff*256.0;\n"
-"    return vec2(x,y) / size;\n"
-"}\n"
-"\n"
-"void main(void) {\n"
-"\n"
-"    vec2 sub;\n"
-"    vec4 dst;\n"
-"    vec4 local = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 sam;\n"
-"    float l;\n"
-"    float smallestDist;\n"
-"    if(local.a == 0.0){\n"
-"\n"
-"        smallestDist = dot(1.0,1.0);\n"
-"    }else{\n"
-"        sub = getCoordFromColor(local)-textureCoordinate;\n"
-"        smallestDist = dot(sub,sub);\n"
-"    }\n"
-"    dst = local;\n"
-"\n"
-"\n"
-"    sam = texture2D(inputImageTexture, topRightTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, topTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, topLeftTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, bottomRightTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, bottomTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, bottomLeftTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, leftTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"\n"
-"    sam = texture2D(inputImageTexture, rightTextureCoordinate);\n"
-"    if(sam.a == 1.0){\n"
-"        sub = (getCoordFromColor(sam)-textureCoordinate);\n"
-"        l = dot(sub,sub);\n"
-"        if(l < smallestDist){\n"
-"            smallestDist = l;\n"
-"            dst = sam;\n"
-"        }\n"
-"    }\n"
-"    gl_FragColor = dst;\n"
-"}"
-;
+extern const char _JFAVoronoi_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 leftTextureCoordinate;
+ varying vec2 rightTextureCoordinate;
+
+ varying vec2 topTextureCoordinate;
+ varying vec2 topLeftTextureCoordinate;
+ varying vec2 topRightTextureCoordinate;
+
+ varying vec2 bottomTextureCoordinate;
+ varying vec2 bottomLeftTextureCoordinate;
+ varying vec2 bottomRightTextureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+ uniform vec2 size;
+ //varying vec2 textureCoordinate;
+ //uniform float sampleStep;
+
+ vec2 getCoordFromColor(vec4 color)
+ {
+     float z = color.z * 256.0;
+     float yoff = floor(z / 8.0);
+     float xoff = mod(z, 8.0);
+     float x = color.x*256.0 + xoff*256.0;
+     float y = color.y*256.0 + yoff*256.0;
+     return vec2(x,y) / size;
+ }
+
+ void main(void) {
+
+     vec2 sub;
+     vec4 dst;
+     vec4 local = texture2D(inputImageTexture, textureCoordinate);
+     vec4 sam;
+     float l;
+     float smallestDist;
+     if(local.a == 0.0){
+
+         smallestDist = dot(1.0,1.0);
+     }else{
+         sub = getCoordFromColor(local)-textureCoordinate;
+         smallestDist = dot(sub,sub);
+     }
+     dst = local;
+
+
+     sam = texture2D(inputImageTexture, topRightTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, topTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, topLeftTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, bottomRightTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, bottomTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, bottomLeftTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, leftTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+
+     sam = texture2D(inputImageTexture, rightTextureCoordinate);
+     if(sam.a == 1.0){
+         sub = (getCoordFromColor(sam)-textureCoordinate);
+         l = dot(sub,sub);
+         if(l < smallestDist){
+             smallestDist = l;
+             dst = sam;
+         }
+     }
+     gl_FragColor = dst;
+ }
+);
 
 #endif
 

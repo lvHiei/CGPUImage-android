@@ -11,43 +11,43 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _pixellate_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp float fractionalWidthOfPixel;\n"
-"uniform highp float aspectRatio;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);\n"
-"\n"
-"    highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;\n"
-"    gl_FragColor = texture2D(inputImageTexture, samplePos );\n"
-"}"
-;
+extern const char _pixellate_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp float fractionalWidthOfPixel;
+    uniform highp float aspectRatio;
+
+    void main()
+    {
+        highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
+
+        highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
+        gl_FragColor = texture2D(inputImageTexture, samplePos );
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _pixellate_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float fractionalWidthOfPixel;\n"
-"uniform float aspectRatio;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);\n"
-"\n"
-"    vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;\n"
-"    gl_FragColor = texture2D(inputImageTexture, samplePos );\n"
-"}"
-;
+extern const char _pixellate_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform float fractionalWidthOfPixel;
+ uniform float aspectRatio;
+
+ void main()
+ {
+     vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
+
+     vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
+     gl_FragColor = texture2D(inputImageTexture, samplePos );
+ }
+);
 
 #endif
 

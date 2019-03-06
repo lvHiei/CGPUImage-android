@@ -11,42 +11,42 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _colorMatrix_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform lowp mat4 colorMatrix;\n"
-"uniform lowp float intensity;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp vec4 outputColor = textureColor * colorMatrix;\n"
-"\n"
-"    gl_FragColor = (intensity * outputColor) + ((1.0 - intensity) * textureColor);\n"
-"}"
-;
+extern const char _colorMatrix_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform lowp mat4 colorMatrix;
+    uniform lowp float intensity;
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp vec4 outputColor = textureColor * colorMatrix;
+
+        gl_FragColor = (intensity * outputColor) + ((1.0 - intensity) * textureColor);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _colorMatrix_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"varying vec2 textureCoordinate;\n"
-"uniform mat4 colorMatrix;\n"
-"uniform float intensity;\n"
+extern const char _colorMatrix_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    uniform sampler2D inputImageTexture;
+    varying vec2 textureCoordinate;
+    uniform mat4 colorMatrix;
+    uniform float intensity;
 
-"void main()\n"
-"{\n"
-"	vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n "
-"   //sepia filter \n"
-"   vec4 outputColor = textureColor * colorMatrix;\n"
-"   vec4 sepiaColor = (intensity * outputColor) + ((1.0 - intensity) * textureColor);\n"
-"   gl_FragColor = sepiaColor;\n"
-"}\n"
-;
+    void main()
+    {
+    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    //sepia filter
+    vec4 outputColor = textureColor * colorMatrix;
+    vec4 sepiaColor = (intensity * outputColor) + ((1.0 - intensity) * textureColor);
+    gl_FragColor = sepiaColor;
+    }
+);
 
 #endif
 

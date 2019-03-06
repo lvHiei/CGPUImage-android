@@ -9,196 +9,196 @@
 
 
 // 顶点着色器
-extern const char _bilateral_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"\n"
-"const int GAUSSIAN_SAMPLES = 9;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"\n"
-"    // Calculate the positions for the blur\n"
-"    int multiplier = 0;\n"
-"    vec2 blurStep;\n"
-"    vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"\n"
-"    for (int i = 0; i < GAUSSIAN_SAMPLES; i++)\n"
-"    {\n"
-"        multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));\n"
-"        // Blur in x (horizontal)\n"
-"        blurStep = float(multiplier) * singleStepOffset;\n"
-"        blurCoordinates[i] = inputTextureCoordinate.xy + blurStep;\n"
-"    }\n"
-"}"
-;
+extern const char _bilateral_vertex_shader[]= SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+
+    const int GAUSSIAN_SAMPLES = 9;
+
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
+
+    varying vec2 textureCoordinate;
+    varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];
+
+    void main()
+    {
+        gl_Position = position;
+        textureCoordinate = inputTextureCoordinate.xy;
+
+        // Calculate the positions for the blur
+        int multiplier = 0;
+        vec2 blurStep;
+        vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);
+
+        for (int i = 0; i < GAUSSIAN_SAMPLES; i++)
+        {
+            multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));
+            // Blur in x (horizontal)
+            blurStep = float(multiplier) * singleStepOffset;
+            blurCoordinates[i] = inputTextureCoordinate.xy + blurStep;
+        }
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _bilateral_fragment_shader[]=
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"const lowp int GAUSSIAN_SAMPLES = 9;\n"
-"\n"
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
-"\n"
-"uniform mediump float distanceNormalizationFactor;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 centralColor;\n"
-"    lowp float gaussianWeightTotal;\n"
-"    lowp vec4 sum;\n"
-"    lowp vec4 sampleColor;\n"
-"    lowp float distanceFromCentralColor;\n"
-"    lowp float gaussianWeight;\n"
-"\n"
-"    centralColor = texture2D(inputImageTexture, blurCoordinates[4]);\n"
-"    gaussianWeightTotal = 0.18;\n"
-"    sum = centralColor * 0.18;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[0]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[1]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[2]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[3]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[5]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[6]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[7]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[8]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    gl_FragColor = sum / gaussianWeightTotal;\n"
-"}"
-;
+extern const char _bilateral_fragment_shader[]= SHADER_STR(
+    uniform sampler2D inputImageTexture;
+
+    const lowp int GAUSSIAN_SAMPLES = 9;
+
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];
+
+    uniform mediump float distanceNormalizationFactor;
+
+    void main()
+    {
+        lowp vec4 centralColor;
+        lowp float gaussianWeightTotal;
+        lowp vec4 sum;
+        lowp vec4 sampleColor;
+        lowp float distanceFromCentralColor;
+        lowp float gaussianWeight;
+
+        centralColor = texture2D(inputImageTexture, blurCoordinates[4]);
+        gaussianWeightTotal = 0.18;
+        sum = centralColor * 0.18;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[0]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[1]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[2]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[3]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[5]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[6]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[7]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        sampleColor = texture2D(inputImageTexture, blurCoordinates[8]);
+        distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+        gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);
+        gaussianWeightTotal += gaussianWeight;
+        sum += sampleColor * gaussianWeight;
+
+        gl_FragColor = sum / gaussianWeightTotal;
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _bilateral_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"const int GAUSSIAN_SAMPLES = 9;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
-"\n"
-"uniform float distanceNormalizationFactor;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 centralColor;\n"
-"    float gaussianWeightTotal;\n"
-"    vec4 sum;\n"
-"    vec4 sampleColor;\n"
-"    float distanceFromCentralColor;\n"
-"    float gaussianWeight;\n"
-"\n"
-"    centralColor = texture2D(inputImageTexture, blurCoordinates[4]);\n"
-"    gaussianWeightTotal = 0.18;\n"
-"    sum = centralColor * 0.18;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[0]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[1]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[2]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[3]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[5]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[6]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[7]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    sampleColor = texture2D(inputImageTexture, blurCoordinates[8]);\n"
-"    distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);\n"
-"    gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);\n"
-"    gaussianWeightTotal += gaussianWeight;\n"
-"    sum += sampleColor * gaussianWeight;\n"
-"\n"
-"    gl_FragColor = sum / gaussianWeightTotal;\n"
-"}"
-;
+extern const char _bilateral_fragment_shader[]= SHADER_STR(
+ precision mediump float;
+ uniform sampler2D inputImageTexture;
+
+ const int GAUSSIAN_SAMPLES = 9;
+
+ varying vec2 textureCoordinate;
+ varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];
+
+ uniform float distanceNormalizationFactor;
+
+ void main()
+ {
+     vec4 centralColor;
+     float gaussianWeightTotal;
+     vec4 sum;
+     vec4 sampleColor;
+     float distanceFromCentralColor;
+     float gaussianWeight;
+
+     centralColor = texture2D(inputImageTexture, blurCoordinates[4]);
+     gaussianWeightTotal = 0.18;
+     sum = centralColor * 0.18;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[0]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[1]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[2]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[3]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[5]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.15 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[6]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.12 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[7]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.09 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     sampleColor = texture2D(inputImageTexture, blurCoordinates[8]);
+     distanceFromCentralColor = min(distance(centralColor, sampleColor) * distanceNormalizationFactor, 1.0);
+     gaussianWeight = 0.05 * (1.0 - distanceFromCentralColor);
+     gaussianWeightTotal += gaussianWeight;
+     sum += sampleColor * gaussianWeight;
+
+     gl_FragColor = sum / gaussianWeightTotal;
+ }
+);
 
 #endif
 

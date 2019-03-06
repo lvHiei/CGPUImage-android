@@ -12,50 +12,50 @@
 
 
 // 片元着色器
-extern const char _falseColor_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform float intensity;\n"
-"uniform vec3 firstColor;\n"
-"uniform vec3 secondColor;\n"
-"\n"
-"const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float luminance = dot(textureColor.rgb, luminanceWeighting);\n"
-"\n"
-"    gl_FragColor = vec4( mix(firstColor.rgb, secondColor.rgb, luminance), textureColor.a);\n"
-"}"
-;
+extern const char _falseColor_fragment_shader[]=SHADER_STR(
+    precision lowp float;
+
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform float intensity;
+    uniform vec3 firstColor;
+    uniform vec3 secondColor;
+
+    const mediump vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        float luminance = dot(textureColor.rgb, luminanceWeighting);
+
+        gl_FragColor = vec4( mix(firstColor.rgb, secondColor.rgb, luminance), textureColor.a);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _falseColor_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform float intensity;\n"
-"uniform vec3 firstColor;\n"
-"uniform vec3 secondColor;\n"
-"\n"
-"const vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float luminance = dot(textureColor.rgb, luminanceWeighting);\n"
-"\n"
-"    gl_FragColor = vec4( mix(firstColor.rgb, secondColor.rgb, luminance), textureColor.a);\n"
-"}"
-;
+extern const char _falseColor_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform float intensity;
+    uniform vec3 firstColor;
+    uniform vec3 secondColor;
+
+    const vec3 luminanceWeighting = vec3(0.2125, 0.7154, 0.0721);
+
+    void main()
+    {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+     float luminance = dot(textureColor.rgb, luminanceWeighting);
+
+     gl_FragColor = vec4( mix(firstColor.rgb, secondColor.rgb, luminance), textureColor.a);
+    }
+);
 
 #endif
 

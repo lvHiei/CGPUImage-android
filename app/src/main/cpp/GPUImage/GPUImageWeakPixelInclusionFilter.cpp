@@ -12,82 +12,82 @@
 
 
 // 片元着色器
-extern const char _weakPixelInclusion_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 topLeftTextureCoordinate;\n"
-"varying vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"varying vec2 bottomLeftTextureCoordinate;\n"
-"varying vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float bottomLeftIntensity = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;\n"
-"    float topRightIntensity = texture2D(inputImageTexture, topRightTextureCoordinate).r;\n"
-"    float topLeftIntensity = texture2D(inputImageTexture, topLeftTextureCoordinate).r;\n"
-"    float bottomRightIntensity = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;\n"
-"    float leftIntensity = texture2D(inputImageTexture, leftTextureCoordinate).r;\n"
-"    float rightIntensity = texture2D(inputImageTexture, rightTextureCoordinate).r;\n"
-"    float bottomIntensity = texture2D(inputImageTexture, bottomTextureCoordinate).r;\n"
-"    float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;\n"
-"    float centerIntensity = texture2D(inputImageTexture, textureCoordinate).r;\n"
-"\n"
-"    float pixelIntensitySum = bottomLeftIntensity + topRightIntensity + topLeftIntensity + bottomRightIntensity + leftIntensity + rightIntensity + bottomIntensity + topIntensity + centerIntensity;\n"
-"    float sumTest = step(1.5, pixelIntensitySum);\n"
-"    float pixelTest = step(0.01, centerIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(sumTest * pixelTest), 1.0);\n"
-"}"
-;
+extern const char _weakPixelInclusion_fragment_shader[]=SHADER_STR(
+    precision lowp float;
+
+    varying vec2 textureCoordinate;
+    varying vec2 leftTextureCoordinate;
+    varying vec2 rightTextureCoordinate;
+
+    varying vec2 topTextureCoordinate;
+    varying vec2 topLeftTextureCoordinate;
+    varying vec2 topRightTextureCoordinate;
+
+    varying vec2 bottomTextureCoordinate;
+    varying vec2 bottomLeftTextureCoordinate;
+    varying vec2 bottomRightTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        float bottomLeftIntensity = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;
+        float topRightIntensity = texture2D(inputImageTexture, topRightTextureCoordinate).r;
+        float topLeftIntensity = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
+        float bottomRightIntensity = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;
+        float leftIntensity = texture2D(inputImageTexture, leftTextureCoordinate).r;
+        float rightIntensity = texture2D(inputImageTexture, rightTextureCoordinate).r;
+        float bottomIntensity = texture2D(inputImageTexture, bottomTextureCoordinate).r;
+        float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;
+        float centerIntensity = texture2D(inputImageTexture, textureCoordinate).r;
+
+        float pixelIntensitySum = bottomLeftIntensity + topRightIntensity + topLeftIntensity + bottomRightIntensity + leftIntensity + rightIntensity + bottomIntensity + topIntensity + centerIntensity;
+        float sumTest = step(1.5, pixelIntensitySum);
+        float pixelTest = step(0.01, centerIntensity);
+
+        gl_FragColor = vec4(vec3(sumTest * pixelTest), 1.0);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _weakPixelInclusion_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 topLeftTextureCoordinate;\n"
-"varying vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"varying vec2 bottomLeftTextureCoordinate;\n"
-"varying vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float bottomLeftIntensity = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;\n"
-"    float topRightIntensity = texture2D(inputImageTexture, topRightTextureCoordinate).r;\n"
-"    float topLeftIntensity = texture2D(inputImageTexture, topLeftTextureCoordinate).r;\n"
-"    float bottomRightIntensity = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;\n"
-"    float leftIntensity = texture2D(inputImageTexture, leftTextureCoordinate).r;\n"
-"    float rightIntensity = texture2D(inputImageTexture, rightTextureCoordinate).r;\n"
-"    float bottomIntensity = texture2D(inputImageTexture, bottomTextureCoordinate).r;\n"
-"    float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;\n"
-"    float centerIntensity = texture2D(inputImageTexture, textureCoordinate).r;\n"
-"\n"
-"    float pixelIntensitySum = bottomLeftIntensity + topRightIntensity + topLeftIntensity + bottomRightIntensity + leftIntensity + rightIntensity + bottomIntensity + topIntensity + centerIntensity;\n"
-"    float sumTest = step(1.5, pixelIntensitySum);\n"
-"    float pixelTest = step(0.01, centerIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(sumTest * pixelTest), 1.0);\n"
-"}"
-;
+extern const char _weakPixelInclusion_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 leftTextureCoordinate;
+ varying vec2 rightTextureCoordinate;
+
+ varying vec2 topTextureCoordinate;
+ varying vec2 topLeftTextureCoordinate;
+ varying vec2 topRightTextureCoordinate;
+
+ varying vec2 bottomTextureCoordinate;
+ varying vec2 bottomLeftTextureCoordinate;
+ varying vec2 bottomRightTextureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ void main()
+ {
+     float bottomLeftIntensity = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;
+     float topRightIntensity = texture2D(inputImageTexture, topRightTextureCoordinate).r;
+     float topLeftIntensity = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
+     float bottomRightIntensity = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;
+     float leftIntensity = texture2D(inputImageTexture, leftTextureCoordinate).r;
+     float rightIntensity = texture2D(inputImageTexture, rightTextureCoordinate).r;
+     float bottomIntensity = texture2D(inputImageTexture, bottomTextureCoordinate).r;
+     float topIntensity = texture2D(inputImageTexture, topTextureCoordinate).r;
+     float centerIntensity = texture2D(inputImageTexture, textureCoordinate).r;
+
+     float pixelIntensitySum = bottomLeftIntensity + topRightIntensity + topLeftIntensity + bottomRightIntensity + leftIntensity + rightIntensity + bottomIntensity + topIntensity + centerIntensity;
+     float sumTest = step(1.5, pixelIntensitySum);
+     float pixelTest = step(0.01, centerIntensity);
+
+     gl_FragColor = vec4(vec3(sumTest * pixelTest), 1.0);
+ }
+);
 
 #endif
 

@@ -12,57 +12,57 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _mask_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    //Averages mask's the RGB values, and scales that value by the mask's alpha\n"
-"    //\n"
-"    //The dot product should take fewer cycles than doing an average normally\n"
-"    //\n"
-"    //Typical/ideal case, R,G, and B will be the same, and Alpha will be 1.0\n"
-"    lowp float newAlpha = dot(textureColor2.rgb, vec3(.33333334, .33333334, .33333334)) * textureColor2.a;\n"
-"\n"
-"    gl_FragColor = vec4(textureColor.xyz, newAlpha);\n"
-"//\t gl_FragColor = vec4(textureColor2);\n"
-"}"
-;
+extern const char _mask_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);
+
+        //Averages mask's the RGB values, and scales that value by the mask's alpha
+        //
+        //The dot product should take fewer cycles than doing an average normally
+        //
+        //Typical/ideal case, R,G, and B will be the same, and Alpha will be 1.0
+        lowp float newAlpha = dot(textureColor2.rgb, vec3(.33333334, .33333334, .33333334)) * textureColor2.a;
+
+        gl_FragColor = vec4(textureColor.xyz, newAlpha);
+        //\t gl_FragColor = vec4(textureColor2);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _mask_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    //Averages mask's the RGB values, and scales that value by the mask's alpha\n"
-"    //\n"
-"    //The dot product should take fewer cycles than doing an average normally\n"
-"    //\n"
-"    //Typical/ideal case, R,G, and B will be the same, and Alpha will be 1.0\n"
-"    float newAlpha = dot(textureColor2.rgb, vec3(.33333334, .33333334, .33333334)) * textureColor2.a;\n"
-"\n"
-"    gl_FragColor = vec4(textureColor.xyz, newAlpha);\n"
-"    //\t gl_FragColor = vec4(textureColor2);\n"
-"}"
-;
+extern const char _mask_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 textureCoordinate2;
+
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+
+ void main()
+ {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+     vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);
+
+     //Averages mask's the RGB values, and scales that value by the mask's alpha
+     //
+     //The dot product should take fewer cycles than doing an average normally
+     //
+     //Typical/ideal case, R,G, and B will be the same, and Alpha will be 1.0
+     float newAlpha = dot(textureColor2.rgb, vec3(.33333334, .33333334, .33333334)) * textureColor2.a;
+
+     gl_FragColor = vec4(textureColor.xyz, newAlpha);
+     //\t gl_FragColor = vec4(textureColor2);
+ }
+);
 
 #endif
 

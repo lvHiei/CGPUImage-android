@@ -12,37 +12,37 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _contrast_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform lowp float contrast;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(((textureColor.rgb - vec3(0.5)) * contrast + vec3(0.5)), textureColor.w);\n"
-"}"
-;
+extern const char _contrast_fragment_shader[] = SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform lowp float contrast;
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+        gl_FragColor = vec4(((textureColor.rgb - vec3(0.5)) * contrast + vec3(0.5)), textureColor.w);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _contrast_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"varying vec2 textureCoordinate;\n"
-"uniform float contrast;\n"
+extern const char _contrast_fragment_shader[] = SHADER_STR(
+    precision mediump float;
+    uniform sampler2D inputImageTexture;
+    varying vec2 textureCoordinate;
+    uniform float contrast;
 
-"void main()\n"
-"{\n"
-"	vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n "
-"   // contrast filter \n"
-"   vec4 contrastColor = vec4(((textureColor.rgb - vec3(0.5)) * contrast + vec3(0.5)), textureColor.a);\n"
-"   gl_FragColor = contrastColor;\n"
-"}\n"
-;
+    void main()
+    {
+    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+    // contrast filter
+    vec4 contrastColor = vec4(((textureColor.rgb - vec3(0.5)) * contrast + vec3(0.5)), textureColor.a);
+    gl_FragColor = contrastColor;
+    }
+);
 
 #endif
 

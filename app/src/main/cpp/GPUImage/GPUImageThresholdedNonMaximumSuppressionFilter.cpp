@@ -11,107 +11,107 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _thresholdedNonMaximumSuppression_fragment_shader[]=
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 leftTextureCoordinate;\n"
-"varying highp vec2 rightTextureCoordinate;\n"
-"\n"
-"varying highp vec2 topTextureCoordinate;\n"
-"varying highp vec2 topLeftTextureCoordinate;\n"
-"varying highp vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying highp vec2 bottomTextureCoordinate;\n"
-"varying highp vec2 bottomLeftTextureCoordinate;\n"
-"varying highp vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"uniform lowp float threshold;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;\n"
-"    lowp float bottomLeftColor = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;\n"
-"    lowp float bottomRightColor = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;\n"
-"    lowp vec4 centerColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp float leftColor = texture2D(inputImageTexture, leftTextureCoordinate).r;\n"
-"    lowp float rightColor = texture2D(inputImageTexture, rightTextureCoordinate).r;\n"
-"    lowp float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;\n"
-"    lowp float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;\n"
-"    lowp float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;\n"
-"\n"
-"    // Use a tiebreaker for pixels to the left and immediately above this one\n"
-"    lowp float multiplier = 1.0 - step(centerColor.r, topColor);\n"
-"    multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));\n"
-"    multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));\n"
-"    multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));\n"
-"\n"
-"    lowp float maxValue = max(centerColor.r, bottomColor);\n"
-"    maxValue = max(maxValue, bottomRightColor);\n"
-"    maxValue = max(maxValue, rightColor);\n"
-"    maxValue = max(maxValue, topRightColor);\n"
-"\n"
-"    lowp float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;\n"
-"    finalValue = step(threshold, finalValue);\n"
-"\n"
-"    gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);\n"
-"//\n"
-"//     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);\n"
-"}"
-;
+extern const char _thresholdedNonMaximumSuppression_fragment_shader[]=SHADER_STR(
+    uniform sampler2D inputImageTexture;
+
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 leftTextureCoordinate;
+    varying highp vec2 rightTextureCoordinate;
+
+    varying highp vec2 topTextureCoordinate;
+    varying highp vec2 topLeftTextureCoordinate;
+    varying highp vec2 topRightTextureCoordinate;
+
+    varying highp vec2 bottomTextureCoordinate;
+    varying highp vec2 bottomLeftTextureCoordinate;
+    varying highp vec2 bottomRightTextureCoordinate;
+
+    uniform lowp float threshold;
+
+    void main()
+    {
+        lowp float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;
+        lowp float bottomLeftColor = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;
+        lowp float bottomRightColor = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;
+        lowp vec4 centerColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp float leftColor = texture2D(inputImageTexture, leftTextureCoordinate).r;
+        lowp float rightColor = texture2D(inputImageTexture, rightTextureCoordinate).r;
+        lowp float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;
+        lowp float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;
+        lowp float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
+
+        // Use a tiebreaker for pixels to the left and immediately above this one
+        lowp float multiplier = 1.0 - step(centerColor.r, topColor);
+        multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));
+        multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));
+        multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));
+
+        lowp float maxValue = max(centerColor.r, bottomColor);
+        maxValue = max(maxValue, bottomRightColor);
+        maxValue = max(maxValue, rightColor);
+        maxValue = max(maxValue, topRightColor);
+
+        lowp float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;
+        finalValue = step(threshold, finalValue);
+
+        gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);
+        //
+        //     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _thresholdedNonMaximumSuppression_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 topLeftTextureCoordinate;\n"
-"varying vec2 topRightTextureCoordinate;\n"
-"\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"varying vec2 bottomLeftTextureCoordinate;\n"
-"varying vec2 bottomRightTextureCoordinate;\n"
-"\n"
-"uniform float threshold;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;\n"
-"    float bottomLeftColor = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;\n"
-"    float bottomRightColor = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;\n"
-"    vec4 centerColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float leftColor = texture2D(inputImageTexture, leftTextureCoordinate).r;\n"
-"    float rightColor = texture2D(inputImageTexture, rightTextureCoordinate).r;\n"
-"    float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;\n"
-"    float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;\n"
-"    float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;\n"
-"\n"
-"    // Use a tiebreaker for pixels to the left and immediately above this one\n"
-"    float multiplier = 1.0 - step(centerColor.r, topColor);\n"
-"    multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));\n"
-"    multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));\n"
-"    multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));\n"
-"\n"
-"    float maxValue = max(centerColor.r, bottomColor);\n"
-"    maxValue = max(maxValue, bottomRightColor);\n"
-"    maxValue = max(maxValue, rightColor);\n"
-"    maxValue = max(maxValue, topRightColor);\n"
-"\n"
-"    float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;\n"
-"    finalValue = step(threshold, finalValue);\n"
-"\n"
-"    gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);\n"
-"    //\n"
-"    //     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);\n"
-"}"
-;
+extern const char _thresholdedNonMaximumSuppression_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ uniform sampler2D inputImageTexture;
+
+ varying vec2 textureCoordinate;
+ varying vec2 leftTextureCoordinate;
+ varying vec2 rightTextureCoordinate;
+
+ varying vec2 topTextureCoordinate;
+ varying vec2 topLeftTextureCoordinate;
+ varying vec2 topRightTextureCoordinate;
+
+ varying vec2 bottomTextureCoordinate;
+ varying vec2 bottomLeftTextureCoordinate;
+ varying vec2 bottomRightTextureCoordinate;
+
+ uniform float threshold;
+
+ void main()
+ {
+     float bottomColor = texture2D(inputImageTexture, bottomTextureCoordinate).r;
+     float bottomLeftColor = texture2D(inputImageTexture, bottomLeftTextureCoordinate).r;
+     float bottomRightColor = texture2D(inputImageTexture, bottomRightTextureCoordinate).r;
+     vec4 centerColor = texture2D(inputImageTexture, textureCoordinate);
+     float leftColor = texture2D(inputImageTexture, leftTextureCoordinate).r;
+     float rightColor = texture2D(inputImageTexture, rightTextureCoordinate).r;
+     float topColor = texture2D(inputImageTexture, topTextureCoordinate).r;
+     float topRightColor = texture2D(inputImageTexture, topRightTextureCoordinate).r;
+     float topLeftColor = texture2D(inputImageTexture, topLeftTextureCoordinate).r;
+
+     // Use a tiebreaker for pixels to the left and immediately above this one
+     float multiplier = 1.0 - step(centerColor.r, topColor);
+     multiplier = multiplier * (1.0 - step(centerColor.r, topLeftColor));
+     multiplier = multiplier * (1.0 - step(centerColor.r, leftColor));
+     multiplier = multiplier * (1.0 - step(centerColor.r, bottomLeftColor));
+
+     float maxValue = max(centerColor.r, bottomColor);
+     maxValue = max(maxValue, bottomRightColor);
+     maxValue = max(maxValue, rightColor);
+     maxValue = max(maxValue, topRightColor);
+
+     float finalValue = centerColor.r * step(maxValue, centerColor.r) * multiplier;
+     finalValue = step(threshold, finalValue);
+
+     gl_FragColor = vec4(finalValue, finalValue, finalValue, 1.0);
+     //
+     //     gl_FragColor = vec4((centerColor.rgb * step(maxValue, step(threshold, centerColor.r)) * multiplier), 1.0);
+ }
+);
 
 #endif
 

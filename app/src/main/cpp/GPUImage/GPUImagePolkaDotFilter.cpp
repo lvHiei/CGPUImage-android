@@ -12,60 +12,60 @@
 
 
 // 片元着色器
-extern const char _polkaDot_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp float fractionalWidthOfPixel;\n"
-"uniform highp float aspectRatio;\n"
-"uniform highp float dotScaling;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);\n"
-"\n"
-"    highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp vec2 adjustedSamplePos = vec2(samplePos.x, (samplePos.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp float distanceFromSamplePoint = distance(adjustedSamplePos, textureCoordinateToUse);\n"
-"    lowp float checkForPresenceWithinDot = step(distanceFromSamplePoint, (fractionalWidthOfPixel * 0.5) * dotScaling);\n"
-"\n"
-"    lowp vec4 inputColor = texture2D(inputImageTexture, samplePos);\n"
-"\n"
-"    gl_FragColor = vec4(inputColor.rgb * checkForPresenceWithinDot, inputColor.a);\n"
-"}"
-;
+extern const char _polkaDot_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp float fractionalWidthOfPixel;
+    uniform highp float aspectRatio;
+    uniform highp float dotScaling;
+
+    void main()
+    {
+        highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
+
+        highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp vec2 adjustedSamplePos = vec2(samplePos.x, (samplePos.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp float distanceFromSamplePoint = distance(adjustedSamplePos, textureCoordinateToUse);
+        lowp float checkForPresenceWithinDot = step(distanceFromSamplePoint, (fractionalWidthOfPixel * 0.5) * dotScaling);
+
+        lowp vec4 inputColor = texture2D(inputImageTexture, samplePos);
+
+        gl_FragColor = vec4(inputColor.rgb * checkForPresenceWithinDot, inputColor.a);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _polkaDot_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float fractionalWidthOfPixel;\n"
-"uniform float aspectRatio;\n"
-"uniform float dotScaling;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);\n"
-"\n"
-"    vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    vec2 adjustedSamplePos = vec2(samplePos.x, (samplePos.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    float distanceFromSamplePoint = distance(adjustedSamplePos, textureCoordinateToUse);\n"
-"    float checkForPresenceWithinDot = step(distanceFromSamplePoint, (fractionalWidthOfPixel * 0.5) * dotScaling);\n"
-"\n"
-"    vec4 inputColor = texture2D(inputImageTexture, samplePos);\n"
-"\n"
-"    gl_FragColor = vec4(inputColor.rgb * checkForPresenceWithinDot, inputColor.a);\n"
-"}"
-;
+extern const char _polkaDot_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform float fractionalWidthOfPixel;
+ uniform float aspectRatio;
+ uniform float dotScaling;
+
+ void main()
+ {
+     vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
+
+     vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
+     vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     vec2 adjustedSamplePos = vec2(samplePos.x, (samplePos.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     float distanceFromSamplePoint = distance(adjustedSamplePos, textureCoordinateToUse);
+     float checkForPresenceWithinDot = step(distanceFromSamplePoint, (fractionalWidthOfPixel * 0.5) * dotScaling);
+
+     vec4 inputColor = texture2D(inputImageTexture, samplePos);
+
+     gl_FragColor = vec4(inputColor.rgb * checkForPresenceWithinDot, inputColor.a);
+ }
+);
 
 #endif
 

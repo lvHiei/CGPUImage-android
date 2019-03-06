@@ -11,48 +11,47 @@
 
 
 // 顶点着色器
-extern const char _base_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
+extern const char _base_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
 
-"varying vec2 textureCoordinate;\n"
+    varying vec2 textureCoordinate;
 
-"void main()\n"
-"{\n"
-"	gl_Position = position;\n"
-"	textureCoordinate = inputTextureCoordinate.xy;\n"
-"}\n"
-;
+    void main()
+    {
+        gl_Position = position;
+        textureCoordinate = inputTextureCoordinate.xy;
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _base_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"}"
-;
+extern const char _base_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _base_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"varying vec2 textureCoordinate;\n"
+extern const char _base_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+    uniform sampler2D inputImageTexture;
 
-"void main()\n"
-"{\n"
-"	vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n "
-"   gl_FragColor = textureColor;\n"
-"}\n"
-;
+    void main()
+    {
+        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+    }
+);
 
 #endif
 

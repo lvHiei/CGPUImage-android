@@ -12,47 +12,47 @@
 
 
 // 片元着色器
-extern const char _luminanceThreshold_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform highp float threshold;\n"
-"\n"
-"const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    highp float luminance = dot(textureColor.rgb, W);\n"
-"    highp float thresholdResult = step(threshold, luminance);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(thresholdResult), textureColor.w);\n"
-"}"
-;
+extern const char _luminanceThreshold_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform highp float threshold;
+
+    const highp vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+    void main()
+    {
+        highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        highp float luminance = dot(textureColor.rgb, W);
+        highp float thresholdResult = step(threshold, luminance);
+
+        gl_FragColor = vec4(vec3(thresholdResult), textureColor.w);
+    }
+);
 
 
 #else
 
 
 // 片元着色器
-extern const char _luminanceThreshold_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform float threshold;\n"
-"\n"
-"const vec3 W = vec3(0.2125, 0.7154, 0.0721);\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float luminance = dot(textureColor.rgb, W);\n"
-"    float thresholdResult = step(threshold, luminance);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(thresholdResult), textureColor.w);\n"
-"}"
-;
+extern const char _luminanceThreshold_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+ uniform float threshold;
+
+ const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+
+ void main()
+ {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+     float luminance = dot(textureColor.rgb, W);
+     float thresholdResult = step(threshold, luminance);
+
+     gl_FragColor = vec4(vec3(thresholdResult), textureColor.w);
+ }
+);
 
 
 #endif

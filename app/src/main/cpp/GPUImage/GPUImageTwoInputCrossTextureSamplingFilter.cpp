@@ -9,47 +9,47 @@
 
 
 // 顶点着色器
-extern const char _twoInputNearbyTexelSamplling_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"attribute vec4 inputTextureCoordinate2;\n"
-"\n"
-"uniform float texelWidth;\n"
-"uniform float texelHeight;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"\n"
-"varying vec2 textureCoordinate2;\n"
-"varying vec2 leftTextureCoordinate2;\n"
-"varying vec2 rightTextureCoordinate2;\n"
-"varying vec2 topTextureCoordinate2;\n"
-"varying vec2 bottomTextureCoordinate2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 widthStep = vec2(texelWidth, 0.0);\n"
-"    vec2 heightStep = vec2(0.0, texelHeight);\n"
-"\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"    leftTextureCoordinate = inputTextureCoordinate.xy - widthStep;\n"
-"    rightTextureCoordinate = inputTextureCoordinate.xy + widthStep;\n"
-"    topTextureCoordinate = inputTextureCoordinate.xy - heightStep;\n"
-"    bottomTextureCoordinate = inputTextureCoordinate.xy + heightStep;\n"
-"\n"
-"    textureCoordinate2 = inputTextureCoordinate2.xy;\n"
-"    leftTextureCoordinate2 = inputTextureCoordinate2.xy - widthStep;\n"
-"    rightTextureCoordinate2 = inputTextureCoordinate2.xy + widthStep;\n"
-"    topTextureCoordinate2 = inputTextureCoordinate2.xy - heightStep;\n"
-"    bottomTextureCoordinate2 = inputTextureCoordinate2.xy + heightStep;\n"
-"}"
-;
+extern const char _twoInputNearbyTexelSamplling_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+    attribute vec4 inputTextureCoordinate2;
+
+    uniform float texelWidth;
+    uniform float texelHeight;
+
+    varying vec2 textureCoordinate;
+    varying vec2 leftTextureCoordinate;
+    varying vec2 rightTextureCoordinate;
+    varying vec2 topTextureCoordinate;
+    varying vec2 bottomTextureCoordinate;
+
+    varying vec2 textureCoordinate2;
+    varying vec2 leftTextureCoordinate2;
+    varying vec2 rightTextureCoordinate2;
+    varying vec2 topTextureCoordinate2;
+    varying vec2 bottomTextureCoordinate2;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 widthStep = vec2(texelWidth, 0.0);
+        vec2 heightStep = vec2(0.0, texelHeight);
+
+        textureCoordinate = inputTextureCoordinate.xy;
+        leftTextureCoordinate = inputTextureCoordinate.xy - widthStep;
+        rightTextureCoordinate = inputTextureCoordinate.xy + widthStep;
+        topTextureCoordinate = inputTextureCoordinate.xy - heightStep;
+        bottomTextureCoordinate = inputTextureCoordinate.xy + heightStep;
+
+        textureCoordinate2 = inputTextureCoordinate2.xy;
+        leftTextureCoordinate2 = inputTextureCoordinate2.xy - widthStep;
+        rightTextureCoordinate2 = inputTextureCoordinate2.xy + widthStep;
+        topTextureCoordinate2 = inputTextureCoordinate2.xy - heightStep;
+        bottomTextureCoordinate2 = inputTextureCoordinate2.xy + heightStep;
+    }
+);
 
 
 GPUImageTwoInputCrossTextureSamplingFilter::GPUImageTwoInputCrossTextureSamplingFilter(const char *fragment)

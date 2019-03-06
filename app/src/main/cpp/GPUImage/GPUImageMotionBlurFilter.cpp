@@ -10,127 +10,127 @@
 
 
 // 顶点着色器
-extern const char _motionBlur_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"\n"
-"uniform vec2 directionalTexelStep;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 oneStepBackTextureCoordinate;\n"
-"varying vec2 twoStepsBackTextureCoordinate;\n"
-"varying vec2 threeStepsBackTextureCoordinate;\n"
-"varying vec2 fourStepsBackTextureCoordinate;\n"
-"varying vec2 oneStepForwardTextureCoordinate;\n"
-"varying vec2 twoStepsForwardTextureCoordinate;\n"
-"varying vec2 threeStepsForwardTextureCoordinate;\n"
-"varying vec2 fourStepsForwardTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"    oneStepBackTextureCoordinate = inputTextureCoordinate.xy - directionalTexelStep;\n"
-"    twoStepsBackTextureCoordinate = inputTextureCoordinate.xy - 2.0 * directionalTexelStep;\n"
-"    threeStepsBackTextureCoordinate = inputTextureCoordinate.xy - 3.0 * directionalTexelStep;\n"
-"    fourStepsBackTextureCoordinate = inputTextureCoordinate.xy - 4.0 * directionalTexelStep;\n"
-"    oneStepForwardTextureCoordinate = inputTextureCoordinate.xy + directionalTexelStep;\n"
-"    twoStepsForwardTextureCoordinate = inputTextureCoordinate.xy + 2.0 * directionalTexelStep;\n"
-"    threeStepsForwardTextureCoordinate = inputTextureCoordinate.xy + 3.0 * directionalTexelStep;\n"
-"    fourStepsForwardTextureCoordinate = inputTextureCoordinate.xy + 4.0 * directionalTexelStep;\n"
-"}"
-;
+extern const char _motionBlur_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+
+    uniform vec2 directionalTexelStep;
+
+    varying vec2 textureCoordinate;
+    varying vec2 oneStepBackTextureCoordinate;
+    varying vec2 twoStepsBackTextureCoordinate;
+    varying vec2 threeStepsBackTextureCoordinate;
+    varying vec2 fourStepsBackTextureCoordinate;
+    varying vec2 oneStepForwardTextureCoordinate;
+    varying vec2 twoStepsForwardTextureCoordinate;
+    varying vec2 threeStepsForwardTextureCoordinate;
+    varying vec2 fourStepsForwardTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        textureCoordinate = inputTextureCoordinate.xy;
+        oneStepBackTextureCoordinate = inputTextureCoordinate.xy - directionalTexelStep;
+        twoStepsBackTextureCoordinate = inputTextureCoordinate.xy - 2.0 * directionalTexelStep;
+        threeStepsBackTextureCoordinate = inputTextureCoordinate.xy - 3.0 * directionalTexelStep;
+        fourStepsBackTextureCoordinate = inputTextureCoordinate.xy - 4.0 * directionalTexelStep;
+        oneStepForwardTextureCoordinate = inputTextureCoordinate.xy + directionalTexelStep;
+        twoStepsForwardTextureCoordinate = inputTextureCoordinate.xy + 2.0 * directionalTexelStep;
+        threeStepsForwardTextureCoordinate = inputTextureCoordinate.xy + 3.0 * directionalTexelStep;
+        fourStepsForwardTextureCoordinate = inputTextureCoordinate.xy + 4.0 * directionalTexelStep;
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-const char _motionBlur_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 oneStepBackTextureCoordinate;\n"
-"varying vec2 twoStepsBackTextureCoordinate;\n"
-"varying vec2 threeStepsBackTextureCoordinate;\n"
-"varying vec2 fourStepsBackTextureCoordinate;\n"
-"varying vec2 oneStepForwardTextureCoordinate;\n"
-"varying vec2 twoStepsForwardTextureCoordinate;\n"
-"varying vec2 threeStepsForwardTextureCoordinate;\n"
-"varying vec2 fourStepsForwardTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    // Box weights\n"
-"//     lowp vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.1111111;\n"
-"//     fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.1111111;\n"
-"\n"
-"    lowp vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.18;\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.15;\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) *  0.12;\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.09;\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.05;\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.15;\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) *  0.12;\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.09;\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.05;\n"
-"\n"
-"    gl_FragColor = fragmentColor;\n"
-"}"
-;
+const char _motionBlur_fragment_shader[]=SHADER_STR(
+    precision highp float;
+
+    uniform sampler2D inputImageTexture;
+
+    varying vec2 textureCoordinate;
+    varying vec2 oneStepBackTextureCoordinate;
+    varying vec2 twoStepsBackTextureCoordinate;
+    varying vec2 threeStepsBackTextureCoordinate;
+    varying vec2 fourStepsBackTextureCoordinate;
+    varying vec2 oneStepForwardTextureCoordinate;
+    varying vec2 twoStepsForwardTextureCoordinate;
+    varying vec2 threeStepsForwardTextureCoordinate;
+    varying vec2 fourStepsForwardTextureCoordinate;
+
+    void main()
+    {
+        // Box weights
+        //     lowp vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.1111111;
+        //     fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.1111111;
+
+        lowp vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.18;
+        fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.15;
+        fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) *  0.12;
+        fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.09;
+        fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.05;
+        fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.15;
+        fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) *  0.12;
+        fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.09;
+        fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.05;
+
+        gl_FragColor = fragmentColor;
+    }
+);
 
 #else
 
 // 片元着色器
-const char _motionBlur_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 oneStepBackTextureCoordinate;\n"
-"varying vec2 twoStepsBackTextureCoordinate;\n"
-"varying vec2 threeStepsBackTextureCoordinate;\n"
-"varying vec2 fourStepsBackTextureCoordinate;\n"
-"varying vec2 oneStepForwardTextureCoordinate;\n"
-"varying vec2 twoStepsForwardTextureCoordinate;\n"
-"varying vec2 threeStepsForwardTextureCoordinate;\n"
-"varying vec2 fourStepsForwardTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    // Box weights\n"
-"    //     vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.1111111;\n"
-"    //     fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.1111111;\n"
-"\n"
-"    vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.18;\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.15;\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) *  0.12;\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.09;\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.05;\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.15;\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) *  0.12;\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.09;\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.05;\n"
-"\n"
-"    gl_FragColor = fragmentColor;\n"
-"}"
-;
+const char _motionBlur_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ uniform sampler2D inputImageTexture;
+
+ varying vec2 textureCoordinate;
+ varying vec2 oneStepBackTextureCoordinate;
+ varying vec2 twoStepsBackTextureCoordinate;
+ varying vec2 threeStepsBackTextureCoordinate;
+ varying vec2 fourStepsBackTextureCoordinate;
+ varying vec2 oneStepForwardTextureCoordinate;
+ varying vec2 twoStepsForwardTextureCoordinate;
+ varying vec2 threeStepsForwardTextureCoordinate;
+ varying vec2 fourStepsForwardTextureCoordinate;
+
+ void main()
+ {
+     // Box weights
+     //     vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.1111111;
+     //     fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.1111111;
+
+     vec4 fragmentColor = texture2D(inputImageTexture, textureCoordinate) * 0.18;
+     fragmentColor += texture2D(inputImageTexture, oneStepBackTextureCoordinate) * 0.15;
+     fragmentColor += texture2D(inputImageTexture, twoStepsBackTextureCoordinate) *  0.12;
+     fragmentColor += texture2D(inputImageTexture, threeStepsBackTextureCoordinate) * 0.09;
+     fragmentColor += texture2D(inputImageTexture, fourStepsBackTextureCoordinate) * 0.05;
+     fragmentColor += texture2D(inputImageTexture, oneStepForwardTextureCoordinate) * 0.15;
+     fragmentColor += texture2D(inputImageTexture, twoStepsForwardTextureCoordinate) *  0.12;
+     fragmentColor += texture2D(inputImageTexture, threeStepsForwardTextureCoordinate) * 0.09;
+     fragmentColor += texture2D(inputImageTexture, fourStepsForwardTextureCoordinate) * 0.05;
+
+     gl_FragColor = fragmentColor;
+ }
+);
 
 #endif
 

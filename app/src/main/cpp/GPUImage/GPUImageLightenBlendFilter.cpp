@@ -13,42 +13,42 @@
 
 
 // 片元着色器
-extern const char _lightenBlend_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    gl_FragColor = max(textureColor, textureColor2);\n"
-"}"
-;
+extern const char _lightenBlend_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);
+
+        gl_FragColor = max(textureColor, textureColor2);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _lightenBlend_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    gl_FragColor = max(textureColor, textureColor2);\n"
-"}"
-;
+extern const char _lightenBlend_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 textureCoordinate2;
+
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+
+ void main()
+ {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+     vec4 textureColor2 = texture2D(inputImageTexture2, textureCoordinate2);
+
+     gl_FragColor = max(textureColor, textureColor2);
+ }
+);
 
 #endif
 

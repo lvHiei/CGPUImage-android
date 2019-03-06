@@ -9,126 +9,126 @@
 
 
 // 顶点着色器
-extern const char _lanczosResapling_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec2 inputTextureCoordinate;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepLeftTextureCoordinate;\n"
-"varying vec2 twoStepsLeftTextureCoordinate;\n"
-"varying vec2 threeStepsLeftTextureCoordinate;\n"
-"varying vec2 fourStepsLeftTextureCoordinate;\n"
-"varying vec2 oneStepRightTextureCoordinate;\n"
-"varying vec2 twoStepsRightTextureCoordinate;\n"
-"varying vec2 threeStepsRightTextureCoordinate;\n"
-"varying vec2 fourStepsRightTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 firstOffset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"    vec2 secondOffset = vec2(2.0 * texelWidthOffset, 2.0 * texelHeightOffset);\n"
-"    vec2 thirdOffset = vec2(3.0 * texelWidthOffset, 3.0 * texelHeightOffset);\n"
-"    vec2 fourthOffset = vec2(4.0 * texelWidthOffset, 4.0 * texelHeightOffset);\n"
-"\n"
-"    centerTextureCoordinate = inputTextureCoordinate;\n"
-"    oneStepLeftTextureCoordinate = inputTextureCoordinate - firstOffset;\n"
-"    twoStepsLeftTextureCoordinate = inputTextureCoordinate - secondOffset;\n"
-"    threeStepsLeftTextureCoordinate = inputTextureCoordinate - thirdOffset;\n"
-"    fourStepsLeftTextureCoordinate = inputTextureCoordinate - fourthOffset;\n"
-"    oneStepRightTextureCoordinate = inputTextureCoordinate + firstOffset;\n"
-"    twoStepsRightTextureCoordinate = inputTextureCoordinate + secondOffset;\n"
-"    threeStepsRightTextureCoordinate = inputTextureCoordinate + thirdOffset;\n"
-"    fourStepsRightTextureCoordinate = inputTextureCoordinate + fourthOffset;\n"
-"}"
-;
+extern const char _lanczosResapling_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec2 inputTextureCoordinate;
+
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepLeftTextureCoordinate;
+    varying vec2 twoStepsLeftTextureCoordinate;
+    varying vec2 threeStepsLeftTextureCoordinate;
+    varying vec2 fourStepsLeftTextureCoordinate;
+    varying vec2 oneStepRightTextureCoordinate;
+    varying vec2 twoStepsRightTextureCoordinate;
+    varying vec2 threeStepsRightTextureCoordinate;
+    varying vec2 fourStepsRightTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 firstOffset = vec2(texelWidthOffset, texelHeightOffset);
+        vec2 secondOffset = vec2(2.0 * texelWidthOffset, 2.0 * texelHeightOffset);
+        vec2 thirdOffset = vec2(3.0 * texelWidthOffset, 3.0 * texelHeightOffset);
+        vec2 fourthOffset = vec2(4.0 * texelWidthOffset, 4.0 * texelHeightOffset);
+
+        centerTextureCoordinate = inputTextureCoordinate;
+        oneStepLeftTextureCoordinate = inputTextureCoordinate - firstOffset;
+        twoStepsLeftTextureCoordinate = inputTextureCoordinate - secondOffset;
+        threeStepsLeftTextureCoordinate = inputTextureCoordinate - thirdOffset;
+        fourStepsLeftTextureCoordinate = inputTextureCoordinate - fourthOffset;
+        oneStepRightTextureCoordinate = inputTextureCoordinate + firstOffset;
+        twoStepsRightTextureCoordinate = inputTextureCoordinate + secondOffset;
+        threeStepsRightTextureCoordinate = inputTextureCoordinate + thirdOffset;
+        fourStepsRightTextureCoordinate = inputTextureCoordinate + fourthOffset;
+    }
+);
 
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _lanczosResapling_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepLeftTextureCoordinate;\n"
-"varying vec2 twoStepsLeftTextureCoordinate;\n"
-"varying vec2 threeStepsLeftTextureCoordinate;\n"
-"varying vec2 fourStepsLeftTextureCoordinate;\n"
-"varying vec2 oneStepRightTextureCoordinate;\n"
-"varying vec2 twoStepsRightTextureCoordinate;\n"
-"varying vec2 threeStepsRightTextureCoordinate;\n"
-"varying vec2 fourStepsRightTextureCoordinate;\n"
-"\n"
-"// sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)\n"
-"// Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5\n"
-"\n"
-"void main()\n"
-"{\n"
-"    lowp vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsLeftTextureCoordinate) * -0.02612;\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsRightTextureCoordinate) * -0.02612;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsLeftTextureCoordinate) * -0.02143;\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsRightTextureCoordinate) * -0.02143;\n"
-"\n"
-"    gl_FragColor = fragmentColor;\n"
-"}"
-;
+extern const char _lanczosResapling_fragment_shader[]=SHADER_STR(
+    precision highp float;
+
+    uniform sampler2D inputImageTexture;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepLeftTextureCoordinate;
+    varying vec2 twoStepsLeftTextureCoordinate;
+    varying vec2 threeStepsLeftTextureCoordinate;
+    varying vec2 fourStepsLeftTextureCoordinate;
+    varying vec2 oneStepRightTextureCoordinate;
+    varying vec2 twoStepsRightTextureCoordinate;
+    varying vec2 threeStepsRightTextureCoordinate;
+    varying vec2 fourStepsRightTextureCoordinate;
+
+    // sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)
+    // Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5
+
+    void main()
+    {
+        lowp vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;
+
+        fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;
+        fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;
+
+        fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;
+        fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;
+
+        fragmentColor += texture2D(inputImageTexture, threeStepsLeftTextureCoordinate) * -0.02612;
+        fragmentColor += texture2D(inputImageTexture, threeStepsRightTextureCoordinate) * -0.02612;
+
+        fragmentColor += texture2D(inputImageTexture, fourStepsLeftTextureCoordinate) * -0.02143;
+        fragmentColor += texture2D(inputImageTexture, fourStepsRightTextureCoordinate) * -0.02143;
+
+        gl_FragColor = fragmentColor;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _lanczosResapling_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepLeftTextureCoordinate;\n"
-"varying vec2 twoStepsLeftTextureCoordinate;\n"
-"varying vec2 threeStepsLeftTextureCoordinate;\n"
-"varying vec2 fourStepsLeftTextureCoordinate;\n"
-"varying vec2 oneStepRightTextureCoordinate;\n"
-"varying vec2 twoStepsRightTextureCoordinate;\n"
-"varying vec2 threeStepsRightTextureCoordinate;\n"
-"varying vec2 fourStepsRightTextureCoordinate;\n"
-"\n"
-"// sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)\n"
-"// Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;\n"
-"    fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;\n"
-"    fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsLeftTextureCoordinate) * -0.02612;\n"
-"    fragmentColor += texture2D(inputImageTexture, threeStepsRightTextureCoordinate) * -0.02612;\n"
-"\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsLeftTextureCoordinate) * -0.02143;\n"
-"    fragmentColor += texture2D(inputImageTexture, fourStepsRightTextureCoordinate) * -0.02143;\n"
-"\n"
-"    gl_FragColor = fragmentColor;\n"
-"}"
-;
+extern const char _lanczosResapling_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ uniform sampler2D inputImageTexture;
+
+ varying vec2 centerTextureCoordinate;
+ varying vec2 oneStepLeftTextureCoordinate;
+ varying vec2 twoStepsLeftTextureCoordinate;
+ varying vec2 threeStepsLeftTextureCoordinate;
+ varying vec2 fourStepsLeftTextureCoordinate;
+ varying vec2 oneStepRightTextureCoordinate;
+ varying vec2 twoStepsRightTextureCoordinate;
+ varying vec2 threeStepsRightTextureCoordinate;
+ varying vec2 fourStepsRightTextureCoordinate;
+
+ // sinc(x) * sinc(x/a) = (a * sin(pi * x) * sin(pi * x / a)) / (pi^2 * x^2)
+ // Assuming a Lanczos constant of 2.0, and scaling values to max out at x = +/- 1.5
+
+ void main()
+ {
+     vec4 fragmentColor = texture2D(inputImageTexture, centerTextureCoordinate) * 0.38026;
+
+     fragmentColor += texture2D(inputImageTexture, oneStepLeftTextureCoordinate) * 0.27667;
+     fragmentColor += texture2D(inputImageTexture, oneStepRightTextureCoordinate) * 0.27667;
+
+     fragmentColor += texture2D(inputImageTexture, twoStepsLeftTextureCoordinate) * 0.08074;
+     fragmentColor += texture2D(inputImageTexture, twoStepsRightTextureCoordinate) * 0.08074;
+
+     fragmentColor += texture2D(inputImageTexture, threeStepsLeftTextureCoordinate) * -0.02612;
+     fragmentColor += texture2D(inputImageTexture, threeStepsRightTextureCoordinate) * -0.02612;
+
+     fragmentColor += texture2D(inputImageTexture, fourStepsLeftTextureCoordinate) * -0.02143;
+     fragmentColor += texture2D(inputImageTexture, fourStepsRightTextureCoordinate) * -0.02143;
+
+     gl_FragColor = fragmentColor;
+ }
+);
 
 #endif
 

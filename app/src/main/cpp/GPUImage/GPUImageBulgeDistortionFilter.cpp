@@ -9,110 +9,116 @@
 
 
 //// 片元着色器
-//const char _bulgeDistortion_fragment_shader[]=
-//"precision mediump float;\n"
-//"varying vec2 textureCoordinate;\n"
-//"\n"
-//"uniform sampler2D inputImageTexture;\n"
-//"\n"
-//"uniform float aspectRatio;\n"
-//"uniform vec2 center;\n"
-//"uniform float radius;\n"
-//"uniform float scale;\n"
-//"\n"
-//"void main()\n"
-//"{\n"
-//"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);\n"
-//"    float dist = distance(center, textureCoordinateToUse);\n"
-//"    textureCoordinateToUse.x = textureCoordinate.x;\n"
-//"    textureCoordinateToUse.y = textureCoordinate.y;\n"
-//"\n"
-//"    if (dist < radius)\n"
-//"    {\n"
-//"        textureCoordinateToUse -= center;\n"
-//"        float percent = 1.0 - ((radius - dist) / radius) * scale;\n"
-//"        percent = percent * percent;\n"
-//"\n"
-//"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-//"        textureCoordinateToUse += center;\n"
-//"        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
-//"    }\nelse{gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);}"
-//"\n"
-//"\nif(textureCoordinateToUse.x==textureCoordinate.x && textureCoordinateToUse.y==textureCoordinate.y){gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);}else{gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);}"
-////"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);\n"
-//"}"
-//;
+//const char _bulgeDistortion_fragment_shader[]= SHADER_STR(
+//    precision mediump float;
+//    varying vec2 textureCoordinate;
+//
+//    uniform sampler2D inputImageTexture;
+//
+//    uniform float aspectRatio;
+//    uniform vec2 center;
+//    uniform float radius;
+//    uniform float scale;
+//
+//    void main()
+//    {
+//        vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);
+//        float dist = distance(center, textureCoordinateToUse);
+//        textureCoordinateToUse.x = textureCoordinate.x;
+//        textureCoordinateToUse.y = textureCoordinate.y;
+//
+//        if (dist < radius)
+//        {
+//            textureCoordinateToUse -= center;
+//            float percent = 1.0 - ((radius - dist) / radius) * scale;
+//            percent = percent * percent;
+//
+//            textureCoordinateToUse = textureCoordinateToUse * percent;
+//            textureCoordinateToUse += center;
+//            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+//        } else{gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);}
+//
+//        if(textureCoordinateToUse.x==textureCoordinate.x && textureCoordinateToUse.y==textureCoordinate.y)
+//        {
+//            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+//        }else{
+//            gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+//        }
+////        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+//    }
+//);
+//
 
 
 
-
+//
 //// 片元着色器
-//const char _bulgeDistortion_fragment_shader[]=
-//"precision mediump float;\n"
-//"varying vec2 textureCoordinate;\n"
-//"\n"
-//"uniform sampler2D inputImageTexture;\n"
-//"\n"
-//"uniform float aspectRatio;\n"
-//"uniform vec2 center;\n"
-//"uniform float radius;\n"
-//"uniform float scale;\n"
-//"\n"
-//"void main()\n"
-//"{\n"
-//"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);\n"
-//"    float dist = distance(center, textureCoordinateToUse);\n"
-//"    textureCoordinateToUse = textureCoordinate;\n"
-//"\n"
-//"    if (dist < radius)\n"
-//"    {\n"
-//"        textureCoordinateToUse -= center;\n"
-//"        float percent = 1.0 - ((radius - dist) / radius) * scale;\n"
-//"        percent = percent * percent;\n"
-//"\n"
-//"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-//"        textureCoordinateToUse += center;\n"
-//"    }\n"
-//"\n"
-//"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);\n"
-//"}"
-//;
+//const char _bulgeDistortion_fragment_shader[]= SHADER_STR(
+//    precision mediump float;
+//    varying vec2 textureCoordinate;
+//
+//    uniform sampler2D inputImageTexture;
+//
+//    uniform float aspectRatio;
+//    uniform vec2 center;
+//    uniform float radius;
+//    uniform float scale;
+//
+//    void main()
+//    {
+//        vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);
+//        float dist = distance(center, textureCoordinateToUse);
+//        textureCoordinateToUse = textureCoordinate;
+//
+//        if (dist < radius)
+//        {
+//            textureCoordinateToUse -= center;
+//            float percent = 1.0 - ((radius - dist) / radius) * scale;
+//            percent = percent * percent;
+//
+//            textureCoordinateToUse = textureCoordinateToUse * percent;
+//            textureCoordinateToUse += center;
+//        }
+//
+//        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+//    }
+//);
 
-
+//
 //// 片元着色器
-//const char _bulgeDistortion_fragment_shader[]=
-//"precision mediump float;\n"
-//"varying vec2 textureCoordinate;\n"
-//"\n"
-//"uniform sampler2D inputImageTexture;\n"
-//"\n"
-//"uniform float aspectRatio;\n"
-//"uniform vec2 center;\n"
-//"uniform float radius;\n"
-//"uniform float scale;\n"
-//"\n"
-//"void main()\n"
-//"{\n"
-//"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);\n"
-//"    float dist = distance(center, textureCoordinateToUse);\n"
-//"    textureCoordinateToUse = textureCoordinate;\n"
-//"\n"
-//"    if (dist < radius)\n"
-//"    {\n"
-//"        textureCoordinateToUse -= center;\n"
-//"        float percent = 1.0 - ((radius - dist) / radius) * scale;\n"
-//"        percent = percent * percent;\n"
-//"\n"
-//"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-//"        textureCoordinateToUse += center;\n"
-//"    }\n"
-//"    else\n"
-//"    {\n"
-//"        textureCoordinateToUse = textureCoordinate;\n"
-//"    }\n"
-//"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);\n"
-//"}"
-//;
+//const char _bulgeDistortion_fragment_shader[]= SHADER_STR(
+//    precision mediump float;
+//    varying vec2 textureCoordinate;
+//
+//    uniform sampler2D inputImageTexture;
+//
+//    uniform float aspectRatio;
+//    uniform vec2 center;
+//    uniform float radius;
+//    uniform float scale;
+//
+//    void main()
+//    {
+//        vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);
+//        float dist = distance(center, textureCoordinateToUse);
+//        textureCoordinateToUse = textureCoordinate;
+//
+//        if (dist < radius)
+//        {
+//            textureCoordinateToUse -= center;
+//            float percent = 1.0 - ((radius - dist) / radius) * scale;
+//            percent = percent * percent;
+//
+//            textureCoordinateToUse = textureCoordinateToUse * percent;
+//            textureCoordinateToUse += center;
+//        }
+//        else
+//        {
+//            textureCoordinateToUse = textureCoordinate;
+//        }
+//        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+//    }
+//);
 
 
 // 不知道为什么 上面三个shader写法都不行，下面这个正常
@@ -122,73 +128,73 @@
 
 
 // 片元着色器
-extern const char _bulgeDistortion_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp float aspectRatio;\n"
-"uniform highp vec2 center;\n"
-"uniform highp float radius;\n"
-"uniform highp float scale;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);\n"
-"    highp float dist = distance(center, textureCoordinateToUse);\n"
-"    textureCoordinateToUse = textureCoordinate;\n"
-"\n"
-"    if (dist < radius)\n"
-"    {\n"
-"        textureCoordinateToUse -= center;\n"
-"        highp float percent = 1.0 - ((radius - dist) / radius) * scale;\n"
-"        percent = percent * percent;\n"
-"\n"
-"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-"        textureCoordinateToUse += center;\n"
-"    }\n"
-"\n"
-"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
-"}"
-;
+extern const char _bulgeDistortion_fragment_shader[]= SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp float aspectRatio;
+    uniform highp vec2 center;
+    uniform highp float radius;
+    uniform highp float scale;
+
+    void main()
+    {
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);
+        highp float dist = distance(center, textureCoordinateToUse);
+        textureCoordinateToUse = textureCoordinate;
+
+        if (dist < radius)
+        {
+            textureCoordinateToUse -= center;
+            highp float percent = 1.0 - ((radius - dist) / radius) * scale;
+            percent = percent * percent;
+
+            textureCoordinateToUse = textureCoordinateToUse * percent;
+            textureCoordinateToUse += center;
+        }
+
+        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _bulgeDistortion_fragment_shader[]=
-"precision mediump float;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float aspectRatio;\n"
-"uniform vec2 center;\n"
-"uniform float radius;\n"
-"uniform float scale;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);\n"
-"    float dist = distance(center, textureCoordinateToUse);\n"
-"    textureCoordinateToUse = textureCoordinate;\n"
-"\n"
-"    if (dist < radius)\n"
-"    {\n"
-"        textureCoordinateToUse -= center;\n"
-"        float percent = 1.0 - ((radius - dist) / radius) * scale;\n"
-"        percent = percent * percent;\n"
-"\n"
-"        textureCoordinateToUse = textureCoordinateToUse * percent;\n"
-"        textureCoordinateToUse += center;\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    }\n"
-"}"
-;
+extern const char _bulgeDistortion_fragment_shader[]= SHADER_STR(
+     precision mediump float;
+
+     varying vec2 textureCoordinate;
+
+     uniform sampler2D inputImageTexture;
+
+     uniform float aspectRatio;
+     uniform vec2 center;
+     uniform float radius;
+     uniform float scale;
+
+     void main()
+     {
+         vec2 textureCoordinateToUse = vec2(textureCoordinate.x, ((textureCoordinate.y - center.y) * aspectRatio) + center.y);
+         float dist = distance(center, textureCoordinateToUse);
+         textureCoordinateToUse = textureCoordinate;
+
+         if (dist < radius)
+         {
+             textureCoordinateToUse -= center;
+             float percent = 1.0 - ((radius - dist) / radius) * scale;
+             percent = percent * percent;
+
+             textureCoordinateToUse = textureCoordinateToUse * percent;
+             textureCoordinateToUse += center;
+             gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+         }
+         else
+         {
+             gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+         }
+     }
+);
 
 #endif
 

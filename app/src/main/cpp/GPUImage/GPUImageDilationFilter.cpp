@@ -11,404 +11,398 @@
 
 
 // 顶点着色器
-extern const char _dilationRadiusOne_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec2 inputTextureCoordinate;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 offset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"\n"
-"    centerTextureCoordinate = inputTextureCoordinate;\n"
-"    oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;\n"
-"    oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;\n"
-"}"
-;
+extern const char _dilationRadiusOne_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec2 inputTextureCoordinate;
+
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 offset = vec2(texelWidthOffset, texelHeightOffset);
+
+        centerTextureCoordinate = inputTextureCoordinate;
+        oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;
+        oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;
+    }
+);
 
 // 顶点着色器
-extern const char _dilationRadiusTwo_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec2 inputTextureCoordinate;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 offset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"\n"
-"    centerTextureCoordinate = inputTextureCoordinate;\n"
-"    oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;\n"
-"    oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;\n"
-"    twoStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 2.0);\n"
-"    twoStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 2.0);\n"
-"}"
-;
+extern const char _dilationRadiusTwo_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec2 inputTextureCoordinate;
+
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+    varying vec2 twoStepsPositiveTextureCoordinate;
+    varying vec2 twoStepsNegativeTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 offset = vec2(texelWidthOffset, texelHeightOffset);
+
+        centerTextureCoordinate = inputTextureCoordinate;
+        oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;
+        oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;
+        twoStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 2.0);
+        twoStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 2.0);
+    }
+);
 
 // 顶点着色器
-extern const char _dilationRadiusThree_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec2 inputTextureCoordinate;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"varying vec2 threeStepsPositiveTextureCoordinate;\n"
-"varying vec2 threeStepsNegativeTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 offset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"\n"
-"    centerTextureCoordinate = inputTextureCoordinate;\n"
-"    oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;\n"
-"    oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;\n"
-"    twoStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 2.0);\n"
-"    twoStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 2.0);\n"
-"    threeStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 3.0);\n"
-"    threeStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 3.0);\n"
-"}"
-;
+extern const char _dilationRadiusThree_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec2 inputTextureCoordinate;
+
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+    varying vec2 twoStepsPositiveTextureCoordinate;
+    varying vec2 twoStepsNegativeTextureCoordinate;
+    varying vec2 threeStepsPositiveTextureCoordinate;
+    varying vec2 threeStepsNegativeTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 offset = vec2(texelWidthOffset, texelHeightOffset);
+
+        centerTextureCoordinate = inputTextureCoordinate;
+        oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;
+        oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;
+        twoStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 2.0);
+        twoStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 2.0);
+        threeStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 3.0);
+        threeStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 3.0);
+    }
+);
 
 
 
 // 顶点着色器
-extern const char _dilationRadiusFour_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec2 inputTextureCoordinate;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"varying vec2 threeStepsPositiveTextureCoordinate;\n"
-"varying vec2 threeStepsNegativeTextureCoordinate;\n"
-"varying vec2 fourStepsPositiveTextureCoordinate;\n"
-"varying vec2 fourStepsNegativeTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 offset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"\n"
-"    centerTextureCoordinate = inputTextureCoordinate;\n"
-"    oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;\n"
-"    oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;\n"
-"    twoStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 2.0);\n"
-"    twoStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 2.0);\n"
-"    threeStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 3.0);\n"
-"    threeStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 3.0);\n"
-"    fourStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 4.0);\n"
-"    fourStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 4.0);\n"
-"}"
-;
+extern const char _dilationRadiusFour_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec2 inputTextureCoordinate;
 
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
 
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+    varying vec2 twoStepsPositiveTextureCoordinate;
+    varying vec2 twoStepsNegativeTextureCoordinate;
+    varying vec2 threeStepsPositiveTextureCoordinate;
+    varying vec2 threeStepsNegativeTextureCoordinate;
+    varying vec2 fourStepsPositiveTextureCoordinate;
+    varying vec2 fourStepsNegativeTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 offset = vec2(texelWidthOffset, texelHeightOffset);
+
+        centerTextureCoordinate = inputTextureCoordinate;
+        oneStepNegativeTextureCoordinate = inputTextureCoordinate - offset;
+        oneStepPositiveTextureCoordinate = inputTextureCoordinate + offset;
+        twoStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 2.0);
+        twoStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 2.0);
+        threeStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 3.0);
+        threeStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 3.0);
+        fourStepsNegativeTextureCoordinate = inputTextureCoordinate - (offset * 4.0);
+        fourStepsPositiveTextureCoordinate = inputTextureCoordinate + (offset * 4.0);
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
-
 // 片元着色器
-extern const char _dilationRadiusOne_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"\n"
-"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusOne_fragment_shader[]=SHADER_STR(
+    precision lowp float;
 
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
 
-// 片元着色器
-extern const char _dilationRadiusTwo_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
-"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
-"\n"
-"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+    uniform sampler2D inputImageTexture;
 
+    void main()
+    {
+        float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+        float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+        float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+
+        lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+        maxValue = max(maxValue, oneStepNegativeIntensity);
+
+        gl_FragColor = vec4(vec3(maxValue), 1.0);
+    }
+);
 
 
 // 片元着色器
-extern const char _dilationRadiusThree_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"varying vec2 threeStepsPositiveTextureCoordinate;\n"
-"varying vec2 threeStepsNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
-"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
-"    float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;\n"
-"    float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;\n"
-"\n"
-"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
-"    maxValue = max(maxValue, threeStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, threeStepsNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusTwo_fragment_shader[]=SHADER_STR(
+    precision lowp float;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+    varying vec2 twoStepsPositiveTextureCoordinate;
+    varying vec2 twoStepsNegativeTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+        float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+        float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+        float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;
+        float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;
+
+        lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+        maxValue = max(maxValue, oneStepNegativeIntensity);
+        maxValue = max(maxValue, twoStepsPositiveIntensity);
+        maxValue = max(maxValue, twoStepsNegativeIntensity);
+
+        gl_FragColor = vec4(vec3(maxValue), 1.0);
+    }
+);
+
+
 
 
 // 片元着色器
-extern const char _dilationRadiusFour_fragment_shader[]=
-"precision lowp float;\n"
-"\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"varying vec2 threeStepsPositiveTextureCoordinate;\n"
-"varying vec2 threeStepsNegativeTextureCoordinate;\n"
-"varying vec2 fourStepsPositiveTextureCoordinate;\n"
-"varying vec2 fourStepsNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
-"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
-"    float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;\n"
-"    float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;\n"
-"    float fourStepsPositiveIntensity = texture2D(inputImageTexture, fourStepsPositiveTextureCoordinate).r;\n"
-"    float fourStepsNegativeIntensity = texture2D(inputImageTexture, fourStepsNegativeTextureCoordinate).r;\n"
-"\n"
-"    lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
-"    maxValue = max(maxValue, threeStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, threeStepsNegativeIntensity);\n"
-"    maxValue = max(maxValue, fourStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, fourStepsNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusThree_fragment_shader[]= SHADER_STR(
+    precision lowp float;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+    varying vec2 twoStepsPositiveTextureCoordinate;
+    varying vec2 twoStepsNegativeTextureCoordinate;
+    varying vec2 threeStepsPositiveTextureCoordinate;
+    varying vec2 threeStepsNegativeTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+        float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+        float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+        float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;
+        float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;
+        float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;
+        float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;
+
+        lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+        maxValue = max(maxValue, oneStepNegativeIntensity);
+        maxValue = max(maxValue, twoStepsPositiveIntensity);
+        maxValue = max(maxValue, twoStepsNegativeIntensity);
+        maxValue = max(maxValue, threeStepsPositiveIntensity);
+        maxValue = max(maxValue, threeStepsNegativeIntensity);
+
+        gl_FragColor = vec4(vec3(maxValue), 1.0);
+    }
+);
+
+
+// 片元着色器
+extern const char _dilationRadiusFour_fragment_shader[]=SHADER_STR(
+    precision lowp float;
+
+    varying vec2 centerTextureCoordinate;
+    varying vec2 oneStepPositiveTextureCoordinate;
+    varying vec2 oneStepNegativeTextureCoordinate;
+    varying vec2 twoStepsPositiveTextureCoordinate;
+    varying vec2 twoStepsNegativeTextureCoordinate;
+    varying vec2 threeStepsPositiveTextureCoordinate;
+    varying vec2 threeStepsNegativeTextureCoordinate;
+    varying vec2 fourStepsPositiveTextureCoordinate;
+    varying vec2 fourStepsNegativeTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+        float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+        float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+        float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;
+        float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;
+        float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;
+        float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;
+        float fourStepsPositiveIntensity = texture2D(inputImageTexture, fourStepsPositiveTextureCoordinate).r;
+        float fourStepsNegativeIntensity = texture2D(inputImageTexture, fourStepsNegativeTextureCoordinate).r;
+
+        lowp float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+        maxValue = max(maxValue, oneStepNegativeIntensity);
+        maxValue = max(maxValue, twoStepsPositiveIntensity);
+        maxValue = max(maxValue, twoStepsNegativeIntensity);
+        maxValue = max(maxValue, threeStepsPositiveIntensity);
+        maxValue = max(maxValue, threeStepsNegativeIntensity);
+        maxValue = max(maxValue, fourStepsPositiveIntensity);
+        maxValue = max(maxValue, fourStepsNegativeIntensity);
+
+        gl_FragColor = vec4(vec3(maxValue), 1.0);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _dilationRadiusOne_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"\n"
-"    float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusOne_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 centerTextureCoordinate;
+ varying vec2 oneStepPositiveTextureCoordinate;
+ varying vec2 oneStepNegativeTextureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ void main()
+ {
+     float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+     float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+     float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+
+     float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+     maxValue = max(maxValue, oneStepNegativeIntensity);
+
+     gl_FragColor = vec4(vec3(maxValue), 1.0);
+ }
+);
 
 
 // 片元着色器
-extern const char _dilationRadiusTwo_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
-"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
-"\n"
-"    float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusTwo_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 centerTextureCoordinate;
+ varying vec2 oneStepPositiveTextureCoordinate;
+ varying vec2 oneStepNegativeTextureCoordinate;
+ varying vec2 twoStepsPositiveTextureCoordinate;
+ varying vec2 twoStepsNegativeTextureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ void main()
+ {
+     float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+     float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+     float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+     float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;
+     float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;
+
+     float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+     maxValue = max(maxValue, oneStepNegativeIntensity);
+     maxValue = max(maxValue, twoStepsPositiveIntensity);
+     maxValue = max(maxValue, twoStepsNegativeIntensity);
+
+     gl_FragColor = vec4(vec3(maxValue), 1.0);
+ }
+);
 
 
 
 // 片元着色器
-extern const char _dilationRadiusThree_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"varying vec2 threeStepsPositiveTextureCoordinate;\n"
-"varying vec2 threeStepsNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
-"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
-"    float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;\n"
-"    float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;\n"
-"\n"
-"    float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
-"    maxValue = max(maxValue, threeStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, threeStepsNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusThree_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 centerTextureCoordinate;
+ varying vec2 oneStepPositiveTextureCoordinate;
+ varying vec2 oneStepNegativeTextureCoordinate;
+ varying vec2 twoStepsPositiveTextureCoordinate;
+ varying vec2 twoStepsNegativeTextureCoordinate;
+ varying vec2 threeStepsPositiveTextureCoordinate;
+ varying vec2 threeStepsNegativeTextureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ void main()
+ {
+     float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+     float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+     float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+     float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;
+     float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;
+     float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;
+     float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;
+
+     float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+     maxValue = max(maxValue, oneStepNegativeIntensity);
+     maxValue = max(maxValue, twoStepsPositiveIntensity);
+     maxValue = max(maxValue, twoStepsNegativeIntensity);
+     maxValue = max(maxValue, threeStepsPositiveIntensity);
+     maxValue = max(maxValue, threeStepsNegativeIntensity);
+
+     gl_FragColor = vec4(vec3(maxValue), 1.0);
+ }
+);
 
 
 // 片元着色器
-extern const char _dilationRadiusFour_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 centerTextureCoordinate;\n"
-"varying vec2 oneStepPositiveTextureCoordinate;\n"
-"varying vec2 oneStepNegativeTextureCoordinate;\n"
-"varying vec2 twoStepsPositiveTextureCoordinate;\n"
-"varying vec2 twoStepsNegativeTextureCoordinate;\n"
-"varying vec2 threeStepsPositiveTextureCoordinate;\n"
-"varying vec2 threeStepsNegativeTextureCoordinate;\n"
-"varying vec2 fourStepsPositiveTextureCoordinate;\n"
-"varying vec2 fourStepsNegativeTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;\n"
-"    float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;\n"
-"    float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;\n"
-"    float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;\n"
-"    float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;\n"
-"    float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;\n"
-"    float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;\n"
-"    float fourStepsPositiveIntensity = texture2D(inputImageTexture, fourStepsPositiveTextureCoordinate).r;\n"
-"    float fourStepsNegativeIntensity = texture2D(inputImageTexture, fourStepsNegativeTextureCoordinate).r;\n"
-"\n"
-"    float maxValue = max(centerIntensity, oneStepPositiveIntensity);\n"
-"    maxValue = max(maxValue, oneStepNegativeIntensity);\n"
-"    maxValue = max(maxValue, twoStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, twoStepsNegativeIntensity);\n"
-"    maxValue = max(maxValue, threeStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, threeStepsNegativeIntensity);\n"
-"    maxValue = max(maxValue, fourStepsPositiveIntensity);\n"
-"    maxValue = max(maxValue, fourStepsNegativeIntensity);\n"
-"\n"
-"    gl_FragColor = vec4(vec3(maxValue), 1.0);\n"
-"}"
-;
+extern const char _dilationRadiusFour_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 centerTextureCoordinate;
+ varying vec2 oneStepPositiveTextureCoordinate;
+ varying vec2 oneStepNegativeTextureCoordinate;
+ varying vec2 twoStepsPositiveTextureCoordinate;
+ varying vec2 twoStepsNegativeTextureCoordinate;
+ varying vec2 threeStepsPositiveTextureCoordinate;
+ varying vec2 threeStepsNegativeTextureCoordinate;
+ varying vec2 fourStepsPositiveTextureCoordinate;
+ varying vec2 fourStepsNegativeTextureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ void main()
+ {
+     float centerIntensity = texture2D(inputImageTexture, centerTextureCoordinate).r;
+     float oneStepPositiveIntensity = texture2D(inputImageTexture, oneStepPositiveTextureCoordinate).r;
+     float oneStepNegativeIntensity = texture2D(inputImageTexture, oneStepNegativeTextureCoordinate).r;
+     float twoStepsPositiveIntensity = texture2D(inputImageTexture, twoStepsPositiveTextureCoordinate).r;
+     float twoStepsNegativeIntensity = texture2D(inputImageTexture, twoStepsNegativeTextureCoordinate).r;
+     float threeStepsPositiveIntensity = texture2D(inputImageTexture, threeStepsPositiveTextureCoordinate).r;
+     float threeStepsNegativeIntensity = texture2D(inputImageTexture, threeStepsNegativeTextureCoordinate).r;
+     float fourStepsPositiveIntensity = texture2D(inputImageTexture, fourStepsPositiveTextureCoordinate).r;
+     float fourStepsNegativeIntensity = texture2D(inputImageTexture, fourStepsNegativeTextureCoordinate).r;
+
+     float maxValue = max(centerIntensity, oneStepPositiveIntensity);
+     maxValue = max(maxValue, oneStepNegativeIntensity);
+     maxValue = max(maxValue, twoStepsPositiveIntensity);
+     maxValue = max(maxValue, twoStepsNegativeIntensity);
+     maxValue = max(maxValue, threeStepsPositiveIntensity);
+     maxValue = max(maxValue, threeStepsNegativeIntensity);
+     maxValue = max(maxValue, fourStepsPositiveIntensity);
+     maxValue = max(maxValue, fourStepsNegativeIntensity);
+
+     gl_FragColor = vec4(vec3(maxValue), 1.0);
+ }
+);
 
 #endif
-
-
-
-
 GPUImageDilationFilter::GPUImageDilationFilter()
     : GPUImageTwoPassTextureSamplingFilter(_dilationRadiusOne_vertex_shader, _dilationRadiusOne_fragment_shader, _dilationRadiusOne_vertex_shader, _dilationRadiusOne_fragment_shader)
 {

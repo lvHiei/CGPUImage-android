@@ -11,37 +11,37 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _exposure_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform highp float exposure;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);\n"
-"}"
-;
+extern const char _exposure_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform highp float exposure;
+
+    void main()
+    {
+        highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+        gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);
+    }
+);
 
 
 #else
 
 // 片元着色器
 extern const char _exposure_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform float exposure;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);\n"
-"}"
+    precision mediump float;
+    varying vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform float exposure;
+
+    void main()
+    {
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+     gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);
+    }
 ;
 
 

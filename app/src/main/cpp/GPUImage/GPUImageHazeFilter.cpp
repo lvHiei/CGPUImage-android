@@ -11,55 +11,55 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _haze_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform lowp float hazeDistance;\n"
-"uniform highp float slope;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    //todo reconsider precision modifiers\t \n"
-"    highp vec4 color = vec4(1.0);//todo reimplement as a parameter\n"
-"\n"
-"    highp float  d = textureCoordinate.y * slope  +  hazeDistance;\n"
-"\n"
-"    highp vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply\n"
-"\n"
-"    c = (c - d * color) / (1.0 -d);\n"
-"\n"
-"    gl_FragColor = c; //consider using premultiply(c);\n"
-"}"
-;
+extern const char _haze_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform lowp float hazeDistance;
+    uniform highp float slope;
+
+    void main()
+    {
+        //todo reconsider precision modifiers\t
+        highp vec4 color = vec4(1.0);//todo reimplement as a parameter
+
+        highp float  d = textureCoordinate.y * slope  +  hazeDistance;
+
+        highp vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply
+
+        c = (c - d * color) / (1.0 -d);
+
+        gl_FragColor = c; //consider using premultiply(c);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _haze_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float hazeDistance;\n"
-"uniform float slope;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    //todo reconsider precision modifiers\n"
-"    vec4 color = vec4(1.0);//todo reimplement as a parameter\n"
-"\n"
-"    float  d = textureCoordinate.y * slope  +  hazeDistance;\n"
-"\n"
-"    vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply\n"
-"\n"
-"    c = (c - d * color) / (1.0 -d);\n"
-"\n"
-"    gl_FragColor = c; //consider using premultiply(c);\n"
-"}"
-;
+extern const char _haze_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform float hazeDistance;
+ uniform float slope;
+
+ void main()
+ {
+     //todo reconsider precision modifiers
+     vec4 color = vec4(1.0);//todo reimplement as a parameter
+
+     float  d = textureCoordinate.y * slope  +  hazeDistance;
+
+     vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply
+
+     c = (c - d * color) / (1.0 -d);
+
+     gl_FragColor = c; //consider using premultiply(c);
+ }
+);
 
 #endif
 

@@ -11,56 +11,56 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _pureTiltShift_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"uniform highp float topFocusLevel;\n"
-"uniform highp float bottomFocusLevel;\n"
-"uniform highp float focusFallOffRate;\n"
-"\n"
-"void main()\n"
-"{\n"
-//"    lowp vec4 sharpImageColor = texture2D(inputImageTexture2, textureCoordinate2);\n"
-//"    lowp vec4 blurredImageColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp vec4 sharpImageColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp vec4 blurredImageColor = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    lowp float blurIntensity = 1.0 - smoothstep(topFocusLevel - focusFallOffRate, topFocusLevel, textureCoordinate2.y);\n"
-"    blurIntensity += smoothstep(bottomFocusLevel, bottomFocusLevel + focusFallOffRate, textureCoordinate2.y);\n"
-"\n"
-"    gl_FragColor = mix(sharpImageColor, blurredImageColor, blurIntensity);\n"
-"}"
-;
+extern const char _pureTiltShift_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    uniform highp float topFocusLevel;
+    uniform highp float bottomFocusLevel;
+    uniform highp float focusFallOffRate;
+
+    void main()
+    {
+//     lowp vec4 sharpImageColor = texture2D(inputImageTexture2, textureCoordinate2);
+//     lowp vec4 blurredImageColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp vec4 sharpImageColor = texture2D(inputImageTexture, textureCoordinate);
+        lowp vec4 blurredImageColor = texture2D(inputImageTexture2, textureCoordinate2);
+
+        lowp float blurIntensity = 1.0 - smoothstep(topFocusLevel - focusFallOffRate, topFocusLevel, textureCoordinate2.y);
+        blurIntensity += smoothstep(bottomFocusLevel, bottomFocusLevel + focusFallOffRate, textureCoordinate2.y);
+
+        gl_FragColor = mix(sharpImageColor, blurredImageColor, blurIntensity);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _pureTiltShift_fragment_shader[]=
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"uniform float topFocusLevel;\n"
-"uniform float bottomFocusLevel;\n"
-"uniform float focusFallOffRate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 sharpImageColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 blurredImageColor = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    float blurIntensity = 1.0 - smoothstep(topFocusLevel - focusFallOffRate, topFocusLevel, textureCoordinate2.y);\n"
-"    blurIntensity += smoothstep(bottomFocusLevel, bottomFocusLevel + focusFallOffRate, textureCoordinate2.y);\n"
-"\n"
-"    gl_FragColor = mix(sharpImageColor, blurredImageColor, blurIntensity);\n"
-"}"
-;
+extern const char _pureTiltShift_fragment_shader[]=SHADER_STR(
+ varying vec2 textureCoordinate;
+ varying vec2 textureCoordinate2;
+
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+
+ uniform float topFocusLevel;
+ uniform float bottomFocusLevel;
+ uniform float focusFallOffRate;
+
+ void main()
+ {
+     vec4 sharpImageColor = texture2D(inputImageTexture, textureCoordinate);
+     vec4 blurredImageColor = texture2D(inputImageTexture2, textureCoordinate2);
+
+     float blurIntensity = 1.0 - smoothstep(topFocusLevel - focusFallOffRate, topFocusLevel, textureCoordinate2.y);
+     blurIntensity += smoothstep(bottomFocusLevel, bottomFocusLevel + focusFallOffRate, textureCoordinate2.y);
+
+     gl_FragColor = mix(sharpImageColor, blurredImageColor, blurIntensity);
+ }
+);
 
 #endif
 

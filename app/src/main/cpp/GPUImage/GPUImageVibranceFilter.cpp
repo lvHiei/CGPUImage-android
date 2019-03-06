@@ -11,41 +11,41 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _vibrance_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform lowp float vibrance;\n"
-"\n"
-"void main() {\n"
-"    lowp vec4 color = texture2D(inputImageTexture, textureCoordinate);\n"
-"    lowp float average = (color.r + color.g + color.b) / 3.0;\n"
-"    lowp float mx = max(color.r, max(color.g, color.b));\n"
-"    lowp float amt = (mx - average) * (-vibrance * 3.0);\n"
-"    color.rgb = mix(color.rgb, vec3(mx), amt);\n"
-"    gl_FragColor = color;\n"
-"}"
-;
+extern const char _vibrance_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform lowp float vibrance;
+
+    void main() {
+        lowp vec4 color = texture2D(inputImageTexture, textureCoordinate);
+        lowp float average = (color.r + color.g + color.b) / 3.0;
+        lowp float mx = max(color.r, max(color.g, color.b));
+        lowp float amt = (mx - average) * (-vibrance * 3.0);
+        color.rgb = mix(color.rgb, vec3(mx), amt);
+        gl_FragColor = color;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _vibrance_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform float vibrance;\n"
-"\n"
-"void main() {\n"
-"    vec4 color = texture2D(inputImageTexture, textureCoordinate);\n"
-"    float average = (color.r + color.g + color.b) / 3.0;\n"
-"    float mx = max(color.r, max(color.g, color.b));\n"
-"    float amt = (mx - average) * (-vibrance * 3.0);\n"
-"    color.rgb = mix(color.rgb, vec3(mx), amt);\n"
-"    gl_FragColor = color;\n"
-"}"
-;
+extern const char _vibrance_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+ uniform float vibrance;
+
+ void main() {
+     vec4 color = texture2D(inputImageTexture, textureCoordinate);
+     float average = (color.r + color.g + color.b) / 3.0;
+     float mx = max(color.r, max(color.g, color.b));
+     float amt = (mx - average) * (-vibrance * 3.0);
+     color.rgb = mix(color.rgb, vec3(mx), amt);
+     gl_FragColor = color;
+ }
+);
 
 #endif
 

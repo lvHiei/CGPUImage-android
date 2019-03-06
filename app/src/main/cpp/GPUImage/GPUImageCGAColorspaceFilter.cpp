@@ -11,98 +11,100 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _CGAColorspace_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 sampleDivisor = vec2(1.0 / 200.0, 1.0 / 320.0);\n"
-"    //highp vec4 colorDivisor = vec4(colorDepth);\n"
-"\n"
-"    highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor);\n"
-"    highp vec4 color = texture2D(inputImageTexture, samplePos );\n"
-"\n"
-"    //gl_FragColor = texture2D(inputImageTexture, samplePos );\n"
-"    mediump vec4 colorCyan = vec4(85.0 / 255.0, 1.0, 1.0, 1.0);\n"
-"    mediump vec4 colorMagenta = vec4(1.0, 85.0 / 255.0, 1.0, 1.0);\n"
-"    mediump vec4 colorWhite = vec4(1.0, 1.0, 1.0, 1.0);\n"
-"    mediump vec4 colorBlack = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"\n"
-"    mediump vec4 endColor;\n"
-"    highp float blackDistance = distance(color, colorBlack);\n"
-"    highp float whiteDistance = distance(color, colorWhite);\n"
-"    highp float magentaDistance = distance(color, colorMagenta);\n"
-"    highp float cyanDistance = distance(color, colorCyan);\n"
-"\n"
-"    mediump vec4 finalColor;\n"
-"\n"
-"    highp float colorDistance = min(magentaDistance, cyanDistance);\n"
-"    colorDistance = min(colorDistance, whiteDistance);\n"
-"    colorDistance = min(colorDistance, blackDistance);\n"
-"\n"
-"    if (colorDistance == blackDistance) {\n"
-"        finalColor = colorBlack;\n"
-"    } else if (colorDistance == whiteDistance) {\n"
-"        finalColor = colorWhite;\n"
-"    } else if (colorDistance == cyanDistance) {\n"
-"        finalColor = colorCyan;\n"
-"    } else {\n"
-"        finalColor = colorMagenta;\n"
-"    }\n"
-"\n"
-"    gl_FragColor = finalColor;\n"
-"}"
-;
+extern const char _CGAColorspace_fragment_shader[]= SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        highp vec2 sampleDivisor = vec2(1.0 / 200.0, 1.0 / 320.0);
+        //highp vec4 colorDivisor = vec4(colorDepth);
+
+        highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor);
+        highp vec4 color = texture2D(inputImageTexture, samplePos );
+
+        //gl_FragColor = texture2D(inputImageTexture, samplePos );
+        mediump vec4 colorCyan = vec4(85.0 / 255.0, 1.0, 1.0, 1.0);
+        mediump vec4 colorMagenta = vec4(1.0, 85.0 / 255.0, 1.0, 1.0);
+        mediump vec4 colorWhite = vec4(1.0, 1.0, 1.0, 1.0);
+        mediump vec4 colorBlack = vec4(0.0, 0.0, 0.0, 1.0);
+
+        mediump vec4 endColor;
+        highp float blackDistance = distance(color, colorBlack);
+        highp float whiteDistance = distance(color, colorWhite);
+        highp float magentaDistance = distance(color, colorMagenta);
+        highp float cyanDistance = distance(color, colorCyan);
+
+        mediump vec4 finalColor;
+
+        highp float colorDistance = min(magentaDistance, cyanDistance);
+        colorDistance = min(colorDistance, whiteDistance);
+        colorDistance = min(colorDistance, blackDistance);
+
+        if (colorDistance == blackDistance) {
+            finalColor = colorBlack;
+        } else if (colorDistance == whiteDistance) {
+            finalColor = colorWhite;
+        } else if (colorDistance == cyanDistance) {
+            finalColor = colorCyan;
+        } else {
+            finalColor = colorMagenta;
+        }
+
+        gl_FragColor = finalColor;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _CGAColorspace_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 sampleDivisor = vec2(1.0 / 200.0, 1.0 / 320.0);\n"
-"    //highp vec4 colorDivisor = vec4(colorDepth);\n"
-"\n"
-"    vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor);\n"
-"    vec4 color = texture2D(inputImageTexture, samplePos );\n"
-"\n"
-"    //gl_FragColor = texture2D(inputImageTexture, samplePos );\n"
-"    vec4 colorCyan = vec4(85.0 / 255.0, 1.0, 1.0, 1.0);\n"
-"    vec4 colorMagenta = vec4(1.0, 85.0 / 255.0, 1.0, 1.0);\n"
-"    vec4 colorWhite = vec4(1.0, 1.0, 1.0, 1.0);\n"
-"    vec4 colorBlack = vec4(0.0, 0.0, 0.0, 1.0);\n"
-"\n"
-"    vec4 endColor;\n"
-"    float blackDistance = distance(color, colorBlack);\n"
-"    float whiteDistance = distance(color, colorWhite);\n"
-"    float magentaDistance = distance(color, colorMagenta);\n"
-"    float cyanDistance = distance(color, colorCyan);\n"
-"\n"
-"    vec4 finalColor;\n"
-"\n"
-"    float colorDistance = min(magentaDistance, cyanDistance);\n"
-"    colorDistance = min(colorDistance, whiteDistance);\n"
-"    colorDistance = min(colorDistance, blackDistance);\n"
-"\n"
-"    if (colorDistance == blackDistance) {\n"
-"        finalColor = colorBlack;\n"
-"    } else if (colorDistance == whiteDistance) {\n"
-"        finalColor = colorWhite;\n"
-"    } else if (colorDistance == cyanDistance) {\n"
-"        finalColor = colorCyan;\n"
-"    } else {\n"
-"        finalColor = colorMagenta;\n"
-"    }\n"
-"\n"
-"    gl_FragColor = finalColor;\n"
-"}"
+extern const char _CGAColorspace_fragment_shader[]= SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+     vec2 sampleDivisor = vec2(1.0 / 200.0, 1.0 / 320.0);
+     //highp vec4 colorDivisor = vec4(colorDepth);
+
+     vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor);
+     vec4 color = texture2D(inputImageTexture, samplePos );
+
+     //gl_FragColor = texture2D(inputImageTexture, samplePos );
+     vec4 colorCyan = vec4(85.0 / 255.0, 1.0, 1.0, 1.0);
+     vec4 colorMagenta = vec4(1.0, 85.0 / 255.0, 1.0, 1.0);
+     vec4 colorWhite = vec4(1.0, 1.0, 1.0, 1.0);
+     vec4 colorBlack = vec4(0.0, 0.0, 0.0, 1.0);
+
+     vec4 endColor;
+     float blackDistance = distance(color, colorBlack);
+     float whiteDistance = distance(color, colorWhite);
+     float magentaDistance = distance(color, colorMagenta);
+     float cyanDistance = distance(color, colorCyan);
+
+     vec4 finalColor;
+
+     float colorDistance = min(magentaDistance, cyanDistance);
+     colorDistance = min(colorDistance, whiteDistance);
+     colorDistance = min(colorDistance, blackDistance);
+
+     if (colorDistance == blackDistance) {
+         finalColor = colorBlack;
+     } else if (colorDistance == whiteDistance) {
+         finalColor = colorWhite;
+     } else if (colorDistance == cyanDistance) {
+         finalColor = colorCyan;
+     } else {
+         finalColor = colorMagenta;
+     }
+
+     gl_FragColor = finalColor;
+    }
+);
+
 ;
 
 #endif

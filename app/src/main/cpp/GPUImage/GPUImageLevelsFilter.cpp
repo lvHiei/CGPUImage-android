@@ -25,72 +25,70 @@
 
 
 // 片元着色器
-extern const char _levels_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform mediump vec3 levelMinimum;\n"
-"uniform mediump vec3 levelMiddle;\n"
-"uniform mediump vec3 levelMaximum;\n"
-"uniform mediump vec3 minOutput;\n"
-"uniform mediump vec3 maxOutput;\n"
-"\n"
-"#define GammaCorrection(color, gamma)\t\t\t\t\t\t\t\tpow(color, 1.0 / gamma)\n"
-"\n"
-"/*\n"
-" ** Levels control (input (+gamma), output)\n"
-" ** Details: http://blog.mouaif.org/2009/01/28/levels-control-shader/\n"
-" */\n"
-"\n"
-"#define LevelsControlInputRange(color, minInput, maxInput)\t\t\t\tmin(max(color - minInput, vec3(0.0)) / (maxInput - minInput), vec3(1.0))\n"
-"#define LevelsControlInput(color, minInput, gamma, maxInput)\t\t\t\tGammaCorrection(LevelsControlInputRange(color, minInput, maxInput), gamma)\n"
-"#define LevelsControlOutputRange(color, minOutput, maxOutput) \t\t\tmix(minOutput, maxOutput, color)\n"
-"#define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput) \tLevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)"
-"\n"
-"void main()\n"
-"{\n"
-"    mediump vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(LevelsControl(textureColor.rgb, levelMinimum, levelMiddle, levelMaximum, minOutput, maxOutput), textureColor.a);\n"
-"}"
-;
+extern const char _levels_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform mediump vec3 levelMinimum;
+    uniform mediump vec3 levelMiddle;
+    uniform mediump vec3 levelMaximum;
+    uniform mediump vec3 minOutput;
+    uniform mediump vec3 maxOutput;
+
+    #define GammaCorrection(color, gamma) pow(color, 1.0 / gamma)
+
+        /*
+         ** Levels control (input (+gamma), output)
+         ** Details: http://blog.mouaif.org/2009/01/28/levels-control-shader/
+         */
+
+    #define LevelsControlInputRange(color, minInput, maxInput) min(max(color - minInput, vec3(0.0)) / (maxInput - minInput), vec3(1.0))
+    #define LevelsControlInput(color, minInput, gamma, maxInput) GammaCorrection(LevelsControlInputRange(color, minInput, maxInput), gamma)
+    #define LevelsControlOutputRange(color, minOutput, maxOutput)  mix(minOutput, maxOutput, color)
+    #define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput)  LevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)
+
+    void main()
+    {
+        mediump vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+        gl_FragColor = vec4(LevelsControl(textureColor.rgb, levelMinimum, levelMiddle, levelMaximum, minOutput, maxOutput), textureColor.a);
+    }
+);
 
 
 #else
 
-
 // 片元着色器
-extern const char _levels_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform vec3 levelMinimum;\n"
-"uniform vec3 levelMiddle;\n"
-"uniform vec3 levelMaximum;\n"
-"uniform vec3 minOutput;\n"
-"uniform vec3 maxOutput;\n"
-"\n"
-"#define GammaCorrection(color, gamma)\t\t\t\t\t\t\t\tpow(color, 1.0 / gamma)\n"
-"\n"
-"/*\n"
-" ** Levels control (input (+gamma), output)\n"
-" ** Details: http://blog.mouaif.org/2009/01/28/levels-control-shader/\n"
-" */\n"
-"\n"
-"#define LevelsControlInputRange(color, minInput, maxInput)\t\t\t\tmin(max(color - minInput, vec3(0.0)) / (maxInput - minInput), vec3(1.0))\n"
-"#define LevelsControlInput(color, minInput, gamma, maxInput)\t\t\t\tGammaCorrection(LevelsControlInputRange(color, minInput, maxInput), gamma)\n"
-"#define LevelsControlOutputRange(color, minOutput, maxOutput) \t\t\tmix(minOutput, maxOutput, color)\n"
-"#define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput) \tLevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)\n"
-""
-"void main()\n"
-"{\n"
-"    vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"\n"
-"    gl_FragColor = vec4(LevelsControl(textureColor.rgb, levelMinimum, levelMiddle, levelMaximum, minOutput, maxOutput), textureColor.a);\n"
-"}"
-;
+extern const char _levels_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
 
+    uniform sampler2D inputImageTexture;
+    uniform mediump vec3 levelMinimum;
+    uniform mediump vec3 levelMiddle;
+    uniform mediump vec3 levelMaximum;
+    uniform mediump vec3 minOutput;
+    uniform mediump vec3 maxOutput;
+
+    #define GammaCorrection(color, gamma) pow(color, 1.0 / gamma)
+
+        /*
+         ** Levels control (input (+gamma), output)
+         ** Details: http://blog.mouaif.org/2009/01/28/levels-control-shader/
+         */
+
+    #define LevelsControlInputRange(color, minInput, maxInput) min(max(color - minInput, vec3(0.0)) / (maxInput - minInput), vec3(1.0))
+    #define LevelsControlInput(color, minInput, gamma, maxInput) GammaCorrection(LevelsControlInputRange(color, minInput, maxInput), gamma)
+    #define LevelsControlOutputRange(color, minOutput, maxOutput)  mix(minOutput, maxOutput, color)
+    #define LevelsControl(color, minInput, gamma, maxInput, minOutput, maxOutput)  LevelsControlOutputRange(LevelsControlInput(color, minInput, gamma, maxInput), minOutput, maxOutput)
+
+    void main()
+    {
+        mediump vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
+
+        gl_FragColor = vec4(LevelsControl(textureColor.rgb, levelMinimum, levelMiddle, levelMaximum, minOutput, maxOutput), textureColor.a);
+    }
+);
 
 #endif
 

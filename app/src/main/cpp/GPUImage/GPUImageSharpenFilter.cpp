@@ -9,100 +9,100 @@
 
 
 // 顶点着色器
-extern const char _sharpen_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"\n"
-"uniform float imageWidthFactor;\n"
-"uniform float imageHeightFactor;\n"
-"uniform float sharpness;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"\n"
-"varying float centerMultiplier;\n"
-"varying float edgeMultiplier;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    vec2 widthStep = vec2(imageWidthFactor, 0.0);\n"
-"    vec2 heightStep = vec2(0.0, imageHeightFactor);\n"
-"\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"    leftTextureCoordinate = inputTextureCoordinate.xy - widthStep;\n"
-"    rightTextureCoordinate = inputTextureCoordinate.xy + widthStep;\n"
-"    topTextureCoordinate = inputTextureCoordinate.xy + heightStep;\n"
-"    bottomTextureCoordinate = inputTextureCoordinate.xy - heightStep;\n"
-"\n"
-"    centerMultiplier = 1.0 + 4.0 * sharpness;\n"
-"    edgeMultiplier = sharpness;\n"
-"}"
-;
+extern const char _sharpen_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+
+    uniform float imageWidthFactor;
+    uniform float imageHeightFactor;
+    uniform float sharpness;
+
+    varying vec2 textureCoordinate;
+    varying vec2 leftTextureCoordinate;
+    varying vec2 rightTextureCoordinate;
+    varying vec2 topTextureCoordinate;
+    varying vec2 bottomTextureCoordinate;
+
+    varying float centerMultiplier;
+    varying float edgeMultiplier;
+
+    void main()
+    {
+        gl_Position = position;
+
+        vec2 widthStep = vec2(imageWidthFactor, 0.0);
+        vec2 heightStep = vec2(0.0, imageHeightFactor);
+
+        textureCoordinate = inputTextureCoordinate.xy;
+        leftTextureCoordinate = inputTextureCoordinate.xy - widthStep;
+        rightTextureCoordinate = inputTextureCoordinate.xy + widthStep;
+        topTextureCoordinate = inputTextureCoordinate.xy + heightStep;
+        bottomTextureCoordinate = inputTextureCoordinate.xy - heightStep;
+
+        centerMultiplier = 1.0 + 4.0 * sharpness;
+        edgeMultiplier = sharpness;
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 
 // 片元着色器
-extern const char _sharpen_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 leftTextureCoordinate;\n"
-"varying highp vec2 rightTextureCoordinate;\n"
-"varying highp vec2 topTextureCoordinate;\n"
-"varying highp vec2 bottomTextureCoordinate;\n"
-"\n"
-"varying highp float centerMultiplier;\n"
-"varying highp float edgeMultiplier;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    mediump vec3 textureColor = texture2D(inputImageTexture, textureCoordinate).rgb;\n"
-"    mediump vec3 leftTextureColor = texture2D(inputImageTexture, leftTextureCoordinate).rgb;\n"
-"    mediump vec3 rightTextureColor = texture2D(inputImageTexture, rightTextureCoordinate).rgb;\n"
-"    mediump vec3 topTextureColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;\n"
-"    mediump vec3 bottomTextureColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;\n"
-"\n"
-"    gl_FragColor = vec4((textureColor * centerMultiplier - (leftTextureColor * edgeMultiplier + rightTextureColor * edgeMultiplier + topTextureColor * edgeMultiplier + bottomTextureColor * edgeMultiplier)), texture2D(inputImageTexture, bottomTextureCoordinate).w);\n"
-"}"
-;
+extern const char _sharpen_fragment_shader[]=SHADER_STR(
+    precision highp float;
+
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 leftTextureCoordinate;
+    varying highp vec2 rightTextureCoordinate;
+    varying highp vec2 topTextureCoordinate;
+    varying highp vec2 bottomTextureCoordinate;
+
+    varying highp float centerMultiplier;
+    varying highp float edgeMultiplier;
+
+    uniform sampler2D inputImageTexture;
+
+    void main()
+    {
+        mediump vec3 textureColor = texture2D(inputImageTexture, textureCoordinate).rgb;
+        mediump vec3 leftTextureColor = texture2D(inputImageTexture, leftTextureCoordinate).rgb;
+        mediump vec3 rightTextureColor = texture2D(inputImageTexture, rightTextureCoordinate).rgb;
+        mediump vec3 topTextureColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;
+        mediump vec3 bottomTextureColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;
+
+        gl_FragColor = vec4((textureColor * centerMultiplier - (leftTextureColor * edgeMultiplier + rightTextureColor * edgeMultiplier + topTextureColor * edgeMultiplier + bottomTextureColor * edgeMultiplier)), texture2D(inputImageTexture, bottomTextureCoordinate).w);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _sharpen_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 leftTextureCoordinate;\n"
-"varying vec2 rightTextureCoordinate;\n"
-"varying vec2 topTextureCoordinate;\n"
-"varying vec2 bottomTextureCoordinate;\n"
-"\n"
-"varying float centerMultiplier;\n"
-"varying float edgeMultiplier;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec3 textureColor = texture2D(inputImageTexture, textureCoordinate).rgb;\n"
-"    vec3 leftTextureColor = texture2D(inputImageTexture, leftTextureCoordinate).rgb;\n"
-"    vec3 rightTextureColor = texture2D(inputImageTexture, rightTextureCoordinate).rgb;\n"
-"    vec3 topTextureColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;\n"
-"    vec3 bottomTextureColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;\n"
-"\n"
-"    gl_FragColor = vec4((textureColor * centerMultiplier - (leftTextureColor * edgeMultiplier + rightTextureColor * edgeMultiplier + topTextureColor * edgeMultiplier + bottomTextureColor * edgeMultiplier)), texture2D(inputImageTexture, bottomTextureCoordinate).w);\n"
-"}"
-;
+extern const char _sharpen_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 leftTextureCoordinate;
+ varying vec2 rightTextureCoordinate;
+ varying vec2 topTextureCoordinate;
+ varying vec2 bottomTextureCoordinate;
+
+ varying float centerMultiplier;
+ varying float edgeMultiplier;
+
+ uniform sampler2D inputImageTexture;
+
+ void main()
+ {
+     vec3 textureColor = texture2D(inputImageTexture, textureCoordinate).rgb;
+     vec3 leftTextureColor = texture2D(inputImageTexture, leftTextureCoordinate).rgb;
+     vec3 rightTextureColor = texture2D(inputImageTexture, rightTextureCoordinate).rgb;
+     vec3 topTextureColor = texture2D(inputImageTexture, topTextureCoordinate).rgb;
+     vec3 bottomTextureColor = texture2D(inputImageTexture, bottomTextureCoordinate).rgb;
+
+     gl_FragColor = vec4((textureColor * centerMultiplier - (leftTextureColor * edgeMultiplier + rightTextureColor * edgeMultiplier + topTextureColor * edgeMultiplier + bottomTextureColor * edgeMultiplier)), texture2D(inputImageTexture, bottomTextureCoordinate).w);
+ }
+);
 
 #endif
 

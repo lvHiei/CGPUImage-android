@@ -11,65 +11,65 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _pixelLatePosition_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp float fractionalWidthOfPixel;\n"
-"uniform highp float aspectRatio;\n"
-"uniform lowp vec2 pixelateCenter;\n"
-"uniform highp float pixelateRadius;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp float dist = distance(pixelateCenter, textureCoordinateToUse);\n"
-"\n"
-"    if (dist < pixelateRadius)\n"
-"    {\n"
-"        highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);\n"
-"        highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;\n"
-"        gl_FragColor = texture2D(inputImageTexture, samplePos );\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate );\n"
-"    }\n"
-"}"
-;
+extern const char _pixelLatePosition_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp float fractionalWidthOfPixel;
+    uniform highp float aspectRatio;
+    uniform lowp vec2 pixelateCenter;
+    uniform highp float pixelateRadius;
+
+    void main()
+    {
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp float dist = distance(pixelateCenter, textureCoordinateToUse);
+
+        if (dist < pixelateRadius)
+        {
+            highp vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
+            highp vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
+            gl_FragColor = texture2D(inputImageTexture, samplePos );
+        }
+        else
+        {
+            gl_FragColor = texture2D(inputImageTexture, textureCoordinate );
+        }
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _pixelLatePosition_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform float fractionalWidthOfPixel;\n"
-"uniform float aspectRatio;\n"
-"uniform vec2 pixelateCenter;\n"
-"uniform float pixelateRadius;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    float dist = distance(pixelateCenter, textureCoordinateToUse);\n"
-"\n"
-"    if (dist < pixelateRadius)\n"
-"    {\n"
-"        vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);\n"
-"        vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;\n"
-"        gl_FragColor = texture2D(inputImageTexture, samplePos );\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate );\n"
-"    }\n"
-"}"
-;
+extern const char _pixelLatePosition_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform float fractionalWidthOfPixel;
+ uniform float aspectRatio;
+ uniform vec2 pixelateCenter;
+ uniform float pixelateRadius;
+
+ void main()
+ {
+     vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     float dist = distance(pixelateCenter, textureCoordinateToUse);
+
+     if (dist < pixelateRadius)
+     {
+         vec2 sampleDivisor = vec2(fractionalWidthOfPixel, fractionalWidthOfPixel / aspectRatio);
+         vec2 samplePos = textureCoordinate - mod(textureCoordinate, sampleDivisor) + 0.5 * sampleDivisor;
+         gl_FragColor = texture2D(inputImageTexture, samplePos );
+     }
+     else
+     {
+         gl_FragColor = texture2D(inputImageTexture, textureCoordinate );
+     }
+ }
+);
 
 #endif
 

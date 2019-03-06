@@ -12,70 +12,70 @@
 
 
 // 片元着色器
-extern const char _swirl_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp vec2 center;\n"
-"uniform highp float radius;\n"
-"uniform highp float angle;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 textureCoordinateToUse = textureCoordinate;\n"
-"    highp float dist = distance(center, textureCoordinate);\n"
-"    if (dist < radius)\n"
-"    {\n"
-"        textureCoordinateToUse -= center;\n"
-"        highp float percent = (radius - dist) / radius;\n"
-"        highp float theta = percent * percent * angle * 8.0;\n"
-"        highp float s = sin(theta);\n"
-"        highp float c = cos(theta);\n"
-"        textureCoordinateToUse = vec2(dot(textureCoordinateToUse, vec2(c, -s)), dot(textureCoordinateToUse, vec2(s, c)));\n"
-"        textureCoordinateToUse += center;\n"
-"    }\n"
-"\n"
-"    gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );\n"
-"\n"
-"}"
-;
+extern const char _swirl_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp vec2 center;
+    uniform highp float radius;
+    uniform highp float angle;
+
+    void main()
+    {
+        highp vec2 textureCoordinateToUse = textureCoordinate;
+        highp float dist = distance(center, textureCoordinate);
+        if (dist < radius)
+        {
+            textureCoordinateToUse -= center;
+            highp float percent = (radius - dist) / radius;
+            highp float theta = percent * percent * angle * 8.0;
+            highp float s = sin(theta);
+            highp float c = cos(theta);
+            textureCoordinateToUse = vec2(dot(textureCoordinateToUse, vec2(c, -s)), dot(textureCoordinateToUse, vec2(s, c)));
+            textureCoordinateToUse += center;
+        }
+
+        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );
+
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _swirl_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform vec2 center;\n"
-"uniform float radius;\n"
-"uniform float angle;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = textureCoordinate;\n"
-"    float dist = distance(center, textureCoordinate);\n"
-"    if (dist < radius)\n"
-"    {\n"
-"        textureCoordinateToUse -= center;\n"
-"        float percent = (radius - dist) / radius;\n"
-"        float theta = percent * percent * angle * 8.0;\n"
-"        float s = sin(theta);\n"
-"        float c = cos(theta);\n"
-"        textureCoordinateToUse = vec2(dot(textureCoordinateToUse, vec2(c, -s)), dot(textureCoordinateToUse, vec2(s, c)));\n"
-"        textureCoordinateToUse += center;\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);\n"
-"    }else{\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    }\n"
-"\n"
-//"    ;\n"
-"}"
-;
+extern const char _swirl_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform vec2 center;
+ uniform float radius;
+ uniform float angle;
+
+ void main()
+ {
+     vec2 textureCoordinateToUse = textureCoordinate;
+     float dist = distance(center, textureCoordinate);
+     if (dist < radius)
+     {
+         textureCoordinateToUse -= center;
+         float percent = (radius - dist) / radius;
+         float theta = percent * percent * angle * 8.0;
+         float s = sin(theta);
+         float c = cos(theta);
+         textureCoordinateToUse = vec2(dot(textureCoordinateToUse, vec2(c, -s)), dot(textureCoordinateToUse, vec2(s, c)));
+         textureCoordinateToUse += center;
+         gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+     }else{
+         gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+     }
+
+//     ;
+ }
+);
 
 #endif
 

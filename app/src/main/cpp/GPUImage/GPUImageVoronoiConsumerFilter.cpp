@@ -13,60 +13,60 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _voronoiConsumer_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"uniform vec2 size;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"vec2 getCoordFromColor(vec4 color)\n"
-"{\n"
-"    float z = color.z * 256.0;\n"
-"    float yoff = floor(z / 8.0);\n"
-"    float xoff = mod(z, 8.0);\n"
-"    float x = color.x*256.0 + xoff*256.0;\n"
-"    float y = color.y*256.0 + yoff*256.0;\n"
-"    return vec2(x,y) / size;\n"
-"}\n"
-"\n"
-"void main(void) {\n"
-"    vec4 colorLoc = texture2D(inputImageTexture2, textureCoordinate);\n"
-"    vec4 color = texture2D(inputImageTexture, getCoordFromColor(colorLoc));\n"
-"\n"
-"    gl_FragColor = color;\n"
-"}"
-;
+extern const char _voronoiConsumer_fragment_shader[]=SHADER_STR(
+    precision highp float;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+    uniform vec2 size;
+    varying vec2 textureCoordinate;
+
+    vec2 getCoordFromColor(vec4 color)
+    {
+        float z = color.z * 256.0;
+        float yoff = floor(z / 8.0);
+        float xoff = mod(z, 8.0);
+        float x = color.x*256.0 + xoff*256.0;
+        float y = color.y*256.0 + yoff*256.0;
+        return vec2(x,y) / size;
+    }
+
+    void main(void) {
+        vec4 colorLoc = texture2D(inputImageTexture2, textureCoordinate);
+        vec4 color = texture2D(inputImageTexture, getCoordFromColor(colorLoc));
+
+        gl_FragColor = color;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _voronoiConsumer_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"uniform vec2 size;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"vec2 getCoordFromColor(vec4 color)\n"
-"{\n"
-"    float z = color.z * 256.0;\n"
-"    float yoff = floor(z / 8.0);\n"
-"    float xoff = mod(z, 8.0);\n"
-"    float x = color.x*256.0 + xoff*256.0;\n"
-"    float y = color.y*256.0 + yoff*256.0;\n"
-"    return vec2(x,y) / size;\n"
-"}\n"
-"\n"
-"void main(void)\n"
-"{\n"
-"    vec4 colorLoc = texture2D(inputImageTexture2, textureCoordinate);\n"
-"    vec4 color = texture2D(inputImageTexture, getCoordFromColor(colorLoc));\n"
-"\n"
-"    gl_FragColor = color;\n"
-"}"
-;
+extern const char _voronoiConsumer_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+ uniform vec2 size;
+ varying vec2 textureCoordinate;
+
+ vec2 getCoordFromColor(vec4 color)
+ {
+     float z = color.z * 256.0;
+     float yoff = floor(z / 8.0);
+     float xoff = mod(z, 8.0);
+     float x = color.x*256.0 + xoff*256.0;
+     float y = color.y*256.0 + yoff*256.0;
+     return vec2(x,y) / size;
+ }
+
+ void main(void)
+ {
+     vec4 colorLoc = texture2D(inputImageTexture2, textureCoordinate);
+     vec4 color = texture2D(inputImageTexture, getCoordFromColor(colorLoc));
+
+     gl_FragColor = color;
+ }
+);
 
 #endif
 

@@ -13,100 +13,100 @@
 
 
 // 片元着色器
-extern const char _luminosityBlend_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"highp float lum(lowp vec3 c) {\n"
-"    return dot(c, vec3(0.3, 0.59, 0.11));\n"
-"}\n"
-"\n"
-"lowp vec3 clipcolor(lowp vec3 c) {\n"
-"   highp float l = lum(c);\n"
-"   lowp float n = min(min(c.r, c.g), c.b);\n"
-"   lowp float x = max(max(c.r, c.g), c.b);\n"
-"\n"
-"   if (n < 0.0) {\n"
-"       c.r = l + ((c.r - l) * l) / (l - n);\n"
-"       c.g = l + ((c.g - l) * l) / (l - n);\n"
-"       c.b = l + ((c.b - l) * l) / (l - n);\n"
-"   }\n"
-"   if (x > 1.0) {\n"
-"       c.r = l + ((c.r - l) * (1.0 - l)) / (x - l);\n"
-"       c.g = l + ((c.g - l) * (1.0 - l)) / (x - l);\n"
-"       c.b = l + ((c.b - l) * (1.0 - l)) / (x - l);\n"
-"   }\n"
-"\n"
-"   return c;\n"
-"}\n"
-"\n"
-"lowp vec3 setlum(lowp vec3 c, highp float l) {\n"
-"   highp float d = l - lum(c);\n"
-"   c = c + vec3(d);\n"
-"   return clipcolor(c);\n"
-"}\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec4 baseColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    highp vec4 overlayColor = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    gl_FragColor = vec4(baseColor.rgb * (1.0 - overlayColor.a) + setlum(baseColor.rgb, lum(overlayColor.rgb)) * overlayColor.a, baseColor.a);\n"
-"}"
-;
+extern const char _luminosityBlend_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    highp float lum(lowp vec3 c) {
+        return dot(c, vec3(0.3, 0.59, 0.11));
+    }
+
+    lowp vec3 clipcolor(lowp vec3 c) {
+        highp float l = lum(c);
+        lowp float n = min(min(c.r, c.g), c.b);
+        lowp float x = max(max(c.r, c.g), c.b);
+
+        if (n < 0.0) {
+            c.r = l + ((c.r - l) * l) / (l - n);
+            c.g = l + ((c.g - l) * l) / (l - n);
+            c.b = l + ((c.b - l) * l) / (l - n);
+        }
+        if (x > 1.0) {
+            c.r = l + ((c.r - l) * (1.0 - l)) / (x - l);
+            c.g = l + ((c.g - l) * (1.0 - l)) / (x - l);
+            c.b = l + ((c.b - l) * (1.0 - l)) / (x - l);
+        }
+
+        return c;
+    }
+
+    lowp vec3 setlum(lowp vec3 c, highp float l) {
+        highp float d = l - lum(c);
+        c = c + vec3(d);
+        return clipcolor(c);
+    }
+
+    void main()
+    {
+        highp vec4 baseColor = texture2D(inputImageTexture, textureCoordinate);
+        highp vec4 overlayColor = texture2D(inputImageTexture2, textureCoordinate2);
+
+        gl_FragColor = vec4(baseColor.rgb * (1.0 - overlayColor.a) + setlum(baseColor.rgb, lum(overlayColor.rgb)) * overlayColor.a, baseColor.a);
+    }
+);
 
 #else
 
 
 // 片元着色器
-extern const char _luminosityBlend_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"float lum(vec3 c) {\n"
-"    return dot(c, vec3(0.3, 0.59, 0.11));\n"
-"}\n"
-"\n"
-"vec3 clipcolor(vec3 c) {\n"
-"    float l = lum(c);\n"
-"    float n = min(min(c.r, c.g), c.b);\n"
-"    float x = max(max(c.r, c.g), c.b);\n"
-"\n"
-"    if (n < 0.0) {\n"
-"        c.r = l + ((c.r - l) * l) / (l - n);\n"
-"        c.g = l + ((c.g - l) * l) / (l - n);\n"
-"        c.b = l + ((c.b - l) * l) / (l - n);\n"
-"    }\n"
-"    if (x > 1.0) {\n"
-"        c.r = l + ((c.r - l) * (1.0 - l)) / (x - l);\n"
-"        c.g = l + ((c.g - l) * (1.0 - l)) / (x - l);\n"
-"        c.b = l + ((c.b - l) * (1.0 - l)) / (x - l);\n"
-"    }\n"
-"\n"
-"    return c;\n"
-"}\n"
-"\n"
-"vec3 setlum(vec3 c, float l) {\n"
-"    float d = l - lum(c);\n"
-"    c = c + vec3(d);\n"
-"    return clipcolor(c);\n"
-"}\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 baseColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 overlayColor = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    gl_FragColor = vec4(baseColor.rgb * (1.0 - overlayColor.a) + setlum(baseColor.rgb, lum(overlayColor.rgb)) * overlayColor.a, baseColor.a);\n"
-"}"
-;
+extern const char _luminosityBlend_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 textureCoordinate2;
+
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+
+ float lum(vec3 c) {
+     return dot(c, vec3(0.3, 0.59, 0.11));
+ }
+
+ vec3 clipcolor(vec3 c) {
+     float l = lum(c);
+     float n = min(min(c.r, c.g), c.b);
+     float x = max(max(c.r, c.g), c.b);
+
+     if (n < 0.0) {
+         c.r = l + ((c.r - l) * l) / (l - n);
+         c.g = l + ((c.g - l) * l) / (l - n);
+         c.b = l + ((c.b - l) * l) / (l - n);
+     }
+     if (x > 1.0) {
+         c.r = l + ((c.r - l) * (1.0 - l)) / (x - l);
+         c.g = l + ((c.g - l) * (1.0 - l)) / (x - l);
+         c.b = l + ((c.b - l) * (1.0 - l)) / (x - l);
+     }
+
+     return c;
+ }
+
+ vec3 setlum(vec3 c, float l) {
+     float d = l - lum(c);
+     c = c + vec3(d);
+     return clipcolor(c);
+ }
+
+ void main()
+ {
+     vec4 baseColor = texture2D(inputImageTexture, textureCoordinate);
+     vec4 overlayColor = texture2D(inputImageTexture2, textureCoordinate2);
+
+     gl_FragColor = vec4(baseColor.rgb * (1.0 - overlayColor.a) + setlum(baseColor.rgb, lum(overlayColor.rgb)) * overlayColor.a, baseColor.a);
+ }
+);
 
 #endif
 

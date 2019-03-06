@@ -10,22 +10,22 @@
 
 
 // 顶点着色器
-extern const char _twoInput_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"attribute vec4 inputTextureCoordinate2;\n"
+extern const char _twoInput_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+    attribute vec4 inputTextureCoordinate2;
 
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
+    varying vec2 textureCoordinate;
+    varying vec2 textureCoordinate2;
 
-"void main()\n"
-"{\n"
-"	gl_Position = position;\n"
-"	textureCoordinate = inputTextureCoordinate.xy;\n"
-"   textureCoordinate2 = inputTextureCoordinate2.xy;\n"
-"}\n"
-;
+    void main()
+    {
+        gl_Position = position;
+        textureCoordinate = inputTextureCoordinate.xy;
+        textureCoordinate2 = inputTextureCoordinate2.xy;
+    }
+);
 
 GPUImageTwoInputFilter::GPUImageTwoInputFilter(const char *fragment)
     : GPUImageFilter(_twoInput_vertex_shader, fragment)

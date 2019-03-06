@@ -12,83 +12,83 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _overlayBlend_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    mediump vec4 base = texture2D(inputImageTexture, textureCoordinate);\n"
-"    mediump vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    mediump float ra;\n"
-"    if (2.0 * base.r < base.a) {\n"
-"        ra = 2.0 * overlay.r * base.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"    } else {\n"
-"        ra = overlay.a * base.a - 2.0 * (base.a - base.r) * (overlay.a - overlay.r) + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"    }\n"
-"\n"
-"    mediump float ga;\n"
-"    if (2.0 * base.g < base.a) {\n"
-"        ga = 2.0 * overlay.g * base.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"    } else {\n"
-"        ga = overlay.a * base.a - 2.0 * (base.a - base.g) * (overlay.a - overlay.g) + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"    }\n"
-"\n"
-"    mediump float ba;\n"
-"    if (2.0 * base.b < base.a) {\n"
-"        ba = 2.0 * overlay.b * base.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"    } else {\n"
-"        ba = overlay.a * base.a - 2.0 * (base.a - base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"    }\n"
-"\n"
-"    gl_FragColor = vec4(ra, ga, ba, 1.0);\n"
-"}"
-;
+extern const char _overlayBlend_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        mediump vec4 base = texture2D(inputImageTexture, textureCoordinate);
+        mediump vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);
+
+        mediump float ra;
+        if (2.0 * base.r < base.a) {
+            ra = 2.0 * overlay.r * base.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+        } else {
+            ra = overlay.a * base.a - 2.0 * (base.a - base.r) * (overlay.a - overlay.r) + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+        }
+
+        mediump float ga;
+        if (2.0 * base.g < base.a) {
+            ga = 2.0 * overlay.g * base.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+        } else {
+            ga = overlay.a * base.a - 2.0 * (base.a - base.g) * (overlay.a - overlay.g) + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+        }
+
+        mediump float ba;
+        if (2.0 * base.b < base.a) {
+            ba = 2.0 * overlay.b * base.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+        } else {
+            ba = overlay.a * base.a - 2.0 * (base.a - base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+        }
+
+        gl_FragColor = vec4(ra, ga, ba, 1.0);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _overlayBlend_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 base = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    float ra;\n"
-"    if (2.0 * base.r < base.a) {\n"
-"        ra = 2.0 * overlay.r * base.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"    } else {\n"
-"        ra = overlay.a * base.a - 2.0 * (base.a - base.r) * (overlay.a - overlay.r) + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"    }\n"
-"\n"
-"    float ga;\n"
-"    if (2.0 * base.g < base.a) {\n"
-"        ga = 2.0 * overlay.g * base.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"    } else {\n"
-"        ga = overlay.a * base.a - 2.0 * (base.a - base.g) * (overlay.a - overlay.g) + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"    }\n"
-"\n"
-"    float ba;\n"
-"    if (2.0 * base.b < base.a) {\n"
-"        ba = 2.0 * overlay.b * base.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"    } else {\n"
-"        ba = overlay.a * base.a - 2.0 * (base.a - base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"    }\n"
-"\n"
-"    gl_FragColor = vec4(ra, ga, ba, 1.0);\n"
-"}"
-;
+extern const char _overlayBlend_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+ varying vec2 textureCoordinate2;
+
+ uniform sampler2D inputImageTexture;
+ uniform sampler2D inputImageTexture2;
+
+ void main()
+ {
+     vec4 base = texture2D(inputImageTexture, textureCoordinate);
+     vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);
+
+     float ra;
+     if (2.0 * base.r < base.a) {
+         ra = 2.0 * overlay.r * base.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+     } else {
+         ra = overlay.a * base.a - 2.0 * (base.a - base.r) * (overlay.a - overlay.r) + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+     }
+
+     float ga;
+     if (2.0 * base.g < base.a) {
+         ga = 2.0 * overlay.g * base.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+     } else {
+         ga = overlay.a * base.a - 2.0 * (base.a - base.g) * (overlay.a - overlay.g) + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+     }
+
+     float ba;
+     if (2.0 * base.b < base.a) {
+         ba = 2.0 * overlay.b * base.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+     } else {
+         ba = overlay.a * base.a - 2.0 * (base.a - base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+     }
+
+     gl_FragColor = vec4(ra, ga, ba, 1.0);
+ }
+);
 
 #endif
 

@@ -10,122 +10,123 @@
 
 
 // 顶点着色器
-extern const char _gaussianBlurPosition_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"\n"
-"const int GAUSSIAN_SAMPLES = 9;\n"
-"\n"
-"uniform float texelWidthOffset;\n"
-"uniform float texelHeightOffset;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"\n"
-"    // Calculate the positions for the blur\n"
-"    int multiplier = 0;\n"
-"    vec2 blurStep;\n"
-"    vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);\n"
-"\n"
-"    for (int i = 0; i < GAUSSIAN_SAMPLES; i++) {\n"
-"        multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));\n"
-"        // Blur in x (horizontal)\n"
-"        blurStep = float(multiplier) * singleStepOffset;\n"
-"        blurCoordinates[i] = inputTextureCoordinate.xy + blurStep;\n"
-"    }\n"
-"}"
-;
+extern const char _gaussianBlurPosition_vertex_shader[]=SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+
+    const int GAUSSIAN_SAMPLES = 9;
+
+    uniform float texelWidthOffset;
+    uniform float texelHeightOffset;
+    varying vec2 textureCoordinate;
+    varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];
+
+    void main()
+    {
+        gl_Position = position;
+        textureCoordinate = inputTextureCoordinate.xy;
+
+        // Calculate the positions for the blur
+        int multiplier = 0;
+        vec2 blurStep;
+        vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset);
+
+        for (int i = 0; i < GAUSSIAN_SAMPLES; i++) {
+            multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));
+            // Blur in x (horizontal)
+            blurStep = float(multiplier) * singleStepOffset;
+            blurCoordinates[i] = inputTextureCoordinate.xy + blurStep;
+        }
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _gaussianBlurPosition_fragment_shader[]=
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"const lowp int GAUSSIAN_SAMPLES = 9;\n"
-"\n"
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
-"\n"
-"uniform highp float aspectRatio;\n"
-"uniform lowp vec2 blurCenter;\n"
-"uniform highp float blurRadius;\n"
-"\n"
-"void main() {\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp float dist = distance(blurCenter, textureCoordinateToUse);\n"
-"\n"
-"    if (dist < blurRadius)\n"
-"    {\n"
-"        lowp vec4 sum = vec4(0.0);\n"
-"\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.05;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.09;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.12;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.15;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.18;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[5]) * 0.15;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[6]) * 0.12;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.09;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.05;\n"
-"\n"
-"        gl_FragColor = sum;\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    }\n"
-"}"
-;
+extern const char _gaussianBlurPosition_fragment_shader[]=SHADER_STR(
+    uniform sampler2D inputImageTexture;
+
+    const lowp int GAUSSIAN_SAMPLES = 9;
+
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 blurCoordinates[GAUSSIAN_SAMPLES];
+
+    uniform highp float aspectRatio;
+    uniform lowp vec2 blurCenter;
+    uniform highp float blurRadius;
+
+    void main() {
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp float dist = distance(blurCenter, textureCoordinateToUse);
+
+        if (dist < blurRadius)
+        {
+            lowp vec4 sum = vec4(0.0);
+
+            sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.05;
+            sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.09;
+            sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.12;
+            sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.15;
+            sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.18;
+            sum += texture2D(inputImageTexture, blurCoordinates[5]) * 0.15;
+            sum += texture2D(inputImageTexture, blurCoordinates[6]) * 0.12;
+            sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.09;
+            sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.05;
+
+            gl_FragColor = sum;
+        }
+        else
+        {
+            gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+        }
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _gaussianBlurPosition_fragment_shader[]=
-"precision mediump float;\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"const int GAUSSIAN_SAMPLES = 9;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];\n"
-"\n"
-"uniform float aspectRatio;\n"
-"uniform vec2 blurCenter;\n"
-"uniform float blurRadius;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    float dist = distance(blurCenter, textureCoordinateToUse);\n"
-"\n"
-"    if (dist < blurRadius)\n"
-"    {\n"
-"        vec4 sum = vec4(0.0);\n"
-"\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.05;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.09;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.12;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.15;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.18;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[5]) * 0.15;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[6]) * 0.12;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.09;\n"
-"        sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.05;\n"
-"\n"
-"        gl_FragColor = sum;\n"
-"    }\n"
-"    else\n"
-"    {\n"
-"        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n"
-"    }\n"
-"}"
-;
+extern const char _gaussianBlurPosition_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    uniform sampler2D inputImageTexture;
+
+    const int GAUSSIAN_SAMPLES = 9;
+
+    varying vec2 textureCoordinate;
+    varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];
+
+    uniform float aspectRatio;
+    uniform vec2 blurCenter;
+    uniform float blurRadius;
+
+    void main()
+    {
+     vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     float dist = distance(blurCenter, textureCoordinateToUse);
+
+     if (dist < blurRadius)
+     {
+         vec4 sum = vec4(0.0);
+
+         sum += texture2D(inputImageTexture, blurCoordinates[0]) * 0.05;
+         sum += texture2D(inputImageTexture, blurCoordinates[1]) * 0.09;
+         sum += texture2D(inputImageTexture, blurCoordinates[2]) * 0.12;
+         sum += texture2D(inputImageTexture, blurCoordinates[3]) * 0.15;
+         sum += texture2D(inputImageTexture, blurCoordinates[4]) * 0.18;
+         sum += texture2D(inputImageTexture, blurCoordinates[5]) * 0.15;
+         sum += texture2D(inputImageTexture, blurCoordinates[6]) * 0.12;
+         sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.09;
+         sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.05;
+
+         gl_FragColor = sum;
+     }
+     else
+     {
+         gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+     }
+    }
+);
+
 
 #endif
 

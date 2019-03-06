@@ -13,86 +13,86 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _divideBlend_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"varying highp vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    mediump vec4 base = texture2D(inputImageTexture, textureCoordinate);\n"
-"    mediump vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    mediump float ra;\n"
-"    if (overlay.a == 0.0 || ((base.r / overlay.r) > (base.a / overlay.a)))\n"
-"        ra = overlay.a * base.a + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"    else\n"
-"        ra = (base.r * overlay.a * overlay.a) / overlay.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"\n"
-"\n"
-"    mediump float ga;\n"
-"    if (overlay.a == 0.0 || ((base.g / overlay.g) > (base.a / overlay.a)))\n"
-"        ga = overlay.a * base.a + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"    else\n"
-"        ga = (base.g * overlay.a * overlay.a) / overlay.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"\n"
-"\n"
-"    mediump float ba;\n"
-"    if (overlay.a == 0.0 || ((base.b / overlay.b) > (base.a / overlay.a)))\n"
-"        ba = overlay.a * base.a + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"    else\n"
-"        ba = (base.b * overlay.a * overlay.a) / overlay.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"\n"
-"    mediump float a = overlay.a + base.a - overlay.a * base.a;\n"
-"\n"
-"    gl_FragColor = vec4(ra, ga, ba, a);\n"
-"}"
-;
+extern const char _divideBlend_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+    varying highp vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+        mediump vec4 base = texture2D(inputImageTexture, textureCoordinate);
+        mediump vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);
+
+        mediump float ra;
+        if (overlay.a == 0.0 || ((base.r / overlay.r) > (base.a / overlay.a)))
+            ra = overlay.a * base.a + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+        else
+            ra = (base.r * overlay.a * overlay.a) / overlay.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+
+
+        mediump float ga;
+        if (overlay.a == 0.0 || ((base.g / overlay.g) > (base.a / overlay.a)))
+            ga = overlay.a * base.a + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+        else
+            ga = (base.g * overlay.a * overlay.a) / overlay.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+
+
+        mediump float ba;
+        if (overlay.a == 0.0 || ((base.b / overlay.b) > (base.a / overlay.a)))
+            ba = overlay.a * base.a + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+        else
+            ba = (base.b * overlay.a * overlay.a) / overlay.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+
+        mediump float a = overlay.a + base.a - overlay.a * base.a;
+
+        gl_FragColor = vec4(ra, ga, ba, a);
+    }
+);
 
 
 #else
 
 // 片元着色器
-extern const char _divideBlend_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 textureCoordinate2;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec4 base = texture2D(inputImageTexture, textureCoordinate);\n"
-"    vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n"
-"\n"
-"    float ra;\n"
-"    if (overlay.a == 0.0 || ((base.r / overlay.r) > (base.a / overlay.a)))\n"
-"        ra = overlay.a * base.a + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"    else\n"
-"        ra = (base.r * overlay.a * overlay.a) / overlay.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n"
-"\n"
-"\n"
-"    float ga;\n"
-"    if (overlay.a == 0.0 || ((base.g / overlay.g) > (base.a / overlay.a)))\n"
-"        ga = overlay.a * base.a + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"    else\n"
-"        ga = (base.g * overlay.a * overlay.a) / overlay.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n"
-"\n"
-"\n"
-"    float ba;\n"
-"    if (overlay.a == 0.0 || ((base.b / overlay.b) > (base.a / overlay.a)))\n"
-"        ba = overlay.a * base.a + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"    else\n"
-"        ba = (base.b * overlay.a * overlay.a) / overlay.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n"
-"\n"
-"    float a = overlay.a + base.a - overlay.a * base.a;\n"
-"\n"
-"    gl_FragColor = vec4(ra, ga, ba, a);\n"
-"}"
-;
+extern const char _divideBlend_fragment_shader[]=SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+    varying vec2 textureCoordinate2;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+
+    void main()
+    {
+     vec4 base = texture2D(inputImageTexture, textureCoordinate);
+     vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);
+
+     float ra;
+     if (overlay.a == 0.0 || ((base.r / overlay.r) > (base.a / overlay.a)))
+         ra = overlay.a * base.a + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+     else
+         ra = (base.r * overlay.a * overlay.a) / overlay.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);
+
+
+     float ga;
+     if (overlay.a == 0.0 || ((base.g / overlay.g) > (base.a / overlay.a)))
+         ga = overlay.a * base.a + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+     else
+         ga = (base.g * overlay.a * overlay.a) / overlay.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);
+
+
+     float ba;
+     if (overlay.a == 0.0 || ((base.b / overlay.b) > (base.a / overlay.a)))
+         ba = overlay.a * base.a + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+     else
+         ba = (base.b * overlay.a * overlay.a) / overlay.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);
+
+     float a = overlay.a + base.a - overlay.a * base.a;
+
+     gl_FragColor = vec4(ra, ga, ba, a);
+    }
+);
 
 
 #endif

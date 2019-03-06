@@ -11,63 +11,63 @@
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _sphereRefraction_fragment_shader[]=
-"varying highp vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform highp vec2 center;\n"
-"uniform highp float radius;\n"
-"uniform highp float aspectRatio;\n"
-"uniform highp float refractiveIndex;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    highp float distanceFromCenter = distance(center, textureCoordinateToUse);\n"
-"    lowp float checkForPresenceWithinSphere = step(distanceFromCenter, radius);\n"
-"\n"
-"    distanceFromCenter = distanceFromCenter / radius;\n"
-"\n"
-"    highp float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);\n"
-"    highp vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));\n"
-"\n"
-"    highp vec3 refractedVector = refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);\n"
-"\n"
-"    gl_FragColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5) * checkForPresenceWithinSphere;\n"
-"}"
-;
+extern const char _sphereRefraction_fragment_shader[]=SHADER_STR(
+    varying highp vec2 textureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+
+    uniform highp vec2 center;
+    uniform highp float radius;
+    uniform highp float aspectRatio;
+    uniform highp float refractiveIndex;
+
+    void main()
+    {
+        highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+        highp float distanceFromCenter = distance(center, textureCoordinateToUse);
+        lowp float checkForPresenceWithinSphere = step(distanceFromCenter, radius);
+
+        distanceFromCenter = distanceFromCenter / radius;
+
+        highp float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+        highp vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));
+
+        highp vec3 refractedVector = refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);
+
+        gl_FragColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5) * checkForPresenceWithinSphere;
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _sphereRefraction_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"\n"
-"uniform vec2 center;\n"
-"uniform float radius;\n"
-"uniform float aspectRatio;\n"
-"uniform float refractiveIndex;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n"
-"    float distanceFromCenter = distance(center, textureCoordinateToUse);\n"
-"    float checkForPresenceWithinSphere = step(distanceFromCenter, radius);\n"
-"\n"
-"    distanceFromCenter = distanceFromCenter / radius;\n"
-"\n"
-"    float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);\n"
-"    vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));\n"
-"\n"
-"    vec3 refractedVector = refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);\n"
-"\n"
-"    gl_FragColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5) * checkForPresenceWithinSphere;\n"
-"}"
-;
+extern const char _sphereRefraction_fragment_shader[]=SHADER_STR(
+ precision mediump float;
+ varying vec2 textureCoordinate;
+
+ uniform sampler2D inputImageTexture;
+
+ uniform vec2 center;
+ uniform float radius;
+ uniform float aspectRatio;
+ uniform float refractiveIndex;
+
+ void main()
+ {
+     vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));
+     float distanceFromCenter = distance(center, textureCoordinateToUse);
+     float checkForPresenceWithinSphere = step(distanceFromCenter, radius);
+
+     distanceFromCenter = distanceFromCenter / radius;
+
+     float normalizedDepth = radius * sqrt(1.0 - distanceFromCenter * distanceFromCenter);
+     vec3 sphereNormal = normalize(vec3(textureCoordinateToUse - center, normalizedDepth));
+
+     vec3 refractedVector = refract(vec3(0.0, 0.0, -1.0), sphereNormal, refractiveIndex);
+
+     gl_FragColor = texture2D(inputImageTexture, (refractedVector.xy + 1.0) * 0.5) * checkForPresenceWithinSphere;
+ }
+);
 
 #endif
 

@@ -8,145 +8,145 @@
 #include "GPUImageColourFASTSamplingOperation.h"
 
 // 顶点着色器
-extern const char _colourFASTSamplingOperation_vertex_shader[]=
-//"precision mediump float;\n"
-"attribute vec4 position;\n"
-"attribute vec4 inputTextureCoordinate;\n"
-"attribute vec4 inputTextureCoordinate2;\n"
-"\n"
-"uniform float texelWidth;\n"
-"uniform float texelHeight;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 pointATextureCoordinate;\n"
-"varying vec2 pointBTextureCoordinate;\n"
-"varying vec2 pointCTextureCoordinate;\n"
-"varying vec2 pointDTextureCoordinate;\n"
-"varying vec2 pointETextureCoordinate;\n"
-"varying vec2 pointFTextureCoordinate;\n"
-"varying vec2 pointGTextureCoordinate;\n"
-"varying vec2 pointHTextureCoordinate;\n"
-"\n"
-"void main()\n"
-"{\n"
-"    gl_Position = position;\n"
-"\n"
-"    float tripleTexelWidth = 3.0 * texelWidth;\n"
-"    float tripleTexelHeight = 3.0 * texelHeight;\n"
-"\n"
-"    textureCoordinate = inputTextureCoordinate.xy;\n"
-"\n"
-"    pointATextureCoordinate = vec2(textureCoordinate.x + tripleTexelWidth, textureCoordinate.y + texelHeight);\n"
-"    pointBTextureCoordinate = vec2(textureCoordinate.x + texelWidth, textureCoordinate.y + tripleTexelHeight);\n"
-"    pointCTextureCoordinate = vec2(textureCoordinate.x - texelWidth, textureCoordinate.y + tripleTexelHeight);\n"
-"    pointDTextureCoordinate = vec2(textureCoordinate.x - tripleTexelWidth, textureCoordinate.y + texelHeight);\n"
-"    pointETextureCoordinate = vec2(textureCoordinate.x - tripleTexelWidth, textureCoordinate.y - texelHeight);\n"
-"    pointFTextureCoordinate = vec2(textureCoordinate.x - texelWidth, textureCoordinate.y - tripleTexelHeight);\n"
-"    pointGTextureCoordinate = vec2(textureCoordinate.x + texelWidth, textureCoordinate.y - tripleTexelHeight);\n"
-"    pointHTextureCoordinate = vec2(textureCoordinate.x + tripleTexelWidth, textureCoordinate.y - texelHeight);\n"
-"}"
-;
+extern const char _colourFASTSamplingOperation_vertex_shader[] = SHADER_STR(
+// precision mediump float;
+    attribute vec4 position;
+    attribute vec4 inputTextureCoordinate;
+    attribute vec4 inputTextureCoordinate2;
+
+    uniform float texelWidth;
+    uniform float texelHeight;
+
+    varying vec2 textureCoordinate;
+    varying vec2 pointATextureCoordinate;
+    varying vec2 pointBTextureCoordinate;
+    varying vec2 pointCTextureCoordinate;
+    varying vec2 pointDTextureCoordinate;
+    varying vec2 pointETextureCoordinate;
+    varying vec2 pointFTextureCoordinate;
+    varying vec2 pointGTextureCoordinate;
+    varying vec2 pointHTextureCoordinate;
+
+    void main()
+    {
+        gl_Position = position;
+
+        float tripleTexelWidth = 3.0 * texelWidth;
+        float tripleTexelHeight = 3.0 * texelHeight;
+
+        textureCoordinate = inputTextureCoordinate.xy;
+
+        pointATextureCoordinate = vec2(textureCoordinate.x + tripleTexelWidth, textureCoordinate.y + texelHeight);
+        pointBTextureCoordinate = vec2(textureCoordinate.x + texelWidth, textureCoordinate.y + tripleTexelHeight);
+        pointCTextureCoordinate = vec2(textureCoordinate.x - texelWidth, textureCoordinate.y + tripleTexelHeight);
+        pointDTextureCoordinate = vec2(textureCoordinate.x - tripleTexelWidth, textureCoordinate.y + texelHeight);
+        pointETextureCoordinate = vec2(textureCoordinate.x - tripleTexelWidth, textureCoordinate.y - texelHeight);
+        pointFTextureCoordinate = vec2(textureCoordinate.x - texelWidth, textureCoordinate.y - tripleTexelHeight);
+        pointGTextureCoordinate = vec2(textureCoordinate.x + texelWidth, textureCoordinate.y - tripleTexelHeight);
+        pointHTextureCoordinate = vec2(textureCoordinate.x + tripleTexelWidth, textureCoordinate.y - texelHeight);
+    }
+);
 
 #ifdef __GLSL_SUPPORT_HIGHP__
 
 // 片元着色器
-extern const char _colourFASTSamplingOperation_fragment_shader[]=
-"precision highp float;\n"
-"\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 pointATextureCoordinate;\n"
-"varying vec2 pointBTextureCoordinate;\n"
-"varying vec2 pointCTextureCoordinate;\n"
-"varying vec2 pointDTextureCoordinate;\n"
-"varying vec2 pointETextureCoordinate;\n"
-"varying vec2 pointFTextureCoordinate;\n"
-"varying vec2 pointGTextureCoordinate;\n"
-"varying vec2 pointHTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"const float PITwo = 6.2832;\n"
-"const float PI = 3.1416;\n"
-"void main()\n"
-"{\n"
-"    vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;\n"
-"\n"
-"    vec3 pointAColor = texture2D(inputImageTexture, pointATextureCoordinate).rgb;\n"
-"    vec3 pointBColor = texture2D(inputImageTexture, pointBTextureCoordinate).rgb;\n"
-"    vec3 pointCColor = texture2D(inputImageTexture, pointCTextureCoordinate).rgb;\n"
-"    vec3 pointDColor = texture2D(inputImageTexture, pointDTextureCoordinate).rgb;\n"
-"    vec3 pointEColor = texture2D(inputImageTexture, pointETextureCoordinate).rgb;\n"
-"    vec3 pointFColor = texture2D(inputImageTexture, pointFTextureCoordinate).rgb;\n"
-"    vec3 pointGColor = texture2D(inputImageTexture, pointGTextureCoordinate).rgb;\n"
-"    vec3 pointHColor = texture2D(inputImageTexture, pointHTextureCoordinate).rgb;\n"
-"\n"
-"    vec3 colorComparison = ((pointAColor + pointBColor + pointCColor + pointDColor + pointEColor + pointFColor + pointGColor + pointHColor) * 0.125) - centerColor;\n"
-"\n"
-"    // Direction calculation drawn from Appendix B of Seth Hall's Ph.D. thesis\n"
-"\n"
-"    vec3 dirX = (pointAColor*0.94868) + (pointBColor*0.316227) - (pointCColor*0.316227) - (pointDColor*0.94868) - (pointEColor*0.94868) - (pointFColor*0.316227) + (pointGColor*0.316227) + (pointHColor*0.94868);\n"
-"    vec3 dirY = (pointAColor*0.316227) + (pointBColor*0.94868) + (pointCColor*0.94868) + (pointDColor*0.316227) - (pointEColor*0.316227) - (pointFColor*0.94868) - (pointGColor*0.94868) - (pointHColor*0.316227);\n"
-"    vec3 absoluteDifference = abs(colorComparison);\n"
-"    float componentLength = length(colorComparison);\n"
-"    float avgX = dot(absoluteDifference, dirX) / componentLength;\n"
-"    float avgY = dot(absoluteDifference, dirY) / componentLength;\n"
-"    float angle = atan(avgY, avgX);\n"
-"\n"
-"    vec3 normalizedColorComparison = (colorComparison + 1.0) * 0.5;\n"
-"\n"
-"    gl_FragColor = vec4(normalizedColorComparison, (angle+PI)/PITwo);\n"
-"}"
-;
+extern const char _colourFASTSamplingOperation_fragment_shader[] = SHADER_STR(
+    precision highp float;
+
+    varying vec2 textureCoordinate;
+    varying vec2 pointATextureCoordinate;
+    varying vec2 pointBTextureCoordinate;
+    varying vec2 pointCTextureCoordinate;
+    varying vec2 pointDTextureCoordinate;
+    varying vec2 pointETextureCoordinate;
+    varying vec2 pointFTextureCoordinate;
+    varying vec2 pointGTextureCoordinate;
+    varying vec2 pointHTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+    const float PITwo = 6.2832;
+    const float PI = 3.1416;
+    void main()
+    {
+        vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;
+
+        vec3 pointAColor = texture2D(inputImageTexture, pointATextureCoordinate).rgb;
+        vec3 pointBColor = texture2D(inputImageTexture, pointBTextureCoordinate).rgb;
+        vec3 pointCColor = texture2D(inputImageTexture, pointCTextureCoordinate).rgb;
+        vec3 pointDColor = texture2D(inputImageTexture, pointDTextureCoordinate).rgb;
+        vec3 pointEColor = texture2D(inputImageTexture, pointETextureCoordinate).rgb;
+        vec3 pointFColor = texture2D(inputImageTexture, pointFTextureCoordinate).rgb;
+        vec3 pointGColor = texture2D(inputImageTexture, pointGTextureCoordinate).rgb;
+        vec3 pointHColor = texture2D(inputImageTexture, pointHTextureCoordinate).rgb;
+
+        vec3 colorComparison = ((pointAColor + pointBColor + pointCColor + pointDColor + pointEColor + pointFColor + pointGColor + pointHColor) * 0.125) - centerColor;
+
+        // Direction calculation drawn from Appendix B of Seth Hall's Ph.D. thesis
+
+        vec3 dirX = (pointAColor*0.94868) + (pointBColor*0.316227) - (pointCColor*0.316227) - (pointDColor*0.94868) - (pointEColor*0.94868) - (pointFColor*0.316227) + (pointGColor*0.316227) + (pointHColor*0.94868);
+        vec3 dirY = (pointAColor*0.316227) + (pointBColor*0.94868) + (pointCColor*0.94868) + (pointDColor*0.316227) - (pointEColor*0.316227) - (pointFColor*0.94868) - (pointGColor*0.94868) - (pointHColor*0.316227);
+        vec3 absoluteDifference = abs(colorComparison);
+        float componentLength = length(colorComparison);
+        float avgX = dot(absoluteDifference, dirX) / componentLength;
+        float avgY = dot(absoluteDifference, dirY) / componentLength;
+        float angle = atan(avgY, avgX);
+
+        vec3 normalizedColorComparison = (colorComparison + 1.0) * 0.5;
+
+        gl_FragColor = vec4(normalizedColorComparison, (angle+PI)/PITwo);
+    }
+);
 
 #else
 
 // 片元着色器
-extern const char _colourFASTSamplingOperation_fragment_shader[]=
-"precision mediump float;\n"
-"varying vec2 textureCoordinate;\n"
-"varying vec2 pointATextureCoordinate;\n"
-"varying vec2 pointBTextureCoordinate;\n"
-"varying vec2 pointCTextureCoordinate;\n"
-"varying vec2 pointDTextureCoordinate;\n"
-"varying vec2 pointETextureCoordinate;\n"
-"varying vec2 pointFTextureCoordinate;\n"
-"varying vec2 pointGTextureCoordinate;\n"
-"varying vec2 pointHTextureCoordinate;\n"
-"\n"
-"uniform sampler2D inputImageTexture;\n"
-"uniform sampler2D inputImageTexture2;\n"
-"const float PITwo = 6.2832;\n"
-"const float PI = 3.1416;\n"
-"void main()\n"
-"{\n"
-"    vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;\n"
-"\n"
-"    vec3 pointAColor = texture2D(inputImageTexture, pointATextureCoordinate).rgb;\n"
-"    vec3 pointBColor = texture2D(inputImageTexture, pointBTextureCoordinate).rgb;\n"
-"    vec3 pointCColor = texture2D(inputImageTexture, pointCTextureCoordinate).rgb;\n"
-"    vec3 pointDColor = texture2D(inputImageTexture, pointDTextureCoordinate).rgb;\n"
-"    vec3 pointEColor = texture2D(inputImageTexture, pointETextureCoordinate).rgb;\n"
-"    vec3 pointFColor = texture2D(inputImageTexture, pointFTextureCoordinate).rgb;\n"
-"    vec3 pointGColor = texture2D(inputImageTexture, pointGTextureCoordinate).rgb;\n"
-"    vec3 pointHColor = texture2D(inputImageTexture, pointHTextureCoordinate).rgb;\n"
-"\n"
-"    vec3 colorComparison = ((pointAColor + pointBColor + pointCColor + pointDColor + pointEColor + pointFColor + pointGColor + pointHColor) * 0.125) - centerColor;\n"
-"\n"
-"    // Direction calculation drawn from Appendix B of Seth Hall's Ph.D. thesis\n"
-"\n"
-"    vec3 dirX = (pointAColor*0.94868) + (pointBColor*0.316227) - (pointCColor*0.316227) - (pointDColor*0.94868) - (pointEColor*0.94868) - (pointFColor*0.316227) + (pointGColor*0.316227) + (pointHColor*0.94868);\n"
-"    vec3 dirY = (pointAColor*0.316227) + (pointBColor*0.94868) + (pointCColor*0.94868) + (pointDColor*0.316227) - (pointEColor*0.316227) - (pointFColor*0.94868) - (pointGColor*0.94868) - (pointHColor*0.316227);\n"
-"    vec3 absoluteDifference = abs(colorComparison);\n"
-"    float componentLength = length(colorComparison);\n"
-"    float avgX = dot(absoluteDifference, dirX) / componentLength;\n"
-"    float avgY = dot(absoluteDifference, dirY) / componentLength;\n"
-"    float angle = atan(avgY, avgX);\n"
-"\n"
-"    vec3 normalizedColorComparison = (colorComparison + 1.0) * 0.5;\n"
-"\n"
-"    gl_FragColor = vec4(normalizedColorComparison, (angle+PI)/PITwo);\n"
-"}"
-;
+extern const char _colourFASTSamplingOperation_fragment_shader[] = SHADER_STR(
+    precision mediump float;
+    varying vec2 textureCoordinate;
+    varying vec2 pointATextureCoordinate;
+    varying vec2 pointBTextureCoordinate;
+    varying vec2 pointCTextureCoordinate;
+    varying vec2 pointDTextureCoordinate;
+    varying vec2 pointETextureCoordinate;
+    varying vec2 pointFTextureCoordinate;
+    varying vec2 pointGTextureCoordinate;
+    varying vec2 pointHTextureCoordinate;
+
+    uniform sampler2D inputImageTexture;
+    uniform sampler2D inputImageTexture2;
+    const float PITwo = 6.2832;
+    const float PI = 3.1416;
+    void main()
+    {
+     vec3 centerColor = texture2D(inputImageTexture, textureCoordinate).rgb;
+
+     vec3 pointAColor = texture2D(inputImageTexture, pointATextureCoordinate).rgb;
+     vec3 pointBColor = texture2D(inputImageTexture, pointBTextureCoordinate).rgb;
+     vec3 pointCColor = texture2D(inputImageTexture, pointCTextureCoordinate).rgb;
+     vec3 pointDColor = texture2D(inputImageTexture, pointDTextureCoordinate).rgb;
+     vec3 pointEColor = texture2D(inputImageTexture, pointETextureCoordinate).rgb;
+     vec3 pointFColor = texture2D(inputImageTexture, pointFTextureCoordinate).rgb;
+     vec3 pointGColor = texture2D(inputImageTexture, pointGTextureCoordinate).rgb;
+     vec3 pointHColor = texture2D(inputImageTexture, pointHTextureCoordinate).rgb;
+
+     vec3 colorComparison = ((pointAColor + pointBColor + pointCColor + pointDColor + pointEColor + pointFColor + pointGColor + pointHColor) * 0.125) - centerColor;
+
+     // Direction calculation drawn from Appendix B of Seth Hall's Ph.D. thesis
+
+     vec3 dirX = (pointAColor*0.94868) + (pointBColor*0.316227) - (pointCColor*0.316227) - (pointDColor*0.94868) - (pointEColor*0.94868) - (pointFColor*0.316227) + (pointGColor*0.316227) + (pointHColor*0.94868);
+     vec3 dirY = (pointAColor*0.316227) + (pointBColor*0.94868) + (pointCColor*0.94868) + (pointDColor*0.316227) - (pointEColor*0.316227) - (pointFColor*0.94868) - (pointGColor*0.94868) - (pointHColor*0.316227);
+     vec3 absoluteDifference = abs(colorComparison);
+     float componentLength = length(colorComparison);
+     float avgX = dot(absoluteDifference, dirX) / componentLength;
+     float avgY = dot(absoluteDifference, dirY) / componentLength;
+     float angle = atan(avgY, avgX);
+
+     vec3 normalizedColorComparison = (colorComparison + 1.0) * 0.5;
+
+     gl_FragColor = vec4(normalizedColorComparison, (angle+PI)/PITwo);
+    }
+);
 
 #endif
 
